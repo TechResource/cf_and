@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <flightpath.com.mapmodule.TripStartStopWidget_
+        android:id="@+id/tripStartStopWidget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+
+        <org.osmdroid.views.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <ToggleButton
+            android:id="@+id/trackLocationBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignBottom="@id/mapView"
+            android:layout_alignRight="@id/mapView"
+            android:layout_margin="@dimen/margin_small"
+            android:background="@drawable/track_location"
+            android:checked="true"
+            android:textOff=""
+            android:textOn=""/>
+
+        <LinearLayout
+            android:id="@+id/statusesContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true"
+            android:background="@color/red_transparent"
+            >
+
+            <TextView
+                style="@style/Base.StatusLabel"
+                android:id="@+id/gpStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/no_gps_text"
+                android:textSize="@dimen/text_size_small"
+                android:drawablePadding="@dimen/margin_small"
+                android:padding="@dimen/margin_very_small"
+                android:layout_gravity="center"
+                android:drawableLeft="@drawable/gps_icon"
+                />
+
+            <TextView
+                style="@style/Base.StatusLabel"
+                android:id="@+id/internetStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/no_internet_text"
+                android:textSize="@dimen/text_size_small"
+                android:drawableLeft="@drawable/internet_signal_icon"
+                android:drawablePadding="@dimen/margin_small"
+                android:padding="@dimen/margin_very_small"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
+
+        <flightpath.com.mapmodule.SyncStatusWidget_
+            android:id="@+id/syncContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/statusesContainer"/>
+
+        <TextView
+            android:id="@+id/statusLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/syncContainer"
+            android:background="@color/white_transparent"
+            android:paddingBottom="@dimen/margin_very_small"
+            android:paddingLeft="@dimen/margin_normal"
+            android:paddingTop="@dimen/margin_very_small"
+            android:text="@string/status_label"
+            android:visibility="gone"
+            />
+
+    </RelativeLayout>
+
+    <flightpath.com.mapmodule.StatusBarColoredWidget_
+        android:id="@+id/tripStatusLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+
+</LinearLayout>

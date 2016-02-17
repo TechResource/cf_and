@@ -1,0 +1,23 @@
+<manifest
+    package="com.flightpathcore"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:theme="@style/BaseTheme.AppTheme"
+        >
+
+        <activity
+            android:name=".base.SignatureActivity_"
+            android:screenOrientation="landscape"
+            />
+
+    </application>
+
+</manifest>

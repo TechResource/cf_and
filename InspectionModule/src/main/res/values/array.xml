@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="jobs_type">
+        <item>Collection</item>
+        <item>Delivery</item>
+    </string-array>
+</resources>

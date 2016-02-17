@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+
+    <ScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="@dimen/margin_normal"
+            android:layout_marginRight="@dimen/margin_normal"
+            android:orientation="vertical" >
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@color/gray"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/margin_normal"
+                android:paddingRight="@dimen/margin_normal" >
+
+                <TextView
+                    android:id="@+id/speedTV"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:gravity="left"
+                    android:text="VEHICLE SPEED" />
+            </RelativeLayout>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/speedChart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="Current Speed" />
+
+                <TextView
+                    android:id="@+id/vehicleSpeed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textSize="@dimen/text_size_extra_large" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_dark" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@color/gray"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/margin_normal"
+                android:paddingRight="@dimen/margin_normal" >
+
+                <TextView
+                    android:id="@+id/rpmTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:gravity="left"
+                    android:text="ENGINE RPM" />
+            </RelativeLayout>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/rpmChart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="Current Engine RPM"
+                    />
+
+                <TextView
+                    android:id="@+id/engineRpm"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0"
+                    android:textSize="@dimen/text_size_extra_large" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/separator_height"
+                android:background="@color/gray_dark" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ImageButton
+        android:id="@+id/sliderIcon"
+        android:background="@drawable/ic_slider"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="1dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

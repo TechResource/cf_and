@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <fragment
+            class="com.flightpathcore.fragments.HeaderFragment_"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:tag="headerFragment"
+            tools:layout="@layout/fragment_header"/>
+
+        <com.flightpathcore.utilities.SwipeableViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v4.view.PagerTabStrip
+                android:id="@+id/pagerTabStrip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:background="@color/menu_bg"
+                android:paddingBottom="@dimen/margin_very_small"
+                android:paddingTop="@dimen/margin_very_small"
+                android:textColor="@android:color/white"/>
+
+        </com.flightpathcore.utilities.SwipeableViewPager>
+    </LinearLayout>
+
+    <com.flightpathcore.widgets.DrawerMenuView_
+        android:id="@+id/menuView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        />
+</android.support.v4.widget.DrawerLayout>

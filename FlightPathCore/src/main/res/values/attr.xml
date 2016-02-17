@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="InputWidget">
+        <attr name="text" format="string"/>
+        <attr name="hint" format="string"/>
+        <attr name="only_digits" format="boolean"/>
+        <attr name="is_required" format="boolean"/>
+    </declare-styleable>
+</resources>

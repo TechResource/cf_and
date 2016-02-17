@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer name="view_tag_spinner_jobs">1</integer>
+    <integer name="view_tag_spinner_job_type">2</integer>
+    <integer name="view_tag_reference_number">3</integer>
+    <integer name="view_tag_customer_name">4</integer>
+    <integer name="view_tag_home_number">5</integer>
+    <integer name="view_tag_address_line_1">6</integer>
+    <integer name="view_tag_address_line_2">7</integer>
+    <integer name="view_tag_city">8</integer>
+    <integer name="view_tag_postcode">9</integer>
+    <integer name="view_tag_registration">10</integer>
+    <integer name="view_tag_manufacturer">11</integer>
+    <integer name="view_tag_model">12</integer>
+    <integer name="view_tag_notes">13</integer>
+    <integer name="view_tag_loan_duration">14</integer>
+    <integer name="view_tag_damages">15</integer>
+    <integer name="view_tag_loose_items">16</integer>
+    <integer name="view_tag_signature">17</integer>
+</resources>

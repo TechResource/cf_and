@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/menu_bg"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/driver"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginBottom="@dimen/margin_large"
+        android:background="@color/menu_secondary_bg"
+        android:paddingTop="@dimen/margin_normal"
+        android:paddingBottom="@dimen/margin_normal"
+        android:paddingLeft="60dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_extra_large"
+        android:textStyle="bold"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@drawable/menu_divider"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+        <Button
+            android:id="@+id/updateApp"
+            style="@style/Menu.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/update_app_label"
+            android:drawableLeft="@drawable/refresh_icon"
+            android:drawablePadding="@dimen/margin_small"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:id="@+id/status"
+            style="@style/Menu.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/status_label"
+            android:drawableLeft="@drawable/ic_change_status"
+            android:drawablePadding="@dimen/margin_small"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:id="@+id/addInspection"
+            style="@style/Menu.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_inspection_label"
+            android:drawableLeft="@drawable/ic_add_inspection"
+            android:drawablePadding="@dimen/margin_small"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:id="@+id/getJobs"
+            style="@style/Menu.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/get_jobs_label"
+            android:visibility="gone"
+            android:drawableLeft="@drawable/ic_get_jobs"
+            android:drawablePadding="@dimen/margin_small"
+            />
+
+        <Button
+            android:id="@+id/jobInfo"
+            style="@style/Menu.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/job_info_label"
+            android:drawablePadding="@dimen/margin_small"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:id="@+id/closePeriod"
+            style="@style/Menu.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/close_period_label"
+            android:drawablePadding="@dimen/margin_small"
+            android:drawableLeft="@drawable/close_period_icon"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:id="@+id/logout"
+            style="@style/Menu.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/logout_label"
+            android:drawableLeft="@drawable/ic_logout"
+            android:drawablePadding="@dimen/margin_small"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:id="@+id/exit"
+            style="@style/Menu.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/exit_label"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:id="@+id/cleanDB"
+            style="@style/Menu.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/clean_db_label"
+            android:visibility="gone"
+            />
+
+        <Button
+            android:id="@+id/sendNow"
+            style="@style/Menu.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/send_now_label"
+            android:visibility="gone"
+            />
+        <Button
+            android:id="@+id/storeDB"
+            style="@style/Menu.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/store_db_label"
+            android:visibility="gone"
+            />
+
+    </LinearLayout>
+</LinearLayout>

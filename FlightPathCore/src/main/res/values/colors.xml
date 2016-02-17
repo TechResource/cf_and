@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">@android:color/white</color>
+
+    <color name="yellow_bg">#ffFFBB33</color>
+    <color name="red_bg">#ffFF4444</color>
+    <color name="blue_bg">#ff0077ca</color>
+    <color name="light_blue_bg">#ffd1f1fb</color>
+    <color name="blue_text_color">#ff19b8ec</color>
+    <color name="separator_color">#ff666666</color>
+    <color name="beige_bg">#fff9f5ed</color>
+    <color name="gray_text_color">#c7c7c7</color>
+    <color name="green_dark">#ff4cd964</color>
+    <color name="gray">#ffebebeb</color>
+    <color name="gray_dark">#ff666666</color>
+    <color name="menu_bg">#2b2c2c</color>
+    <color name="menu_secondary_bg">#272727</color>
+    <color name="green_transparent">#aa98b84b</color>
+    <color name="yellow_transparent">#aaFFBB33</color>
+    <color name="red_transparent">#aaFF4444</color>
+    <color name="black_transparent">#aa000000</color>
+    <color name="dark_blue_color">#004c82</color>
+    <color name="blue_color">#00548f</color>
+    <color name="blue_color_transparent">#8800548f</color>
+    <color name="light_blue_color">#1c80c6</color>
+    <color name="white_transparent">#aaffffff</color>
+
+</resources>

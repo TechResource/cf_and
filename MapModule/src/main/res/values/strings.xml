@@ -1,0 +1,13 @@
+<resources>
+    <string name="create_trip_label">START TRIP</string>
+    <string name="trip_in_progress_label">Trip in progress</string>
+    <string name="trip_paused_label">Your trip is paused</string>
+    <string name="trip_ready_to_start_label">Your trip is ready to start</string>
+    <string name="lat_label">Lat:</string>
+    <string name="long_label">Long:</string>
+    <string name="last_sync_label">LAST SYNC:</string>
+    <string name="to_send_label">TO SEND:</string>
+    <string name="from_label">"FROM: "</string>
+    <string name="no_gps_text">It looks like we can\'t get your GPS location</string>
+    <string name="no_internet_text">It looks like you don\'t have an internet connection</string>
+</resources>

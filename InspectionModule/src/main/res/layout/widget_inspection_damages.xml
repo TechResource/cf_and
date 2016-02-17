@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:divider="@drawable/inspection_divider"
+    android:showDividers="middle"
+    android:orientation="vertical"
+    >
+
+    <Button
+        android:id="@+id/addDamage"
+        style="@style/Inspection.Select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Damage"
+        />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_normal"
+        >
+
+        <LinearLayout
+            android:id="@+id/damagesContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/horizontal_transparent_divider"
+            android:orientation="horizontal"
+            android:showDividers="middle"
+            ></LinearLayout>
+
+    </HorizontalScrollView>
+
+</LinearLayout>

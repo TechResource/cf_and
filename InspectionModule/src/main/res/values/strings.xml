@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">InspectionModule</string>
+    <string name="description_label">Description</string>
+    <string name="all_items_selected_label">All items selected</string>
+    <string name="add_inspection_text">Add</string>
+    <string name="signature_label">Signature</string>
+    <string name="field_required_error">Field can\'t be empty.</string>
+</resources>

@@ -1,0 +1,105 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <fragment
+        class="com.flightpathcore.fragments.HeaderFragment_"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/headerFragment"
+        tools:layout="@layout/fragment_header"/>
+
+    <LinearLayout
+        android:id="@+id/pagerStrip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/btn1"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/dark_blue_color"
+                android:padding="@dimen/margin_normal"
+                android:src="@drawable/ic_car"
+                />
+
+            <FrameLayout
+                android:id="@+id/select1"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/light_blue_color"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btn2"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/dark_blue_color"
+                android:padding="@dimen/margin_normal"
+                android:src="@drawable/ic_pen"
+                />
+
+            <FrameLayout
+                android:id="@+id/select2"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/blue_color"
+                />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.flightpathcore.utilities.SwipeableViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:id="@+id/addInspection"
+        style="@style/Base.BlueButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:id="@+id/addInspectionBtn"
+            style="@style/Base.BlueButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:drawableLeft="@drawable/ic_add"
+            android:drawablePadding="@dimen/margin_small"
+            android:padding="@dimen/margin_normal"
+            android:text="@string/add_inspection_text"
+            android:textSize="@dimen/text_size_extra_large"
+
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

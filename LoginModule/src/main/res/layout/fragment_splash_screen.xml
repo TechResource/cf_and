@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.flightpathcore.utilities.SwipeableViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.flightpathcore.utilities.SwipeableViewPager>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/margin_large">
+
+        <TextView
+            android:id="@+id/appName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_extra_large"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/versionNumberView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/appName"
+            android:layout_toRightOf="@id/appName"
+            android:textColor="@color/gray_text_color"
+            android:layout_marginLeft="@dimen/margin_very_small"
+            android:textSize="@dimen/text_size_normal"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/dots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/loginButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:id="@+id/dot1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_very_small"
+            android:layout_marginRight="@dimen/margin_very_small"
+            android:src="@drawable/dot_selected"/>
+
+        <ImageView
+            android:id="@+id/dot2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_very_small"
+            android:layout_marginRight="@dimen/margin_very_small"
+            android:src="@drawable/dot"/>
+
+        <ImageView
+            android:id="@+id/dot3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_very_small"
+            android:layout_marginRight="@dimen/margin_very_small"
+            android:src="@drawable/dot"/>
+
+        <ImageView
+            android:id="@+id/dot4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_very_small"
+            android:layout_marginRight="@dimen/margin_very_small"
+            android:src="@drawable/dot"/>
+
+    </LinearLayout>
+
+    <Button
+        style="@style/LMButton"
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin_normal"
+        android:layout_marginLeft="@dimen/margin_large"
+        android:layout_marginRight="@dimen/margin_large"
+        android:text="LOGIN"
+        android:visibility="gone"
+        />
+</RelativeLayout>

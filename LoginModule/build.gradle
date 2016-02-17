@@ -1,0 +1,51 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
+def AAVersion = '3.3.1'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+apt {
+    arguments {
+        androidManifestFile variant.outputs[0].processResources.manifestFile
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    //android
+    compile rootProject.ext.appCompat
+    compile rootProject.ext.recyclerView
+    compile rootProject.ext.design
+
+    apt 'com.google.dagger:dagger-compiler:2.0'
+    compile 'com.google.dagger:dagger:2.0'
+    provided 'javax.annotation:jsr250-api:1.0'
+
+    //android annotations
+    apt "org.androidannotations:androidannotations:$AAVersion"
+    compile "org.androidannotations:androidannotations-api:$AAVersion"
+    compile project(':FlightPathCore')
+
+}

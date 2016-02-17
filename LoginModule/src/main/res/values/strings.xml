@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">LoginModule</string>
+
+    <string name="login_hint">Login</string>
+    <string name="password_hint">Password</string>
+    <string name="login_button_text">Login</string>
+    <string name="login_issue_text">Login issues?</string>
+    <string name="security_code_hint">Security code</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="security_code">6936</string>
+    <string name="server_address_label">Server address</string>
+    <string name="update_label">Update</string>
+    <string name="update_app_message">Downloading new app version...</string>
+    <string name="update_new_version_msg">New app version available.\nDo you want to update it now?</string>
+    <string name="current_mileage_hint">Start Trip Mileage</string>
+    <string name="vehicle_registration_number_hint">Vehicle Registration Number</string>
+
+    <string-array name="spinnerReasonItems">
+        <item>Business trip.</item>
+    </string-array>
+
+    <string name="info_window_text1">"Connected Fleet gives you possibility to effectively manage your fleet, run monthly payrolls, track your drivers behaviour on road and collect inspections of cards."</string>
+
+</resources>

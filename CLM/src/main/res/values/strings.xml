@@ -1,0 +1,5 @@
+<resources>
+    <string name="api_version">1.1</string>
+
+    <string name="sign_behalf_of_text">I am the driver’s representative and sign on their behalf</string>
+</resources>

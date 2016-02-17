@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <fragment
+        class="com.flightpathcore.fragments.HeaderFragment_"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:tag="headerFragment"
+        tools:layout="@layout/fragment_header"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:divider="@drawable/list_view_divider_drawable"
+            android:showDividers="middle"
+            >
+            <com.flightpathcore.widgets.InputWidget_
+                android:id="@+id/startMileageIW"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hint="@string/current_mileage_hint"
+                app:is_required="true"
+                app:only_digits="true"
+                />
+
+            <com.flightpathcore.widgets.InputWidget_
+                android:id="@+id/registrationNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hint="@string/vehicle_registration_number_hint"
+                app:is_required="true"
+                />
+
+            <Spinner
+                android:id="@+id/reasonSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/spinnerReasonItems"
+                >
+            </Spinner>
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

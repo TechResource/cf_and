@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.TextInputLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/til"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <EditText
+        android:id="@+id/securityCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_normal"
+        android:hint="@string/security_code_hint"
+        android:minHeight="@dimen/margin_normal"
+        android:inputType="textPassword"
+        android:textColorHint="@android:color/black"
+        />
+
+</android.support.design.widget.TextInputLayout>

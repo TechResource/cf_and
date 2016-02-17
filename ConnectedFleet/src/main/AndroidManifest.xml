@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    package="com.connectedfleet"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:name=".ConnectedFleetApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/BaseTheme.AppTheme"
+        android:hardwareAccelerated="true"
+        >
+        <activity android:name=".activity.SplashScreenActivity_"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.LoginActivity_"
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/BaseTheme.AppThemeTranslucentBg"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".activity.MainActivity_"
+            android:theme="@style/BaseTheme.AppThemeTranslucentBg"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".activity.PrepareTripActivity_"
+            android:theme="@style/BaseTheme.AppThemeTranslucentBg"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.ClosePeriodActivity_"
+            android:screenOrientation="landscape"
+            />
+
+        <service android:name="com.flightpathcore.acceleration.AccelerationService"/>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="ffe491230b5578ec5a4b9f88d76d8fea3c69ea4b" />
+    </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+</manifest>

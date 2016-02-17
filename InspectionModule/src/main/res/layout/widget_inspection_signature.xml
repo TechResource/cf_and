@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Button
+        style="@style/Base.BlueButton"
+        android:id="@+id/signatureBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/signature_label"
+        android:layout_weight="0.6"
+        />
+    <ImageView
+        android:id="@+id/signatureIV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray"
+        android:src="@drawable/glyphicons_picture"
+        android:scaleType="centerInside"
+        android:layout_weight="0.4"/>
+</LinearLayout>

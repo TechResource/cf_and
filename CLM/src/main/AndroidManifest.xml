@@ -1,0 +1,35 @@
+<manifest package="com.flightpath.clm"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application
+        android:name=".CLMApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/fp_icon"
+        android:label="@string/app_name"
+        android:theme="@style/BaseTheme.AppTheme">
+
+        <activity android:name=".activity.SplashScreenActivity_" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.LoginActivity_"
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/BaseTheme.AppThemeTranslucentBg"
+            />
+        <activity android:name=".activity.MapActivity_"
+                  android:theme="@style/BaseTheme.AppThemeTranslucentBg"
+                  />
+        <activity android:name=".activity.InspectionActivity_"
+                  android:windowSoftInputMode="stateHidden"
+                  android:theme="@style/BaseTheme.AppThemeTranslucentBg" />
+
+        <activity android:name=".activity.PrepareTripActivity_"
+                  android:theme="@style/BaseTheme.AppThemeTranslucentBg"
+                  android:windowSoftInputMode="stateHidden" />
+
+    </application>
+
+</manifest>

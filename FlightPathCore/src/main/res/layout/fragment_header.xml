@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/blue_color"
+    android:orientation="horizontal"
+    >
+
+    <ImageView
+        android:id="@+id/menu"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:padding="@dimen/margin_normal"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_drawer"
+        android:visibility="visible"
+        />
+
+    <Button
+        android:id="@+id/leftBtn"
+        style="@style/TextButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:minWidth="50dp"
+        android:paddingLeft="@dimen/margin_normal"
+        android:textSize="@dimen/text_size_normal"
+        android:visibility="gone"
+        />
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/appName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Connected Fleet"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_extra_large"
+            android:textStyle="bold"
+            android:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/versionName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/appName"
+            android:layout_toRightOf="@id/appName"
+            android:text="2"
+            android:textColor="@color/gray_text_color"
+            android:textSize="@dimen/text_size_small"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+
+    <Button
+        style="@style/TextButtonStyle"
+        android:id="@+id/rightBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/margin_small"
+        android:background="@null"
+        android:textSize="@dimen/text_size_normal"
+        android:visibility="gone"/>
+</RelativeLayout>

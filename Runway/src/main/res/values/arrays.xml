@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="host_addresses">
+        <!-- PRODUCTION -->
+        <item>http://xpfc.autoxp.co.uk:5666</item>
+        <!--DEV-->
+        <item>http://46.17.215.204:42551</item>
+        <!--KICHA-->
+        <item>http://192.168.0.109:8001</item>
+    </array>
+</resources>
