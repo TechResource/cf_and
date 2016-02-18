@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">DongleModule</string>
+
+    <string name="scan_devices_text">Scanning for Devices</string>
 </resources>

@@ -86,20 +86,20 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onCreate(db);
-        try {
-            if (oldVersion < 16) {
-                db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_HELPER_ID + " INTEGER DEFAULT 1");
-                db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_ACCESS + " INTEGER");
-                db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_TOKEN_ID + " INTEGER");
-            }
-            if(oldVersion < 17) {
+        if (oldVersion < 16) {
+            db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_HELPER_ID + " INTEGER DEFAULT 1");
+            db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_ACCESS + " INTEGER");
+            db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_TOKEN_ID + " INTEGER");
+        }
+        if(oldVersion < 17) {
+            try {
                 db.execSQL("ALTER TABLE " + TripTable.TABLE_NAME + " ADD COLUMN " + TripTable.TRIP_DRIVER_ID + " INTEGER");
+            }catch (Exception e){
+                //dont know why but sometime it happening and without try/catch it would not continue upgrading
             }
-            if( oldVersion < 18){
-                db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_NAME+ " TEXT");
-            }
-        }catch (Exception e){
-            e.printStackTrace();
+        }
+        if( oldVersion < 18){
+            db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_NAME+ " TEXT");
         }
     }
 

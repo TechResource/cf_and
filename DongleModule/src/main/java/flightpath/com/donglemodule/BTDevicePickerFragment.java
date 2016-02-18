@@ -67,7 +67,7 @@ public class BTDevicePickerFragment extends BaseFragment implements BTReceiver.B
 
     @AfterViews
     protected void init() {
-        status.setText("scan devices");
+        status.setText(R.string.scan_devices_text);
         adapter = new Adapter();
         devicesList.setLayoutManager(new LinearLayoutManager(getContext()));
         devicesList.setAdapter(adapter);
@@ -110,7 +110,7 @@ public class BTDevicePickerFragment extends BaseFragment implements BTReceiver.B
                 status.setText("OBD service error.\nPlease wait or select another device.");
             }
         }else{
-            status.setText("scan devices");
+            status.setText(R.string.scan_devices_text);
         }
         pairedDeviceFound = false;
         scanDevices();
@@ -189,7 +189,7 @@ public class BTDevicePickerFragment extends BaseFragment implements BTReceiver.B
     @Override
     public void onBtEnabled(int state) {
         if(state == BluetoothAdapter.STATE_ON) {
-            status.setText("scan devices");
+            status.setText(R.string.scan_devices_text);
             statusProgress.setVisibility(View.VISIBLE);
             devicesList.postDelayed(() -> scanDevices(), 1000);
         }else if(state == BluetoothAdapter.STATE_OFF){
