@@ -3,6 +3,7 @@ package com.connectedfleet.activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.location.Location;
@@ -13,7 +14,9 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -100,7 +103,7 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
         di().inject(this);
         SynchronizationHelper.initInstance(fpModel);
         currentUser = ((UserObject) DBHelper.getInstance().getLast(new DriverTable()));
-        if(currentUser != null) {
+        if (currentUser != null) {
             pointCollectInterval = 1000 * currentUser.gpsPointPer;
         }
         tripStatusHelper.addListener(this);
@@ -207,7 +210,7 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
         }
     }
 
-    private void onExit(){
+    private void onExit() {
         Utilities.styleAlertDialog(new AlertDialog.Builder(this, R.style.BlueAlertDialog)
                 .setTitle(R.string.close_app_title)
                 .setMessage(R.string.close_app_msg)
@@ -242,9 +245,9 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
         fpModel.fpApi.checkUpdate(new MyCallback<UpdateAppObject>() {
             @Override
             public void onSuccess(UpdateAppObject response) {
-                if(response.version != null){
+                if (response.version != null) {
                     new UpdateHelper(MainActivity.this, response, null).askUpdateApp();
-                }else{
+                } else {
                     Utilities.styleAlertDialog(new AlertDialog.Builder(MainActivity.this, R.style.BlueAlertDialog)
                             .setMessage("You have the newest version of app right now.")
                             .setNegativeButton("CLOSE", null)
@@ -269,7 +272,7 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
     private Runnable dataCollector = new Runnable() {
         @Override
         public void run() {
-            if(shouldCollectData) {
+            if (shouldCollectData) {
                 EventObject eventObject = collectPoint();
                 if (eventObject != null) {
                     DBHelper.getInstance().createEvent(eventObject);
@@ -285,17 +288,17 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
         currentLocation = locationHandler.getLocation();
         currentTripStatus = tripStatusHelper.getTripStatus();
 
-        if(dongleDataHelper == null)
-            dongleDataHelper = ((DongleContainerFragment)adapter.getItem(1)).getDongleDataHelper();
+        if (dongleDataHelper == null)
+            dongleDataHelper = ((DongleContainerFragment) adapter.getItem(1)).getDongleDataHelper();
 
-        if(dongleDataHelper != null)
+        if (dongleDataHelper != null)
             currentDongleData = dongleDataHelper.getCurrentData();
 
-        if(mConnection != null && accelerationService != null && currentDongleData != null){
-            currentDongleData.put("acceleration", accelerationService.getCurrentAcceleration()+"");
+        if (mConnection != null && accelerationService != null && currentDongleData != null) {
+            currentDongleData.put("acceleration", accelerationService.getCurrentAcceleration() + "");
         }
 
-        if(currentLocation != null && tripStatusHelper.getTripStatus() != TripObject.TripStatus.TRIP_STOPPED) {
+        if (currentLocation != null && tripStatusHelper.getTripStatus() != TripObject.TripStatus.TRIP_STOPPED) {
             eventObject = new EventObject();
 
             eventObject.type = EventObject.EventType.POINT;
@@ -320,9 +323,9 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
                 eventObject.onPause = false;
             }
             eventObject.timestamp = Utilities.getTimestamp();
-            if(tripStatusHelper.getCurrentTrip() != null) {
+            if (tripStatusHelper.getCurrentTrip() != null) {
                 eventObject.tripId = tripStatusHelper.getCurrentTrip().tripId;
-                eventObject.startDateTrip = tripStatusHelper.getCurrentTrip().startDateAsTimestamp+"";
+                eventObject.startDateTrip = tripStatusHelper.getCurrentTrip().startDateAsTimestamp + "";
             }
 
             Log.d("POINT COLLECTOR", gson.toJson(eventObject));
@@ -333,14 +336,14 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(mapFragment != null){
+        if (mapFragment != null) {
             mapFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
     @Override
     public void onTripStatusChanged(TripObject.TripStatus tripStatus, TripObject trip) {
-        switch (tripStatus){
+        switch (tripStatus) {
             case TRIP_STARTED:
             case TRIP_PAUSED:
                 shouldCollectData = true;
@@ -352,17 +355,27 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
     }
 
     private boolean canFinish = false;
+    AlertDialog stopTripDialog = null;
 
     @Override
     public void onStopTrip() {
         InputWidget inputWidget = InputWidget_.build(this);
         inputWidget.setOnlyNumbersInput();
         inputWidget.setText(null, getString(R.string.end_mileage_label));
-        AlertDialog d = new AlertDialog.Builder(this, R.style.BlueAlertDialog)
+        inputWidget.setOnEditorActionListener((v1, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (stopTripDialog != null)
+                    stopTripDialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+                return true;
+            } else {
+                return false;
+            }
+        });
+        stopTripDialog = new AlertDialog.Builder(this, R.style.BlueAlertDialog)
                 .setView(inputWidget)
                 .setPositiveButton(R.string.ok_label, (dialog1, which) -> {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInputFromInputMethod(inputWidget.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+                    imm.showSoftInputFromInputMethod(inputWidget.getWindowToken(), InputMethodManager.SHOW_FORCED);
                 })
                 .setNegativeButton(R.string.cancel_text, (dialog1, which) -> {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -370,13 +383,13 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
                 })
                 .setCancelable(false)
                 .create();
-        d.setOnShowListener(dialog -> {
+        stopTripDialog.setOnShowListener(dialog -> {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(inputWidget.et, InputMethodManager.SHOW_IMPLICIT);
         });
-        d.show();
-        Utilities.styleAlertDialog(d);
-        d.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+        stopTripDialog.show();
+        Utilities.styleAlertDialog(stopTripDialog);
+        stopTripDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             Integer endMileage = null;
             try {
                 endMileage = Integer.parseInt(inputWidget.getValue());
@@ -391,11 +404,12 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
                 canFinish = false;
             }
             if (canFinish) {
-                d.dismiss();
+                if (stopTripDialog != null)
+                    stopTripDialog.dismiss();
             }
         });
-
     }
+
 
     @Override
     public void onDrawerSlide(View drawerView, float slideOffset) {
@@ -409,7 +423,7 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
 
     @Override
     public void onDrawerClosed(View drawerView) {
-        if(onMenuCloseOpenViewWithId != null){
+        if (onMenuCloseOpenViewWithId != null) {
             if (onMenuCloseOpenViewWithId == DrawerMenuView.UPDATE_APP) {
                 checkUpdate();
             } else if (onMenuCloseOpenViewWithId == DrawerMenuView.LOGOUT) {

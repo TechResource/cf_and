@@ -7,8 +7,10 @@ import android.os.Build;
 import android.support.design.widget.TextInputLayout;
 import android.text.method.DigitsKeyListener;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.flightpathcore.R;
 
@@ -105,5 +107,20 @@ public class InputWidget extends FrameLayout {
 
     public void setError(String s) {
         et.setError(s);
+    }
+
+    public void setOnEditorActionListener(TextView.OnEditorActionListener onEditorActionListener) {
+        et.setOnEditorActionListener(onEditorActionListener);
+        blockBackBtn = true;
+    }
+
+    private boolean blockBackBtn = false;
+
+    @Override
+    public boolean dispatchKeyEventPreIme(KeyEvent event) {
+        if(blockBackBtn && event.getKeyCode() == KeyEvent.KEYCODE_BACK){
+            return true;
+        }
+        return super.dispatchKeyEventPreIme(event);
     }
 }
