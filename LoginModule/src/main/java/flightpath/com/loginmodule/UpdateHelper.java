@@ -9,6 +9,7 @@ import android.support.v7.app.AlertDialog;
 
 import com.flightpathcore.objects.UpdateAppObject;
 import com.flightpathcore.utilities.Utilities;
+import com.flightpathcore.utilities.Utils;
 
 import java.io.File;
 
@@ -46,7 +47,6 @@ public class UpdateHelper {
         progressDialog.setMax(100);
         progressDialog.setCancelable(false);
         progressDialog.show();
-
         Downloader downloader = new Downloader(downloaderCallbacks);
         downloader.execute(apkUrl);
     }

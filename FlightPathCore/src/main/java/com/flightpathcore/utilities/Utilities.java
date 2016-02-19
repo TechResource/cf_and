@@ -42,6 +42,10 @@ public class Utilities {
      * @return path+"/";
      */
     private static String getBaseDirectoryPath() {
+        File f = new File(Environment.getExternalStorageDirectory() + "/" + DIRECTORY_NAME);
+        if(!f.exists()){
+            f.mkdir();
+        }
         return Environment.getExternalStorageDirectory() + "/" + DIRECTORY_NAME + "/";
     }
 

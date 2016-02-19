@@ -7,5 +7,6 @@ public interface LoginCallbacks {
 
     void onLogin(String login, String password);
     void onServerChanged();
+    void onPermissionResult();
 
 }

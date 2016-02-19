@@ -1,7 +1,11 @@
 package flightpath.com.loginmodule;
 
+import android.Manifest;
 import android.app.Dialog;
+import android.content.pm.PackageManager;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.InputType;
@@ -22,12 +26,21 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Tomasz Szafran ( tomek@appsvisio.com ) on 2015-10-19.
  */
 
 @EFragment(resName = "fragment_login")
 public class LoginFragment extends BaseFragment implements HeaderFragment.HeaderCallback {
+
+    private static final int PERMISSION_REQUEST = 2;
+
+    private static final String[] permissionNeed = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @ViewById
     protected EditText login, password;
@@ -150,6 +163,45 @@ public class LoginFragment extends BaseFragment implements HeaderFragment.Header
     @Override
     public boolean onBackPressed() {
         return false;
+    }
+
+    public boolean checkPermissions(boolean requestPermission) {
+        List<String> permissionsRequest = new ArrayList<>();
+
+        for (String p : permissionNeed) {
+            if (ContextCompat.checkSelfPermission(getActivity(), p) != PackageManager.PERMISSION_GRANTED) {
+                permissionsRequest.add(p);
+            }
+        }
+
+        if (permissionsRequest.size() == 0) {
+            return true;
+        } else {
+            if(requestPermission) {
+                ActivityCompat.requestPermissions(getActivity(), permissionsRequest.toArray(new String[permissionsRequest.size()]), PERMISSION_REQUEST);
+            }
+            return false;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (permissions[i].equalsIgnoreCase(Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
+                        permissions[i].equalsIgnoreCase(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    if(loginCallback != null){
+                        loginCallback.onPermissionResult();
+                    }
+                    return;
+                }else{
+                    if(loginCallback != null){
+                        loginCallback.onPermissionResult();
+                    }
+                }
+            }
+        }
     }
 
 }

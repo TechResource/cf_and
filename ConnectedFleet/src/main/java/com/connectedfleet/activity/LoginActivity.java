@@ -42,6 +42,8 @@ public class LoginActivity extends CFBaseActivity implements LoginCallbacks{
     @Inject
     protected FPModel fpModel;
 
+    private UserObject response = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,27 +61,35 @@ public class LoginActivity extends CFBaseActivity implements LoginCallbacks{
     @Override
     public void onLogin(String login, String password) {
         fpModel.fpApi.login(
-                new LoginRequest(login, password), new MyCallback<UserObject>() {
-                    @Override
-                    public void onSuccess(UserObject response) {
-                        loginFragment.setLoginBtnEnabled(false);
-                        DBHelper.getInstance().updateOrInsert(new DriverTable(), new DriverTable().getContentValues(response), DriverTable.HELPER_ID + "");
-                        SPHelper.saveData(LoginActivity.this, SPHelper.USER_SESSION_KEY, new Gson().toJson(response));
-
-                        if (response.update != null && response.update.url != null){
-                            askUpdateApp(response.update);
-                        }else {
-                            loginSuccess();
-                        }
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        loginFragment.setLoginBtnEnabled(true);
-                        Toast.makeText(LoginActivity.this, error, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                new LoginRequest(login, password), loginCallback);
     }
+
+    private MyCallback<UserObject> loginCallback = new MyCallback<UserObject>() {
+        @Override
+        public void onSuccess(UserObject response) {
+            LoginActivity.this.response = response;
+
+            loginFragment.setLoginBtnEnabled(false);
+            DBHelper.getInstance().updateOrInsert(new DriverTable(), new DriverTable().getContentValues(response), DriverTable.HELPER_ID + "");
+            SPHelper.saveData(LoginActivity.this, SPHelper.USER_SESSION_KEY, new Gson().toJson(response));
+
+            if (response.update != null && response.update.url != null ){
+                if(loginFragment.checkPermissions(true)) {
+                    askUpdateApp(response.update);
+                }else{
+                    return;
+                }
+            }else {
+                loginSuccess();
+            }
+        }
+
+        @Override
+        public void onError(String error) {
+            loginFragment.setLoginBtnEnabled(true);
+            Toast.makeText(LoginActivity.this, error, Toast.LENGTH_SHORT).show();
+        }
+    };
 
     private void loginSuccess(){
         navigator.loginSuccessfully();
@@ -92,6 +102,27 @@ public class LoginActivity extends CFBaseActivity implements LoginCallbacks{
     @Override
     public void onServerChanged(){
         fpModel.changeServerAddress(this);
+    }
+
+    @Override
+    public void onPermissionResult() {
+        if(loginFragment.checkPermissions(false)){
+            if(response != null)
+                loginCallback.onSuccess(response);
+        }else{
+            if(response != null){
+                response.update = null; // dont ask about update once again
+                loginCallback.onSuccess(response);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (loginFragment != null) {
+            loginFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     @Override

@@ -28,7 +28,7 @@ public class TripObject {
     public String reason;
     public boolean isJobDone;
     public int dongleConnectionTime;
-    public long jobId;
+    public Long jobId;
     public int driverId;
     public long startDateAsTimestamp;
     @SerializedName("estimated_time")
@@ -48,7 +48,7 @@ public class TripObject {
         this.driverId = driverId;
     }
 
-    public TripObject(int startMileage, int jobId){
+    public TripObject(int startMileage, Long jobId){
         this.startMileage = startMileage;
         this.jobId = jobId;
     }

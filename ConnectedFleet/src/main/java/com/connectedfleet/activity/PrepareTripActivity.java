@@ -120,7 +120,7 @@ public class PrepareTripActivity extends CFBaseActivity implements HeaderFragmen
         } catch (NumberFormatException e) {
             //should never happen
         }
-        if(previousTrip != null && previousTrip.endMileage > startMileage){
+        if(previousTrip != null && previousTrip.vehicleRegistrationNumber.equals(registrationNumber.getValue().toString()) && previousTrip.endMileage > startMileage){
             askAboutMileage(previousTrip, startMileage);
         }else{
             startNewTrip(startMileage);
@@ -133,7 +133,7 @@ public class PrepareTripActivity extends CFBaseActivity implements HeaderFragmen
         Location l = locationHandler.getLocation();
         newTrip.startLat = l.getLatitude();
         newTrip.startLon = l.getLongitude();
-        newTrip.jobId = -1;
+        newTrip.jobId = null;
         newTrip.vehicleRegistrationNumber = registrationNumber.getValue();
         newTrip.startDateAsTimestamp = Utilities.getTimestamp();
         DBHelper.getInstance().insert(new TripTable(), new TripTable().getContentValues(newTrip));
@@ -148,10 +148,8 @@ public class PrepareTripActivity extends CFBaseActivity implements HeaderFragmen
 
     private void askAboutMileage(TripObject previousTrip, Integer enterMileage) {
         Utilities.styleAlertDialog(new AlertDialog.Builder(this, R.style.BlueAlertDialog)
-                .setMessage("Last trip ended " + previousTrip.endMileage + " for " + previousTrip.vehicleRegistrationNumber +
-                        " vehicle.\nAre you sure you want to enter " + enterMileage + "?")
-                .setPositiveButton(R.string.ok_label, (dialog, which) -> startNewTrip(enterMileage))
-                .setNegativeButton(R.string.cancel_text, null)
+                .setMessage("Last trip ended with " + previousTrip.endMileage + " mileage for " + previousTrip.vehicleRegistrationNumber + " vehicle.")
+                .setPositiveButton(R.string.ok_label, null)
                 .show());
     }
 

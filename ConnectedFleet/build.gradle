@@ -40,7 +40,7 @@ android {
         applicationId "com.connectedfleet"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 40
+        versionCode 42
         versionName "2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
