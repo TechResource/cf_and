@@ -83,6 +83,11 @@ public class SignatureWidget extends LinearLayout implements InspectionWidgetInt
 
     }
 
+    @Override
+    public SignatureObject getStructure() {
+        return data;
+    }
+
     public void setSignature(Bitmap signature){
         signatureIV.setImageBitmap(signature);
     }

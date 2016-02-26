@@ -115,34 +115,36 @@ public class SynchronizationHelper {
                             try {
                                 response = instance.fpModel.fpApi.sendEvents(new SynchronizeRequest(instance.user.tokenId, instance.user.access, eventsToSend));
                             } catch (RetrofitError e) {
-
+                                response = null;
                             }
                         }else{
                             response = 1;
                         }
 
-                        Integer imgResponse = null;
-                        EventObject lastSendEvent = DBHelper.getInstance().getLastSendEvent();
-                        if(lastSendEvent != null) {
-                            Map<String, TypedFile> output = createMultipartOutput(lastSendEvent.eventId);
-                            if(output != null) {
-                                try {
-                                    imgResponse = instance.fpModel.fpApi.sendMultipleFiles(output);
-                                    if (imgResponse != null) {
-                                        if(eventsToSend.size() > 0) {
-                                            for (ItemsDamagedObject e : DBHelper.getInstance().getDamagedItemsToSend(eventsToSend.get(eventsToSend.size()-1).eventId)) {
-                                                DBHelper.getInstance().removeDamagedItemById(e.id);
+                        Integer imgResponse = 1;
+                        if(response != null) {
+                            EventObject lastSendEvent = DBHelper.getInstance().getLastSendEvent();
+                            if (lastSendEvent != null) {
+                                Map<String, TypedFile> output = createMultipartOutput(lastSendEvent.eventId);
+                                if (output != null) {
+                                    try {
+                                        imgResponse = instance.fpModel.fpApi.sendMultipleFiles(output);
+                                        if (imgResponse != null) {
+                                            if (eventsToSend.size() > 0) {
+                                                for (ItemsDamagedObject e : DBHelper.getInstance().getDamagedItemsToSend(eventsToSend.get(eventsToSend.size() - 1).eventId)) {
+                                                    DBHelper.getInstance().removeDamagedItemById(e.id);
+                                                }
                                             }
                                         }
+                                    } catch (RetrofitError e) {
+                                        imgResponse = null;
                                     }
-                                } catch (RetrofitError e) {
-
+                                } else {
+                                    imgResponse = 1;
                                 }
-                            }else{
+                            } else {
                                 imgResponse = 1;
                             }
-                        }else{
-                            imgResponse = 1;
                         }
 
                         instance.lastSyncDate = Utilities.getCurrentDateFormatted();
@@ -184,7 +186,7 @@ public class SynchronizationHelper {
                 File f = new File(items.get(i).imagePath.replace("file:",""));
                 EventObject event = (EventObject) DBHelper.getInstance().get(new EventTable(), items.get(i).eventId+"");
                 if (event != null) {
-                    multipartTypedOutput.put(("damage_item_id[" + Utilities.getUtcDateTime(event.timestamp) + "|" + items.get(i).id + "]"), new TypedFile("image/jpg", f));
+                    multipartTypedOutput.put(("damage_item_id[" + event.timestamp + "|" + items.get(i).id + "]"), new TypedFile("image/jpg", f));
                 }
             }
             return multipartTypedOutput;

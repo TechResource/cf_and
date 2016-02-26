@@ -17,6 +17,7 @@ import org.androidannotations.annotations.ViewById;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import flightpath.com.inspectionmodule.widgets.CheckBoxWidget;
@@ -156,5 +157,14 @@ public class InspectionStep2Fragment extends BaseFragment implements SignatureWi
             }
         }
         return validity;
+    }
+
+    public List<BaseWidgetObject> collectStructure() {
+        List<BaseWidgetObject> structure = new ArrayList<>();
+        for (int i = 0; i < step2Container.getChildCount(); i++) {
+            InspectionWidgetInterface w = (InspectionWidgetInterface) step2Container.getChildAt(i);
+            structure.add(w.getStructure());
+        }
+        return structure;
     }
 }

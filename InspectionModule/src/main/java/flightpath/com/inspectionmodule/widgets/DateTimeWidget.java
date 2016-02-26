@@ -98,6 +98,12 @@ public class DateTimeWidget extends FrameLayout implements InspectionWidgetInter
         return data.jsonProperty;
     }
 
+    @Override
+    public InputObject getStructure() {
+        data.value = et.getText().toString();
+        return data;
+    }
+
     private void createDialogWithDateAndTimePicker() {
 
         final Dialog dialog = new Dialog(getContext());

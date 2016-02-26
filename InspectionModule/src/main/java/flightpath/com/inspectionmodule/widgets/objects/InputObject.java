@@ -6,8 +6,6 @@ import com.flightpathcore.objects.BaseWidgetObject;
  * Created by Tomasz Szafran ( tomek@appsvisio.com ) on 2016-01-12.
  */
 public class InputObject extends BaseWidgetObject {
-    public String hint;
-    public String value;
 
     public InputObject(String jsonProperty, String hint, String value, Integer viewTag, boolean isRequired, boolean isEditable) {
         this.jsonProperty = jsonProperty;

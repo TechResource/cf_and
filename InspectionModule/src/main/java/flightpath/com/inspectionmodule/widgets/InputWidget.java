@@ -94,6 +94,12 @@ public class InputWidget extends FrameLayout implements InspectionWidgetInterfac
         }
     }
 
+    @Override
+    public InputObject getStructure() {
+        data.value = et.getText().toString();
+        return data;
+    }
+
     public String getContentValue() {
         return et.getText().toString().trim();
     }

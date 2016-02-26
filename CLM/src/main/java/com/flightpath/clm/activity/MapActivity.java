@@ -109,7 +109,7 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
 
         menuView.setCallbacks(this);
         menuView.setupMenu(DrawerMenuView.UPDATE_APP, DrawerMenuView.STATUS, DrawerMenuView.ADD_INSPECTION, DrawerMenuView.GET_JOBS,
-                DrawerMenuView.JOB_INFO, DrawerMenuView.LOGOUT, DrawerMenuView.EXIT);
+                /*DrawerMenuView.JOB_INFO, */DrawerMenuView.LOGOUT, DrawerMenuView.EXIT);
 
         drawer.setDrawerListener(this);
 
@@ -249,7 +249,7 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
                 })
                 .setPositiveButton("OK", (dialog1, which1) -> {
                     EventObject event = new EventObject();
-                    event.timestamp = Utilities.getTimestamp();
+                    event.timestamp = Utilities.getTimestamp()+"";
                     event.type = EventObject.EventType.STATUS;
                     event.customEventObject = statuses[tempSelectedStats];
                     if (tripStatusHelper.getCurrentTrip() != null) {
@@ -321,13 +321,13 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
             } catch (Exception e) {
                 endMileage = null;
             }
-            if (endMileage != null && endMileage >= tripStatusHelper.getCurrentTrip().startMileage) {
+//            if (endMileage != null && endMileage >= tripStatusHelper.getCurrentTrip().startMileage) {
                 tripStatusHelper.setTripStatus(TripObject.TripStatus.TRIP_STOPPED, locationHandler.getLocation(), endMileage);
                 canFinish = true;
-            } else {
-                inputWidget.setError("Finish mileage can\'t be lower than starting mileage: " + tripStatusHelper.getCurrentTrip().startMileage + "!");
-                canFinish = false;
-            }
+//            } else {
+//                inputWidget.setError("Finish mileage can\'t be lower than starting mileage: " + tripStatusHelper.getCurrentTrip().startMileage + "!");
+//                canFinish = false;
+//            }
             if (canFinish) {
                 if (stopTripDialog != null)
                     stopTripDialog.dismiss();
@@ -394,7 +394,7 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
             } else {
                 eventObject.onPause = false;
             }
-            eventObject.timestamp = Utilities.getTimestamp();
+            eventObject.timestamp = Utilities.getTimestamp()+"";
             if (tripStatusHelper.getCurrentTrip() != null) {
                 eventObject.tripId = tripStatusHelper.getCurrentTrip().tripId;
                 eventObject.startDateTrip = tripStatusHelper.getCurrentTrip().startDateAsTimestamp + "";

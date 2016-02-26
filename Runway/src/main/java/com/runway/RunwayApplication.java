@@ -26,7 +26,7 @@ public class RunwayApplication extends BaseApplication {
         try {
             return new AppObject(getString(R.string.app_name), getString(R.string.api_version),
                     getPackageManager().getPackageInfo(getPackageName(), 0).versionName,
-                    getPackageManager().getPackageInfo(getPackageName(), 0).versionCode+"");
+                    getPackageManager().getPackageInfo(getPackageName(), 0).versionCode+"", "RUNWAY");
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             throw new IllegalArgumentException("can't get version name");

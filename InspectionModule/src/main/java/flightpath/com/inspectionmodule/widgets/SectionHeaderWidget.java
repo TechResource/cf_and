@@ -19,6 +19,8 @@ import flightpath.com.inspectionmodule.widgets.objects.SectionHeaderObject;
 @EView
 public class SectionHeaderWidget extends TextView implements InspectionWidgetInterface<SectionHeaderObject>{
 
+    private SectionHeaderObject data;
+
     public SectionHeaderWidget(Context context) {
         super(context);
     }
@@ -43,6 +45,7 @@ public class SectionHeaderWidget extends TextView implements InspectionWidgetInt
 
     @Override
     public void setData(SectionHeaderObject data) {
+        this.data = data;
         setText(data.title);
     }
 
@@ -54,6 +57,11 @@ public class SectionHeaderWidget extends TextView implements InspectionWidgetInt
     @Override
     public void setValue(String value) {
 
+    }
+
+    @Override
+    public SectionHeaderObject getStructure() {
+        return data;
     }
 
     @Override

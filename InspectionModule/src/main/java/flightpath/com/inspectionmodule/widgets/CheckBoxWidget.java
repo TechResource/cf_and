@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.flightpathcore.objects.BaseWidgetObject;
 import com.google.gson.JsonObject;
 
 import org.androidannotations.annotations.Click;
@@ -92,4 +93,9 @@ public class CheckBoxWidget extends LinearLayout implements InspectionWidgetInte
         return data.jsonProperty;
     }
 
+    @Override
+    public CheckBoxObject getStructure() {
+        data.value = checkbox.isChecked()+"";
+        return data;
+    }
 }

@@ -13,6 +13,7 @@ import com.flightpath.clm.R;
 import com.flightpathcore.adapters.BaseSpinnerAdapter;
 import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.database.tables.JobsTable;
+import com.flightpathcore.database.tables.TripTable;
 import com.flightpathcore.fragments.HeaderFragment;
 import com.flightpathcore.network.FPModel;
 import com.flightpathcore.network.MyCallback;
@@ -20,6 +21,7 @@ import com.flightpathcore.network.requests.JobsRequest;
 import com.flightpathcore.objects.JobObject;
 import com.flightpathcore.objects.TripObject;
 import com.flightpathcore.utilities.SPHelper;
+import com.flightpathcore.utilities.Utilities;
 
 import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
@@ -110,6 +112,8 @@ public class PrepareTripActivity extends CLMBaseActivity implements HeaderFragme
         Location l = locationHandler.getLocation();
         newTrip.startLat = l.getLatitude();
         newTrip.startLon = l.getLongitude();
+        newTrip.startDateAsTimestamp = Utilities.getTimestamp();
+        DBHelper.getInstance().insert(new TripTable(), new TripTable().getContentValues(newTrip));
 //        newTrip.type = EventObject.EventType.START;
 //        newTrip.timestamp = Utilities.getTimestamp();
 //        DBHelper.getInstance().createEvent(newTrip);

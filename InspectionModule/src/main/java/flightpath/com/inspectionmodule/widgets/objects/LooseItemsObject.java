@@ -10,8 +10,6 @@ import java.util.List;
  * Created by Tomasz Szafran ( tomek@appsvisio.com ) on 2016-01-13.
  */
 public class LooseItemsObject extends BaseWidgetObject {
-    public List<LooseItem> looseItems = null;
-    public boolean[] selectedLooseItems = null;
 
     public LooseItemsObject(String jsonProperty, Integer viewTag) {
         this.jsonProperty = jsonProperty;

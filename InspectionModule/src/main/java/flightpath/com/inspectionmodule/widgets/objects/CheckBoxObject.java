@@ -20,6 +20,9 @@ public class CheckBoxObject extends BaseWidgetObject {
 
     public CheckBoxObject(BaseWidgetObject base) {
         super(base);
+        if(base.value != null){
+            this.isChecked = Boolean.parseBoolean(base.value);
+        }
         this.text = base.hint;
         this.isPagerBlocker = true;
     }

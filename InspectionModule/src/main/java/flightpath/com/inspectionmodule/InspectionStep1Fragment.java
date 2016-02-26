@@ -138,10 +138,12 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
             InspectionWidgetInterface w = (InspectionWidgetInterface)widgetsContainer.getChildAt(i);
             if(w.getProperty() != null) {
                 if(w instanceof DamagesWidget){
+                    JSONArray jAr = new JSONArray();
                     List<ItemsDamagedObject> arr = (List<ItemsDamagedObject>) w.getValue();
                     for (ItemsDamagedObject o : arr) {
-                        json.accumulate(w.getProperty(), o.getJson());
+                        jAr.put(o.getJson());
                     }
+                    json.put(w.getProperty(), jAr);
                     try {
                         json.accumulate("damagedItemsCount", ((List) w.getValue()).size());
                     }catch (Exception e){
@@ -155,6 +157,16 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
         }
         Log.d("Inspection", "step1 data :" + json.toString());
         return json;
+    }
+
+    public List<BaseWidgetObject> collectStructure(){
+        List<BaseWidgetObject> structure = new ArrayList<>();
+        for (int i=0;i<widgetsContainer.getChildCount();i++){
+            InspectionWidgetInterface w = (InspectionWidgetInterface)widgetsContainer.getChildAt(i);
+            structure.add(w.getStructure());
+        }
+
+        return structure;
     }
 
     @Override

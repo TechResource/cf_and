@@ -33,4 +33,9 @@ public class ToggleBtnWidget implements InspectionWidgetInterface<ToggleBtnObjec
     public String getProperty() {
         return null;
     }
+
+    @Override
+    public ToggleBtnObject getStructure() {
+        return null;
+    }
 }

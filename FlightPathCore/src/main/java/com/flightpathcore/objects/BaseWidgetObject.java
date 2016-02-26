@@ -1,7 +1,10 @@
 package com.flightpathcore.objects;
 
+import com.flightpathcore.objects.jobs.LooseItem;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 /**
  * Created by Tomasz Szafran ( tomek@appsvisio.com ) on 2016-01-12.
@@ -20,6 +23,10 @@ public class BaseWidgetObject {
     @SerializedName("input_type")
     public String inputType;
 
+    public boolean[] selectedLooseItems = null;
+    public String selection = "0";
+    public List<LooseItem> looseItems = null;
+
     public BaseWidgetObject() {
     }
 
@@ -32,6 +39,9 @@ public class BaseWidgetObject {
         this.isEditable = base.isEditable;
         this.viewTag = base.viewTag;
         this.inputType = base.inputType;
+        this.selectedLooseItems = base.selectedLooseItems;
+        this.selection = base.selection;
+        this.looseItems = base.looseItems;
     }
 
     public Integer getViewTag(){

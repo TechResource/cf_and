@@ -7,4 +7,5 @@ import java.util.List;
  */
 public class InspectionStructureResponse {
     public List<BaseWidgetObject> inspection;
+    public List<BaseWidgetObject> widgetsStep2;
 }

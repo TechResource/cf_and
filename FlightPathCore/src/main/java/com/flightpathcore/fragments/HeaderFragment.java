@@ -105,12 +105,25 @@ public class HeaderFragment extends BaseFragment {
     }
 
     public void setRightBtnEnabled(boolean enabled){
-//        rightBtn.setEnabled(enabled);
         rightBtn.setVisibility(enabled ? View.VISIBLE : View.GONE);
     }
 
+    public void setRightBtnText(String text){
+        if(text == null){
+            rightBtn.setVisibility(View.GONE);
+        }else {
+            rightBtn.setText(text);
+            rightBtn.setVisibility(View.VISIBLE);
+        }
+    }
+
     public void setLeftBtnText(String text){
-        leftBtn.setText(text);
+        if(text == null){
+            leftBtn.setVisibility(View.GONE);
+        }else {
+            leftBtn.setText(text);
+            leftBtn.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

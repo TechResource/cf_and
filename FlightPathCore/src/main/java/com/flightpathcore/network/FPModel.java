@@ -44,6 +44,7 @@ public class FPModel {
                     request.addHeader("DEVICE_PLATFORM", "android");
                     request.addHeader("DEVICE_OS", Build.VERSION.SDK_INT + "(" + Build.VERSION.RELEASE + ")");
                     request.addHeader("DEVICE_MODEL", Build.MANUFACTURER + " " + Build.MODEL);
+                    request.addHeader("APP_TYPE", AppCore.getInstance().getAppInfo().appType);
                 })
                 .setClient(new OkClient(new OkHttpClient()))
                 .build();

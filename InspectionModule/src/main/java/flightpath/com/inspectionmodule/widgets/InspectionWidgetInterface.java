@@ -12,4 +12,5 @@ public interface InspectionWidgetInterface<T extends BaseWidgetObject> {
     boolean isValid();
     void setValue(String value);
     String getProperty();
+    T getStructure();
 }

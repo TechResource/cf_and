@@ -91,7 +91,7 @@ public class TripStatusHelper {
 
     private void createEvent(Location currentLocation, EventObject.EventType eventType){
         EventObject eventObject = new EventObject();
-        eventObject.timestamp = Utilities.getTimestamp();
+        eventObject.timestamp = Utilities.getTimestamp()+"";
         eventObject.tripId = currentTrip.tripId;
         if(currentLocation != null){
             eventObject.longitude = currentLocation.getLongitude();

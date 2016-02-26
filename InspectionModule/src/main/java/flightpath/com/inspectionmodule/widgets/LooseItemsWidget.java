@@ -140,18 +140,47 @@ public class LooseItemsWidget extends FrameLayout implements InspectionWidgetInt
         data.selectedLooseItems[which] = isChecked;
     }
 
+    @Override
+    public LooseItemsObject getStructure() {
+        return data;
+    }
+
     public void setJobData(boolean[] selectedLooseItems, List<LooseItem> looseItems) {
-        if(selectedLooseItems == null){
-            selectedLooseItems = new boolean[looseItems.size()];
-            for (int i=0;i<looseItems.size();i++){
-                selectedLooseItems[i] = true;
+        if(!checkLooseItemsAreEqual(data.selectedLooseItems, data.looseItems, selectedLooseItems, looseItems)) {
+            if (selectedLooseItems == null) {
+                selectedLooseItems = new boolean[looseItems.size()];
+                for (int i = 0; i < looseItems.size(); i++) {
+                    selectedLooseItems[i] = true;
+                }
             }
+            data.selectedLooseItems = selectedLooseItems;
+            data.looseItems = looseItems;
         }
-        data.selectedLooseItems = selectedLooseItems;
-        data.looseItems = looseItems;
         if (data.looseItems != null) {
             buildBtnText();
         }
+    }
+
+    private boolean checkLooseItemsAreEqual(boolean[] selectedLooseItems, List<LooseItem> looseItems, boolean[] selectedLooseItems2, List<LooseItem> looseItems2) {
+        try {
+            if(looseItems.size() != looseItems2.size()){
+                return false;
+            }
+            for (int i=0;i<looseItems.size();i++){
+                if(looseItems.get(i).id != looseItems2.get(i).id){
+                    return false;
+                }
+                if(selectedLooseItems2 != null) {
+                    if (selectedLooseItems[i] != selectedLooseItems2[i]) {
+                        return false;
+                    }
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 }

@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.database.tables.ItemsDamagedTable;
+import com.flightpathcore.objects.BaseWidgetObject;
 import com.flightpathcore.objects.ItemsDamagedObject;
 
 import org.androidannotations.annotations.Click;
@@ -88,11 +89,7 @@ public class DamagesWidget extends LinearLayout implements InspectionWidgetInter
                     ItemsDamagedTable dmgTable = new ItemsDamagedTable();
                     item.id = DBHelper.getInstance().insert(dmgTable, dmgTable.getContentValues(item));
 
-                    DamageWidget view = DamageWidget_.build(getContext());
-                    view.setDamage(item);
-                    view.dmgImg.setOnClickListener(v -> damagesCallback.showFullImg(item));
-                    view.removeDmg.setOnClickListener(v -> onRemoveDamage(view));
-                    damagesContainer.addView(view);
+                    addDamageWidget(item);
                 })
                 .setNegativeButton(R.string.cancel_label, (dialog1, which1) -> {
                     damageDialogShouldBeOpen = false;
@@ -103,6 +100,14 @@ public class DamagesWidget extends LinearLayout implements InspectionWidgetInter
             imm.showSoftInput(et.et, InputMethodManager.SHOW_IMPLICIT);
         });
         damageDialog.show();
+    }
+
+    private void addDamageWidget(ItemsDamagedObject item) {
+        DamageWidget view = DamageWidget_.build(getContext());
+        view.setDamage(item);
+        view.dmgImg.setOnClickListener(v -> damagesCallback.showFullImg(item));
+        view.removeDmg.setOnClickListener(v -> onRemoveDamage(view));
+        damagesContainer.addView(view);
     }
 
     private void onRemoveDamage(DamageWidget viewToRemove) {
@@ -124,6 +129,12 @@ public class DamagesWidget extends LinearLayout implements InspectionWidgetInter
     @Override
     public void setData(DamagesObject data) {
         this.data = data;
+        if(data.value != null && !data.value.isEmpty()){
+            List<ItemsDamagedObject> items = DBHelper.getInstance().getDamagesByEventId(data.value);
+            for (ItemsDamagedObject item : items){
+                addDamageWidget(item);
+            }
+        }
     }
 
     @Override
@@ -146,5 +157,9 @@ public class DamagesWidget extends LinearLayout implements InspectionWidgetInter
         void showFullImg(ItemsDamagedObject damagedObject);
     }
 
-
+    @Override
+    public DamagesObject getStructure() {
+        data.value = data.currentEventId+"";
+        return data;
+    }
 }

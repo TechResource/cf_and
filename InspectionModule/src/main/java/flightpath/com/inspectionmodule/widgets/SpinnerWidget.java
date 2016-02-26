@@ -75,6 +75,9 @@ public class SpinnerWidget extends Spinner implements InspectionWidgetInterface<
             setAdapter(adapter);
             adapter.notifyDataSetChanged();
         }
+        if(data.value != null && !data.value.isEmpty()){
+            setSelection(Integer.parseInt(data.selection));
+        }
     }
 
     @Override
@@ -85,6 +88,12 @@ public class SpinnerWidget extends Spinner implements InspectionWidgetInterface<
     @Override
     public void setValue(String value) {
 
+    }
+
+    @Override
+    public SpinnerObject getStructure() {
+        data.selection = getSelectedItemPosition()+"";
+        return data;
     }
 
     @Override

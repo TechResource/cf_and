@@ -322,7 +322,7 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
             } else {
                 eventObject.onPause = false;
             }
-            eventObject.timestamp = Utilities.getTimestamp();
+            eventObject.timestamp = Utilities.getTimestamp()+"";
             if (tripStatusHelper.getCurrentTrip() != null) {
                 eventObject.tripId = tripStatusHelper.getCurrentTrip().tripId;
                 eventObject.startDateTrip = tripStatusHelper.getCurrentTrip().startDateAsTimestamp + "";

@@ -12,10 +12,8 @@ public class EventObject{
     @SerializedName("id")
     public long eventId;
     public EventType type;
-    public transient long timestamp;
+    public String timestamp;
     public transient boolean isSent = false;
-    @SerializedName("timestamp")
-    public String dateTime;
     public int driverId;
     @SerializedName("bt")
     public int btEnabled;
@@ -42,14 +40,18 @@ public class EventObject{
         this.longitude = cursor.getDouble(3);
         this.tripId = cursor.getInt(4);
         this.onPause = cursor.getInt(5) == 1 ? true : false;
-        this.timestamp = cursor.getLong(6);
+        if(this.type == EventType.INSPECTION) {
+            this.timestamp = Utilities.getUtcDateTime(cursor.getLong(6));
+        }else {
+            this.timestamp = cursor.getLong(6) + "";
+        }
         this.isSent = cursor.getInt(7) == 1 ? true : false;
         this.driverId = cursor.getInt(8);
         this.startDateTrip = cursor.getString(9);
         this.btEnabled = cursor.getInt(10);
         this.dongleEnabled = cursor.getInt(11);
         this.customEventObject = cursor.getString(12);
-        this.dateTime = Utilities.getUtcDateTime(this.timestamp);
+
     }
 
     private EventType getTypeFromString(String type){
