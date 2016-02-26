@@ -17,6 +17,7 @@ import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.database.tables.DriverTable;
 import com.flightpathcore.database.tables.EventTable;
 import com.flightpathcore.fragments.HeaderFragment;
+import com.flightpathcore.network.SynchronizationHelper;
 import com.flightpathcore.objects.BaseWidgetObject;
 import com.flightpathcore.objects.EventObject;
 import com.flightpathcore.objects.InspectionStructureResponse;
@@ -146,6 +147,7 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
         DBHelper.getInstance().markDamagesReadyToSend(currentEventObject.eventId);
 
         SPHelper.saveData(getContext(),SPHelper.SAVED_INSPECTION, null);
+        SynchronizationHelper.getInstance().updateCounter();
         ((InspectionModuleInterfaces.InspectionCompleteListener) getActivity()).onCompleteListener();
     }
 

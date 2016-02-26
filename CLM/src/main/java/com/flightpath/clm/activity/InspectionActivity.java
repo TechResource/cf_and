@@ -93,6 +93,7 @@ public class InspectionActivity extends CLMBaseActivity implements InspectionMod
 
     @Override
     public void onCompleteListener() {
+
         finish();
     }
 }

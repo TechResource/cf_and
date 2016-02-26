@@ -32,7 +32,7 @@ public class SynchronizationHelper {
     protected FPModel fpModel;
     private static SynchronizationHelper instance = null;
     private Thread syncThread = null;
-    private int synPerMillis = 10000;
+    private int synPerMillis = 180*1000;
     private boolean shouldRunning = true;
     private UserObject user;
     private List<SynchronizationCallback> listeners;
@@ -192,6 +192,11 @@ public class SynchronizationHelper {
             return multipartTypedOutput;
         }
 
+    }
+
+    public void updateCounter(){
+        instance.eventsLeft = DBHelper.getInstance().countEventsLeft();
+        instance.notifyListeners();
     }
 
     public void sendNow(){
