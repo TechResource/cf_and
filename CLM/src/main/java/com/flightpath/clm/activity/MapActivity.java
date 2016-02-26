@@ -103,7 +103,7 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
     }
 
     @AfterViews
-    protected void init(){
+    protected void init() {
         headerFragment.setHeaderCallback(this);
         mapFragment.setCallbacks(this);
 
@@ -150,7 +150,7 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
         onExit();
     }
 
-    private void onExit(){
+    private void onExit() {
         Utilities.styleAlertDialog(new AlertDialog.Builder(this, R.style.BlueAlertDialog)
                 .setTitle(R.string.close_app_title)
                 .setMessage(R.string.close_app_msg)
@@ -190,7 +190,7 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
             @Override
             public void onSuccess(UpdateAppObject response) {
                 if (response.version != null) {
-                    new UpdateHelper(MapActivity.this, response, null);
+                    new UpdateHelper(MapActivity.this, response, null).askUpdateApp();
                 } else {
                     Utilities.styleAlertDialog(new AlertDialog.Builder(MapActivity.this, R.style.BlueAlertDialog)
                             .setMessage("You have the newest version of app right now.")
@@ -201,7 +201,7 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
 
             @Override
             public void onError(String error) {
-
+                Toast.makeText(MapActivity.this, error, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -228,10 +228,10 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
     private String[] statuses = new String[]{"On Route to destination", "Arrived at destination",
             "Awaiting client", "Vehicle handover with client", "Delivery complete", "Return journey"};
 
-    private int getCurrentStatusIndex(){
+    private int getCurrentStatusIndex() {
         String curStatus = SPHelper.getData(this, SPHelper.CURRENT_STATUS_KEY);
-        for (int i=0;i<statuses.length;i++){
-            if(statuses[i].equalsIgnoreCase(curStatus)){
+        for (int i = 0; i < statuses.length; i++) {
+            if (statuses[i].equalsIgnoreCase(curStatus)) {
                 return i;
             }
         }
@@ -249,7 +249,7 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
                 })
                 .setPositiveButton("OK", (dialog1, which1) -> {
                     EventObject event = new EventObject();
-                    event.timestamp = Utilities.getTimestamp()+"";
+                    event.timestamp = Utilities.getTimestamp() + "";
                     event.type = EventObject.EventType.STATUS;
                     event.customEventObject = statuses[tempSelectedStats];
                     if (tripStatusHelper.getCurrentTrip() != null) {
@@ -265,7 +265,7 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
                 .show());
     }
 
-    private void getJobs(){
+    private void getJobs() {
         fpModel.fpApi.getJobs(new JobsRequest(SPHelper.getUserSession(this)), new MyCallback<List<JobObject>>() {
             @Override
             public void onSuccess(List<JobObject> response) {
@@ -322,8 +322,8 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
                 endMileage = null;
             }
 //            if (endMileage != null && endMileage >= tripStatusHelper.getCurrentTrip().startMileage) {
-                tripStatusHelper.setTripStatus(TripObject.TripStatus.TRIP_STOPPED, locationHandler.getLocation(), endMileage);
-                canFinish = true;
+            tripStatusHelper.setTripStatus(TripObject.TripStatus.TRIP_STOPPED, locationHandler.getLocation(), endMileage);
+            canFinish = true;
 //            } else {
 //                inputWidget.setError("Finish mileage can\'t be lower than starting mileage: " + tripStatusHelper.getCurrentTrip().startMileage + "!");
 //                canFinish = false;
@@ -394,7 +394,7 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
             } else {
                 eventObject.onPause = false;
             }
-            eventObject.timestamp = Utilities.getTimestamp()+"";
+            eventObject.timestamp = Utilities.getTimestamp() + "";
             if (tripStatusHelper.getCurrentTrip() != null) {
                 eventObject.tripId = tripStatusHelper.getCurrentTrip().tripId;
                 eventObject.startDateTrip = tripStatusHelper.getCurrentTrip().startDateAsTimestamp + "";
