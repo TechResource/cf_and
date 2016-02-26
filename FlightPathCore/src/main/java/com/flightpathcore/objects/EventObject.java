@@ -2,6 +2,7 @@ package com.flightpathcore.objects;
 
 import android.database.Cursor;
 
+import com.flightpathcore.utilities.Utilities;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -11,8 +12,10 @@ public class EventObject{
     @SerializedName("id")
     public long eventId;
     public EventType type;
-    public long timestamp;
+    public transient long timestamp;
     public transient boolean isSent = false;
+    @SerializedName("timestamp")
+    public String dateTime;
     public int driverId;
     @SerializedName("bt")
     public int btEnabled;
@@ -46,6 +49,7 @@ public class EventObject{
         this.btEnabled = cursor.getInt(10);
         this.dongleEnabled = cursor.getInt(11);
         this.customEventObject = cursor.getString(12);
+        this.dateTime = Utilities.getUtcDateTime(this.timestamp);
     }
 
     private EventType getTypeFromString(String type){
@@ -63,6 +67,8 @@ public class EventObject{
             return EventType.POINT;
         }else if(type.equals("STATUS")){
             return EventType.STATUS;
+        }else if(type.equals("INSPECTION")){
+            return EventType.INSPECTION;
         }
 
         throw new IllegalArgumentException("wrong type :"+type);
@@ -84,6 +90,8 @@ public class EventObject{
                 return "POINT";
             case STATUS:
                 return "STATUS";
+            case INSPECTION:
+                return "INSPECTION";
         }
         throw new IllegalArgumentException("wrong type");
     }
@@ -104,6 +112,8 @@ public class EventObject{
                 return "POINT";
             case STATUS:
                 return "STATUS";
+            case INSPECTION:
+                return "INSPECTION";
         }
         throw new IllegalArgumentException("wrong type");
     }
@@ -115,6 +125,7 @@ public class EventObject{
         START,
         STOP,
         POINT,
+        INSPECTION,
         STATUS;
     }
 }

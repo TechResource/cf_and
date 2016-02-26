@@ -7,12 +7,16 @@ import com.flightpathcore.objects.BaseWidgetObject;
  */
 public class DamagesObject extends BaseWidgetObject {
 
-    public DamagesObject(String jsonProperty, Integer viewTag) {
+    public long currentEventId;
+
+    public DamagesObject(String jsonProperty, Integer viewTag, long currentEventId) {
         this.viewTag = viewTag;
         this.jsonProperty = jsonProperty;
+        this.currentEventId = currentEventId;
     }
 
-    public DamagesObject(BaseWidgetObject base) {
+    public DamagesObject(BaseWidgetObject base,  long currentEventId) {
         super(base);
+        this.currentEventId = currentEventId;
     }
 }

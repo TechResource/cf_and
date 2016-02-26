@@ -12,17 +12,14 @@ import android.widget.Toast;
 import com.flightpath.clm.R;
 import com.flightpathcore.adapters.BaseSpinnerAdapter;
 import com.flightpathcore.database.DBHelper;
-import com.flightpathcore.database.tables.DriverTable;
 import com.flightpathcore.database.tables.JobsTable;
 import com.flightpathcore.fragments.HeaderFragment;
 import com.flightpathcore.network.FPModel;
 import com.flightpathcore.network.MyCallback;
 import com.flightpathcore.network.requests.JobsRequest;
-import com.flightpathcore.objects.EventObject;
 import com.flightpathcore.objects.JobObject;
 import com.flightpathcore.objects.TripObject;
 import com.flightpathcore.utilities.SPHelper;
-import com.flightpathcore.utilities.Utilities;
 
 import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;

@@ -49,9 +49,9 @@ public interface FPApi {
 //    @POST("/driver/synchronize")
 //    void sendEventsAsync(@Body SynchronizeRequest request, MyCallback<Object> callback); //remove callback and make request synchronous
 //
-//    @Multipart
-//    @POST("/driver/files")
-//    Object sendMultipleFiles(@PartMap Map<String,TypedFile> Files);
+    @Multipart
+    @POST("/driver/files")
+    Integer sendMultipleFiles(@PartMap Map<String,TypedFile> Files);
 
     @POST("/driver/jobs")
     void getJobs(@Body JobsRequest request, MyCallback<List<JobObject>> callback);

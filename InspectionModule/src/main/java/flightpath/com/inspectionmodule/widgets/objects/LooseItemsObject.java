@@ -18,6 +18,10 @@ public class LooseItemsObject extends BaseWidgetObject {
         this.viewTag = viewTag;
     }
 
+    public LooseItemsObject(BaseWidgetObject base) {
+        super(base);
+    }
+
     public String[] getLooseItemsAsArray() {
         if(looseItems == null){
             return new String[0];

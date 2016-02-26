@@ -6,6 +6,7 @@ import com.flightpath.clm.activity.InspectionActivity_;
 import com.flightpath.clm.activity.LoginActivity_;
 import com.flightpath.clm.activity.MapActivity_;
 import com.flightpath.clm.activity.PrepareTripActivity_;
+import com.flightpath.clm.activity.SplashScreenActivity_;
 import com.flightpathcore.base.NavigatorAbstract;
 import com.flightpathcore.di.components.ActivityScope;
 
@@ -43,11 +44,14 @@ public class Navigator extends NavigatorAbstract {
 
     @Override
     public void splashScreen() {
-
+        SplashScreenActivity_.intent(activity).start();
+        activity.finish();
     }
 
     public void addInspection(){
         InspectionActivity_.intent(activity).start();
     }
 
+    public void closePeriod() {
+    }
 }

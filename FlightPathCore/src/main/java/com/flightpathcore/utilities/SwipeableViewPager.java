@@ -34,4 +34,8 @@ public class SwipeableViewPager extends ViewPager {
 	public void setSwipeAble(boolean swipeAble) {
 		this.swipeAble = swipeAble;
 	}
+
+	public boolean isSwipeAble(){
+		return swipeAble;
+	}
 }

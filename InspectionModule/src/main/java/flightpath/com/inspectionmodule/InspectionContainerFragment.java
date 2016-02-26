@@ -13,10 +13,16 @@ import android.widget.TextView;
 
 import com.flightpathcore.adapters.PagerAdapter;
 import com.flightpathcore.base.BaseFragment;
+import com.flightpathcore.database.DBHelper;
+import com.flightpathcore.database.tables.DriverTable;
+import com.flightpathcore.database.tables.EventTable;
 import com.flightpathcore.fragments.HeaderFragment;
+import com.flightpathcore.objects.BaseWidgetObject;
+import com.flightpathcore.objects.EventObject;
 import com.flightpathcore.objects.InspectionStructureResponse;
 import com.flightpathcore.objects.InspectionWidgetTypes;
 import com.flightpathcore.objects.JobObject;
+import com.flightpathcore.objects.UserObject;
 import com.flightpathcore.utilities.SwipeableViewPager;
 import com.flightpathcore.utilities.Utilities;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -34,11 +40,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.flightpathcore.objects.BaseWidgetObject;
-
 import flightpath.com.inspectionmodule.widgets.objects.CheckBoxObject;
 import flightpath.com.inspectionmodule.widgets.objects.DamagesObject;
 import flightpath.com.inspectionmodule.widgets.objects.InputObject;
+import flightpath.com.inspectionmodule.widgets.objects.LooseItemsObject;
 import flightpath.com.inspectionmodule.widgets.objects.SectionHeaderObject;
 import flightpath.com.inspectionmodule.widgets.objects.SpinnerObject;
 
@@ -65,9 +70,21 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
     private PagerAdapter pagerAdapter;
     private InspectionStructureResponse inspectionStructure;
     private List<BaseWidgetObject> widgetStep1, widgetStep2;
+    private EventObject currentEventObject = null;
 
     @AfterViews
     protected void init() {
+        if (currentEventObject == null) {
+            currentEventObject = new EventObject();
+            currentEventObject.driverId = ((UserObject) DBHelper.getInstance().getLast(new DriverTable())).driverId;
+            currentEventObject.timestamp = Utilities.getTimestamp();
+            currentEventObject.type = EventObject.EventType.INSPECTION;
+            currentEventObject.isSent = true;
+            EventTable et = new EventTable();
+            currentEventObject.eventId = DBHelper.getInstance().insert(et, et.getContentValues(currentEventObject));
+        }
+
+
         headerFragment = (HeaderFragment) getChildFragmentManager().findFragmentById(R.id.headerFragment);
         Utilities.setOswaldTypeface(getActivity().getAssets(), addInspectionBtn);
         createImageLoaderInstance(getContext());
@@ -91,24 +108,37 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
     }
 
     @Click
-    protected void addInspection(){
-        if(!checkValidity()){
+    protected void addInspection() {
+        if (!checkValidity()) {
             return;
         }
         JSONObject json = new JSONObject();
         try {
             JSONObject step1 = ((InspectionStep1Fragment) pagerAdapter.getItem(0)).collectData();
-            json.accumulate("customEventObject", ((InspectionStep2Fragment) pagerAdapter.getItem(1)).collectData(step1));
+            if(pager.isSwipeAble()) {
+                json = ((InspectionStep2Fragment) pagerAdapter.getItem(1)).collectData(step1);
+            }else{
+                json = step1;
+            }
         } catch (JSONException e) {
             e.printStackTrace();
+            return;
         }
-        Log.d("Inspection", "all data: "+json.toString());
+        Log.d("Inspection", "all data: " + json.toString());
+
+        currentEventObject.isSent = false;
+        currentEventObject.customEventObject = json.toString();
+        EventTable et = new EventTable();
+        DBHelper.getInstance().updateOrInsert(et, et.getContentValues(currentEventObject), currentEventObject.eventId + "");
+        DBHelper.getInstance().markDamagesReadyToSend(currentEventObject.eventId);
+
+        ((InspectionModuleInterfaces.InspectionCompleteListener) getActivity()).onCompleteListener();
     }
 
     private boolean checkValidity() {
         boolean validity = false;
         validity = ((InspectionStep1Fragment) pagerAdapter.getItem(0)).validation();
-        if(((InspectionStep2Fragment) pagerAdapter.getItem(1)).validation() && validity){
+        if (((InspectionStep2Fragment) pagerAdapter.getItem(1)).validation() && validity) {
             validity = true;
         }
         return validity;
@@ -151,10 +181,10 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
 
     @Override
     public boolean onBackPressed() {
-        if(pager.getCurrentItem() == 1){
+        if (pager.getCurrentItem() == 1) {
             pager.setCurrentItem(0, true);
             return true;
-        }else {
+        } else {
             return ((BaseFragment) pagerAdapter.getItem(0)).onBackPressed();
         }
     }
@@ -183,11 +213,11 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
 
     @Override
     public List<BaseWidgetObject> getWidgetsStep1() {
-        if(widgetStep1 == null){
+        if (widgetStep1 == null) {
             widgetStep1 = new ArrayList<>();
 
-            for (BaseWidgetObject base : inspectionStructure.inspection){
-                if(base != null) {
+            for (BaseWidgetObject base : inspectionStructure.inspection) {
+                if (base != null) {
                     if (base.type.equalsIgnoreCase(InspectionWidgetTypes.SPINNER)) {
                         widgetStep1.add(new SpinnerObject(base));
                     } else if (base.type.equalsIgnoreCase(InspectionWidgetTypes.SECTION_HEADER)) {
@@ -196,8 +226,10 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
                         widgetStep1.add(new InputObject(base));
                     } else if (base.type.equalsIgnoreCase(InspectionWidgetTypes.CHECK_BOX)) {
                         widgetStep1.add(new CheckBoxObject(base));
-                    } else if(base.type.equalsIgnoreCase(InspectionWidgetTypes.DAMAGES)){
-                        widgetStep1.add(new DamagesObject(base));
+                    } else if (base.type.equalsIgnoreCase(InspectionWidgetTypes.DAMAGES)) {
+                        widgetStep1.add(new DamagesObject(base, currentEventObject.eventId));
+                    } else if (base.type.equalsIgnoreCase(InspectionWidgetTypes.LOOSE_ITEMS)) {
+                        widgetStep1.add(new LooseItemsObject(base));
                     }
                 }
             }
@@ -226,9 +258,9 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == InspectionStep1Fragment.REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK){
+        if (requestCode == InspectionStep1Fragment.REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             pagerAdapter.getItem(0).onActivityResult(requestCode, resultCode, data);
-        }else if(requestCode == InspectionStep2Fragment.REQUEST_SIGN_IN && resultCode == Activity.RESULT_OK){
+        } else if (requestCode == InspectionStep2Fragment.REQUEST_SIGN_IN && resultCode == Activity.RESULT_OK) {
             pagerAdapter.getItem(1).onActivityResult(requestCode, resultCode, data);
         }
     }
@@ -269,6 +301,6 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
 
     @Override
     public void onJobChanged(JobObject selectedJob) {
-        ((InspectionStep2Fragment)pagerAdapter.getItem(1)).onJobChanged(selectedJob);
+        ((InspectionStep2Fragment) pagerAdapter.getItem(1)).onJobChanged(selectedJob);
     }
 }

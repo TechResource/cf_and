@@ -21,6 +21,7 @@ import java.util.List;
 
 import flightpath.com.inspectionmodule.widgets.CheckBoxWidget;
 import flightpath.com.inspectionmodule.widgets.CheckBoxWidget_;
+import flightpath.com.inspectionmodule.widgets.DamagesWidget;
 import flightpath.com.inspectionmodule.widgets.DateTimeWidget;
 import flightpath.com.inspectionmodule.widgets.DateTimeWidget_;
 import flightpath.com.inspectionmodule.widgets.DateWidget;
@@ -31,6 +32,8 @@ import flightpath.com.inspectionmodule.widgets.SignatureWidget;
 import flightpath.com.inspectionmodule.widgets.SignatureWidget_;
 import flightpath.com.inspectionmodule.widgets.InspectionWidgetInterface;
 import com.flightpathcore.objects.BaseWidgetObject;
+import com.flightpathcore.utilities.Utils;
+
 import flightpath.com.inspectionmodule.widgets.objects.CheckBoxObject;
 import flightpath.com.inspectionmodule.widgets.objects.InputObject;
 import flightpath.com.inspectionmodule.widgets.objects.SignatureObject;
@@ -113,8 +116,17 @@ public class InspectionStep2Fragment extends BaseFragment implements SignatureWi
                 currentJson.accumulate(w.getProperty(), w.getValue());
             }
         }
+        currentJson.accumulate("termsImage", getImageAsBase64());
         Log.d("Inspection", "step2 data :" + currentJson.toString());
         return currentJson;
+    }
+
+    private String getImageAsBase64() {
+        if (getView().findFocus() != null) {
+            getView().findFocus().clearFocus();
+        }
+        Bitmap b = Utils.getBitmapFromView(step2Container);
+        return Utils.getBase64StringFromBitmap(b);
     }
 
     @Override

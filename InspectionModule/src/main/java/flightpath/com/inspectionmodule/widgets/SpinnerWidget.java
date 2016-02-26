@@ -26,7 +26,7 @@ import flightpath.com.inspectionmodule.widgets.objects.SpinnerObject;
 @EView
 public class SpinnerWidget extends Spinner implements InspectionWidgetInterface<SpinnerObject>, AdapterView.OnItemSelectedListener{
 
-    public List<Object> values = new ArrayList<>();
+    public List<String> values = new ArrayList<>();
     private BaseSpinnerAdapter adapter;
     private SpinnerCallback callback;
     private SpinnerObject data;
@@ -67,7 +67,7 @@ public class SpinnerWidget extends Spinner implements InspectionWidgetInterface<
                 setOnItemSelectedListener(this);
                 break;
             case JOB_TYPE:
-                values = Arrays.asList(new Object[]{getContext().getResources().getStringArray(R.array.jobs_type)});
+                values = Arrays.asList(getContext().getResources().getStringArray(R.array.jobs_type));
                 adapter = new BaseSpinnerAdapter(getContext(), getContext().getResources().getStringArray(R.array.jobs_type));
                 break;
         }

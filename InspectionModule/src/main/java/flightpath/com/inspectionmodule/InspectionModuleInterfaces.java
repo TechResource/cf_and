@@ -13,4 +13,8 @@ public class InspectionModuleInterfaces {
         List<BaseWidgetObject> getWidgetsStep1();
         List<BaseWidgetObject> getWidgetStep2();
     }
+
+    public interface InspectionCompleteListener{
+        void onCompleteListener();
+    }
 }

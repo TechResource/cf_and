@@ -355,7 +355,7 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
     }
 
     private boolean canFinish = false;
-    AlertDialog stopTripDialog = null;
+    private AlertDialog stopTripDialog = null;
 
     @Override
     public void onStopTrip() {

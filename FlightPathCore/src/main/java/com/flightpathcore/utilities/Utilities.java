@@ -26,6 +26,7 @@ import java.lang.reflect.Type;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by Tomasz Szafran ( tomek@appsvisio.com ) on 2015-10-21.
@@ -36,6 +37,12 @@ public class Utilities {
 
     public static String getUpdateApkPath() {
         return getBaseDirectoryPath() + "update.apk";
+    }
+
+    public static String getUtcDateTime(long timestamp) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        format.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(timestamp));
     }
 
     /**

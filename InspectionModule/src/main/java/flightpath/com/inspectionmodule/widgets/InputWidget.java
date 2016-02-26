@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.support.design.widget.TextInputLayout;
+import android.text.method.DigitsKeyListener;
 import android.util.AttributeSet;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -50,6 +51,9 @@ public class InputWidget extends FrameLayout implements InspectionWidgetInterfac
         if (data.value != null && !data.value.isEmpty()) {
             et.setText(data.value);
         }
+        if(data.inputType != null && data.inputType.equals("number")){
+            setOnlyNumbersInput();
+        }
 //        et.setFocusable(data.isEditable());
 //        et.setClickable(data.isEditable());
     }
@@ -79,10 +83,22 @@ public class InputWidget extends FrameLayout implements InspectionWidgetInterfac
 
     @Override
     public Object getValue() {
-        return et.getText().toString().trim();
+        if(data.inputType != null && data.inputType.equals("number")){
+            try {
+                return Integer.parseInt(et.getText().toString());
+            }catch (Exception e){
+                return 0;
+            }
+        }else {
+            return et.getText().toString().trim();
+        }
     }
 
     public String getContentValue() {
         return et.getText().toString().trim();
+    }
+
+    private void setOnlyNumbersInput(){
+        et.setKeyListener(DigitsKeyListener.getInstance("0123456789"));
     }
 }

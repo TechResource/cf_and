@@ -10,17 +10,17 @@ import com.flightpathcore.objects.ItemsDamagedObject;
 public class ItemsDamagedTable implements AbstractTable<ItemsDamagedObject> {
 
     public static final String TABLE_NAME = "items_damaged";
-    private static final String DAMAGE_ID = "_id";
-    private static final String EVENT_ID = "event_id";
+    public static final String DAMAGE_ID = "_id";
+    public static final String EVENT_ID = "event_id";
     private static final String DMG_DESCRIPTION = "i_dmg_description";
     private static final String PHOTO_FILE = "photo_path";
-    private static final String IS_SENT = "is_sent";
+    public static final String IS_SENT = "is_sent";
 
     public static final String CREATE_TABLE = "create table IF NOT EXISTS " + TABLE_NAME + " (" +
             DAMAGE_ID + " integer primary key autoincrement," +
             EVENT_ID + " integer, " +
-            DMG_DESCRIPTION +" text, " +
-            PHOTO_FILE +" text, " +
+            DMG_DESCRIPTION + " text, " +
+            PHOTO_FILE + " text, " +
             IS_SENT + " integer " +
             ");";
 
@@ -33,7 +33,11 @@ public class ItemsDamagedTable implements AbstractTable<ItemsDamagedObject> {
 
     @Override
     public String getWhereClause(String id) {
-        return DAMAGE_ID +" = "+id;
+        return DAMAGE_ID + " = " + id;
+    }
+
+    public String getDamagesNotSent(String eventIdTo) {
+        return EVENT_ID + " <= " + eventIdTo + " AND " + IS_SENT + " = 0 ";
     }
 
     @Override

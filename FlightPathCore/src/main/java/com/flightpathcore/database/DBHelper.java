@@ -16,6 +16,7 @@ import com.flightpathcore.database.tables.PointsTable;
 import com.flightpathcore.database.tables.TripTable;
 import com.flightpathcore.network.SynchronizationHelper;
 import com.flightpathcore.objects.EventObject;
+import com.flightpathcore.objects.ItemsDamagedObject;
 import com.flightpathcore.objects.TripObject;
 import com.google.gson.Gson;
 
@@ -91,15 +92,15 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_ACCESS + " INTEGER");
             db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_TOKEN_ID + " INTEGER");
         }
-        if(oldVersion < 17) {
+        if (oldVersion < 17) {
             try {
                 db.execSQL("ALTER TABLE " + TripTable.TABLE_NAME + " ADD COLUMN " + TripTable.TRIP_DRIVER_ID + " INTEGER");
-            }catch (Exception e){
+            } catch (Exception e) {
                 //dont know why but sometime it happening and without try/catch it would not continue upgrading
             }
         }
-        if( oldVersion < 18){
-            db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_NAME+ " TEXT");
+        if (oldVersion < 18) {
+            db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_NAME + " TEXT");
         }
     }
 
@@ -298,5 +299,41 @@ public class DBHelper extends SQLiteOpenHelper {
         for (EventObject e : eventsToSend) {
             updateOrInsert(new EventTable(), values, e.eventId + "");
         }
+    }
+
+    public void markDamagesReadyToSend(long eventId) {
+        ContentValues values = new ContentValues();
+        values.put(ItemsDamagedTable.IS_SENT, 0);
+        getWritableDatabase().update(ItemsDamagedTable.TABLE_NAME, values, ItemsDamagedTable.EVENT_ID + "=" + eventId, null);
+    }
+
+    public List<ItemsDamagedObject> getDamagedItemsToSend(long eventIdTo) {
+        ItemsDamagedTable idt = new ItemsDamagedTable();
+        ArrayList<ItemsDamagedObject> items = new ArrayList<>();
+        Cursor cursor = getReadableDatabase().query(idt.TABLE_NAME, idt.getAllColumns(), idt.EVENT_ID + " <= " + eventIdTo + " AND " + idt.IS_SENT + "=0 ", null, null, null, idt.DAMAGE_ID);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            items.add(new ItemsDamagedObject(cursor));
+            cursor.moveToNext();
+        }
+        return items;
+    }
+
+    public EventObject getLastSendEvent() {
+        EventObject lastSendEvent = null;
+        EventTable et = new EventTable();
+        Cursor cursor = getReadableDatabase().query(et.getTableName(), et.getAllColumns(), et.EVENT_IS_SENT + " =1 ", null, null, null, et.EVENT_ID + " DESC", "1");
+        if (cursor.moveToFirst()) {
+            lastSendEvent = new EventObject(cursor);
+        } else {
+            lastSendEvent = (EventObject) getLast(et);
+        }
+        cursor.close();
+        return lastSendEvent;
+    }
+
+    public void removeDamagedItemById(Long id) {
+        ItemsDamagedTable idt = new ItemsDamagedTable();
+        getWritableDatabase().delete(idt.getTableName(), idt.DAMAGE_ID + "=" + id, null);
     }
 }

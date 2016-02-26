@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Tomasz Szafran ( tomek@appsvisio.com ) on 2016-01-13.
  */
 public class JobObject {
-    public int id;
+    public long id;
     public String name;
     @SerializedName("loose_items")
     public List<LooseItem> looseItems;

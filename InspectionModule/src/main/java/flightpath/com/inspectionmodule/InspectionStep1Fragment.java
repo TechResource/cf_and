@@ -17,11 +17,13 @@ import com.flightpathcore.base.BaseFragment;
 import com.flightpathcore.objects.ItemsDamagedObject;
 import com.flightpathcore.objects.JobObject;
 import com.flightpathcore.utilities.Utils;
+import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -118,13 +120,13 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
             }else if(widget instanceof DamagesObject){
                 DamagesWidget dw = DamagesWidget_.build(getContext());
                 dw.setData((DamagesObject) widget);
-                dw.setTag(widget.getViewTag());
+                dw.setTag(R.integer.view_tag_damages);
                 dw.setCalback(this);
                 widgetsContainer.addView(dw);
             }else if(widget instanceof LooseItemsObject){
                 LooseItemsWidget liw = LooseItemsWidget_.build(getContext()/*new ContextThemeWrapper(getContext(), R.style.Inspection_Select), null,0*/);
                 liw.setData((LooseItemsObject) widget);
-                liw.setTag(widget.getViewTag());
+                liw.setTag(R.integer.view_tag_loose_items);
                 widgetsContainer.addView(liw);
             }
         }
@@ -135,7 +137,20 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
         for (int i=0;i<widgetsContainer.getChildCount();i++){
             InspectionWidgetInterface w = (InspectionWidgetInterface)widgetsContainer.getChildAt(i);
             if(w.getProperty() != null) {
-                json.accumulate(w.getProperty(), w.getValue());
+                if(w instanceof DamagesWidget){
+                    List<ItemsDamagedObject> arr = (List<ItemsDamagedObject>) w.getValue();
+                    for (ItemsDamagedObject o : arr) {
+                        json.accumulate(w.getProperty(), o.getJson());
+                    }
+                    try {
+                        json.accumulate("damagedItemsCount", ((List) w.getValue()).size());
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        json.accumulate("damagedItemsCount", 0);
+                    }
+                }else {
+                    json.accumulate(w.getProperty(), w.getValue());
+                }
             }
         }
         Log.d("Inspection", "step1 data :" + json.toString());

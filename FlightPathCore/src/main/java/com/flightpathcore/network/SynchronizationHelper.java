@@ -5,18 +5,24 @@ import android.util.Log;
 import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.database.tables.DriverTable;
 import com.flightpathcore.database.tables.EventTable;
+import com.flightpathcore.database.tables.ItemsDamagedTable;
 import com.flightpathcore.di.DICore;
 import com.flightpathcore.network.requests.SynchronizeRequest;
 import com.flightpathcore.objects.EventObject;
+import com.flightpathcore.objects.ItemsDamagedObject;
 import com.flightpathcore.objects.UserObject;
 import com.flightpathcore.utilities.Utilities;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import retrofit.RetrofitError;
+import retrofit.mime.TypedFile;
 
 /**
  * Created by Tomasz Szafran ( tomek@appsvisio.com ) on 2015-11-10.
@@ -104,29 +110,54 @@ public class SynchronizationHelper {
                     } else {
                         eventsToSend = DBHelper.getInstance().getEventsToSend(MAX_EVENTS_TO_SEND);
 //                    eventsToSend = (List<EventObject>) DBHelper.getInstance().getMultiple(eventTable, null, eventTable.getIdColumn(), MAX_EVENTS_TO_SEND);
-
+                        Integer response = null;
                         if (eventsToSend.size() > 0) {
-                            Integer response = null;
                             try {
                                 response = instance.fpModel.fpApi.sendEvents(new SynchronizeRequest(instance.user.tokenId, instance.user.access, eventsToSend));
                             } catch (RetrofitError e) {
 
                             }
-
-                            instance.lastSyncDate = Utilities.getCurrentDateFormatted();
-                            if (response != null) {
-                                instance.syncState = SyncState.STATE_OK;
-                                DBHelper.getInstance().setEventsSuccess(eventsToSend);
-                            } else {
-                                if (instance.syncState == SyncState.STATE_OK) {
-                                    instance.syncState = SyncState.STATE_LAST_SYNC_FAILED;
-                                } else {
-                                    instance.syncState = SyncState.STATE_SYNC_FAILED;
-                                }
-                            }
-                            instance.eventsLeft = DBHelper.getInstance().countEventsLeft();
-                            instance.notifyListeners();
+                        }else{
+                            response = 1;
                         }
+
+                        Integer imgResponse = null;
+                        EventObject lastSendEvent = DBHelper.getInstance().getLastSendEvent();
+                        if(lastSendEvent != null) {
+                            Map<String, TypedFile> output = createMultipartOutput(lastSendEvent.eventId);
+                            if(output != null) {
+                                try {
+                                    imgResponse = instance.fpModel.fpApi.sendMultipleFiles(output);
+                                    if (imgResponse != null) {
+                                        if(eventsToSend.size() > 0) {
+                                            for (ItemsDamagedObject e : DBHelper.getInstance().getDamagedItemsToSend(eventsToSend.get(eventsToSend.size()-1).eventId)) {
+                                                DBHelper.getInstance().removeDamagedItemById(e.id);
+                                            }
+                                        }
+                                    }
+                                } catch (RetrofitError e) {
+
+                                }
+                            }else{
+                                imgResponse = 1;
+                            }
+                        }else{
+                            imgResponse = 1;
+                        }
+
+                        instance.lastSyncDate = Utilities.getCurrentDateFormatted();
+                        if (response != null && imgResponse != null ) {
+                            instance.syncState = SyncState.STATE_OK;
+                            DBHelper.getInstance().setEventsSuccess(eventsToSend);
+                        } else {
+                            if (instance.syncState == SyncState.STATE_OK) {
+                                instance.syncState = SyncState.STATE_LAST_SYNC_FAILED;
+                            } else {
+                                instance.syncState = SyncState.STATE_SYNC_FAILED;
+                            }
+                        }
+                        instance.eventsLeft = DBHelper.getInstance().countEventsLeft();
+                        instance.notifyListeners();
                     }
                     instance.sending = false;
                 }
@@ -139,6 +170,26 @@ public class SynchronizationHelper {
                 }
             }
         }
+
+        private Map<String,TypedFile> createMultipartOutput( long eventIdTo) {
+
+            List<ItemsDamagedObject> items = DBHelper.getInstance().getDamagedItemsToSend(eventIdTo);
+
+            if( items == null || items.size() == 0){
+                return null;
+            }
+
+            Map<String,TypedFile> multipartTypedOutput = new HashMap<>();
+            for(int i=0;i<items.size();i++){
+                File f = new File(items.get(i).imagePath.replace("file:",""));
+                EventObject event = (EventObject) DBHelper.getInstance().get(new EventTable(), items.get(i).eventId+"");
+                if (event != null) {
+                    multipartTypedOutput.put(("damage_item_id[" + Utilities.getUtcDateTime(event.timestamp) + "|" + items.get(i).id + "]"), new TypedFile("image/jpg", f));
+                }
+            }
+            return multipartTypedOutput;
+        }
+
     }
 
     public void sendNow(){

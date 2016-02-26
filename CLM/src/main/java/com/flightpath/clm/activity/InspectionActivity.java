@@ -13,22 +13,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import flightpath.com.inspectionmodule.InspectionContainerFragment;
+
+import com.flightpathcore.database.DBHelper;
+import com.flightpathcore.database.tables.DriverTable;
+import com.flightpathcore.database.tables.EventTable;
 import com.flightpathcore.objects.BaseWidgetObject;
+import com.flightpathcore.objects.EventObject;
 import com.flightpathcore.objects.InspectionStructureResponse;
+import com.flightpathcore.objects.UserObject;
+import com.flightpathcore.utilities.SPHelper;
+import com.flightpathcore.utilities.Utilities;
 import com.google.gson.Gson;
 
+import flightpath.com.inspectionmodule.InspectionModuleInterfaces;
 import flightpath.com.inspectionmodule.widgets.objects.CheckBoxObject;
-import flightpath.com.inspectionmodule.widgets.objects.DamagesObject;
-import flightpath.com.inspectionmodule.widgets.objects.InputObject;
-import flightpath.com.inspectionmodule.widgets.objects.LooseItemsObject;
-import flightpath.com.inspectionmodule.widgets.objects.SectionHeaderObject;
-import flightpath.com.inspectionmodule.widgets.objects.SpinnerObject;
 
 /**
  * Created by Tomasz Szafran ( tomek@appsvisio.com ) on 2016-01-21.
  */
 @EActivity(R.layout.activity_inspection)
-public class InspectionActivity extends CLMBaseActivity {
+public class InspectionActivity extends CLMBaseActivity implements InspectionModuleInterfaces.InspectionCompleteListener {
 
     @FragmentByTag
     protected InspectionContainerFragment inspectionContainerFragment;
@@ -74,16 +78,30 @@ public class InspectionActivity extends CLMBaseActivity {
         List<BaseWidgetObject> list = new ArrayList<>();
 //        InspectionStructureResponse inspStructure = new Gson().fromJson(SPHelper.getData(this, SPHelper.INSPECTION_STRUCTURE), InspectionStructureResponse.class);
         //temporary
-        InspectionStructureResponse inspStructure = new Gson().fromJson("{\"inspection\":[{\"type\":\"spinner\",\"property\":\"jobId\",\"hint\":null,\"value\":\"jobs\",\"is_required\":" +
-                "null,\"is_editable\":null},{\"type\":\"section_header\",\"property\":null,\"hint\":null,\"value\":\"Vehicle\",\"is_required\":null,\"is_editable\":null},{\"type\":\"" +
-                "input\",\"property\":null,\"hint\":\"Registration\",\"value\":null,\"is_required\":false,\"is_editable\":false},{\"type\":\"input\",\"property\":null,\"hint\":\"" +
-                "Manufacturer\",\"value\":null,\"is_required\":false,\"is_editable\":false},{\"type\":\"input\",\"property\":null,\"hint\":\"Model\",\"value\":null,\"is_required\"" +
-                ":false,\"is_editable\":false},{\"type\":\"input\",\"property\":null,\"hint\":\"Loan duration\",\"value\":null,\"is_required\":false,\"is_editable\":false},{\"type\"" +
-                ":\"section_header\",\"property\":null,\"hint\":null,\"value\":\"Damages\",\"is_required\":null,\"is_editable\":null},{\"type\":\"damages\",\"property\":null,\"hint\"" +
-                ":null,\"value\":null,\"is_required\":null,\"is_editable\":null},{\"type\":\"section_header\",\"property\":null,\"hint\":null,\"value\":\"Loose Items\",\"is_required\"" +
-                ":null,\"is_editable\":null},{\"type\":\"loose_items\",\"property\":null,\"hint\":null,\"value\":null,\"is_required\":null,\"is_editable\":null},{\"type\":\"input\",\"" +
-                "property\":\"driverNotes\",\"hint\":\"Notes\",\"value\":null,\"is_required\":false,\"is_editable\":true},{\"type\":\"check_box\",\"property\":\"includeCustomerSignature" +
-                "\",\"hint\":\"I would like to include Customer signature\",\"value\":null,\"is_required\":false,\"is_editable\":true},]}", InspectionStructureResponse.class);
+        InspectionStructureResponse inspStructure = new Gson().fromJson("{\"inspection\":[{\"type\":\"spinner\",\"property\":\"jobId\",\"hint\":null,\"value\":" +
+                "\"jobs\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":\"spinner\",\"property\":\"jobType\",\"hint\":null,\"value\":" +
+                "\"job_type\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":\"input\",\"property\":\"refNumber\",\"hint\":" +
+                "\"Reference Number\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":" +
+                "\"customerName\",\"hint\":\"Customer Name\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":" +
+                "\"section_header\",\"property\":null,\"hint\":null,\"value\":\"Address\",\"is_required\":null,\"is_editable\":null,\"input_type\":" +
+                "null},{\"type\":\"input\",\"property\":\"homeNumber\",\"hint\":\"Home Name/Number\",\"value\":null,\"is_required\":true,\"is_editable\":" +
+                "true,\"input_type\":null},{\"type\":\"input\",\"property\":\"addressLine1\",\"hint\":\"Address Line 1\",\"value\":null,\"is_required\":" +
+                "false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":\"addressLine2\",\"hint\":\"Address Line 2\",\"value\":" +
+                "null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":\"city\",\"hint\":\"City\",\"value\":" +
+                "null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":\"postcode\",\"hint\":\"PostCode\",\"value\":" +
+                "null,\"is_required\":true,\"is_editable\":true,\"input_type\":null},{\"type\":\"section_header\",\"property\":null,\"hint\":null,\"value\":" +
+                "\"Vehicle\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":\"input\",\"property\":registration,\"hint\":" +
+                "\"Registration\",\"value\":null,\"is_required\":true,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":" +
+                "manufacturer,\"hint\":\"Manufacturer\",\"value\":null,\"is_required\":true,\"is_editable\":true,\"input_type\":null},{\"type\":" +
+                "\"input\",\"property\":model,\"hint\":\"Model\",\"value\":null,\"is_required\":true,\"is_editable\":true,\"input_type\":null},{\"type\":" +
+                "\"section_header\",\"property\":null,\"hint\":null,\"value\":\"Damages\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":" +
+                "\"damages\",\"property\":\"damagedItems\",\"hint\":null,\"value\":null,\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":" +
+                "\"input\",\"property\":\"mileage\",\"hint\":\"Mileage\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":" +
+                "\"number\"},{\"type\":\"section_header\",\"property\":null,\"hint\":null,\"value\":\"Loose Items\",\"is_required\":null,\"is_editable\":" +
+                "null,\"input_type\":null},{\"type\":\"loose_items\",\"property\":\"looseItemsChecked\",\"hint\":null,\"value\":null,\"is_required\":" +
+                "null,\"is_editable\":null,\"input_type\":null},{\"type\":\"input\",\"property\":\"driverNotes\",\"hint\":\"Notes\",\"value\":null,\"is_required\":" +
+                "false,\"is_editable\":true,\"input_type\":null},{\"type\":\"check_box\",\"property\":\"includeCustomerSignature\",\"hint\":" +
+                "\"I would like to include Customer signature\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null}]}", InspectionStructureResponse.class);
 
 
 //        list.add(new SpinnerObject("jobId", SpinnerObject.SpinnerType.JOBS, R.integer.view_tag_spinner_jobs));
@@ -118,5 +136,10 @@ public class InspectionActivity extends CLMBaseActivity {
         if (!inspectionContainerFragment.onBackPressed()) {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onCompleteListener() {
+        finish();
     }
 }

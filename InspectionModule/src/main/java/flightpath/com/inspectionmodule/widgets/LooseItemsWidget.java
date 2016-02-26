@@ -6,10 +6,14 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ListAdapter;
 
 import com.flightpathcore.objects.jobs.LooseItem;
+import com.flightpathcore.utilities.Utilities;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EViewGroup;
@@ -53,12 +57,12 @@ public class LooseItemsWidget extends FrameLayout implements InspectionWidgetInt
     }
 
     private void showLooseItemsDialog() {
-        new AlertDialog.Builder(getContext(), R.style.BlueAlertDialog)
+        Utilities.styleAlertDialog(new AlertDialog.Builder(getContext(), R.style.BlueAlertDialog)
                 .setTitle("Loose Items")
                 .setMultiChoiceItems(data.getLooseItemsAsArray(), data.selectedLooseItems, this)
                 .setPositiveButton(R.string.ok_label, (dialog, which) -> buildBtnText())
                 .setNegativeButton(R.string.cancel_label, null)
-                .show();
+                .show());
     }
 
     @Override
@@ -149,4 +153,5 @@ public class LooseItemsWidget extends FrameLayout implements InspectionWidgetInt
             buildBtnText();
         }
     }
+
 }

@@ -17,6 +17,8 @@ public class BaseWidgetObject {
     @SerializedName("is_editable")
     protected boolean isEditable = true;
     protected Integer viewTag = null;
+    @SerializedName("input_type")
+    public String inputType;
 
     public BaseWidgetObject() {
     }
@@ -29,6 +31,7 @@ public class BaseWidgetObject {
         this.isRequired =  base.isRequired;
         this.isEditable = base.isEditable;
         this.viewTag = base.viewTag;
+        this.inputType = base.inputType;
     }
 
     public Integer getViewTag(){

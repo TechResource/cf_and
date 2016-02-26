@@ -8,14 +8,20 @@ import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.flightpathcore.database.DBHelper;
+import com.flightpathcore.database.tables.ItemsDamagedTable;
 import com.flightpathcore.objects.ItemsDamagedObject;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import flightpath.com.inspectionmodule.R;
 import flightpath.com.inspectionmodule.widgets.objects.DamagesObject;
@@ -75,9 +81,12 @@ public class DamagesWidget extends LinearLayout implements InspectionWidgetInter
                     damageDialogShouldBeOpen = false;
                     ItemsDamagedObject item = new ItemsDamagedObject();
                     item.dmgDescription = et.getContentValue();
-//                        item.eventId = ((InspectionAddActivity) getActivity()).getCurrentEventId();
+                    item.eventId = data.currentEventId;
                     item.imagePath = photoFile.toString();
-//                        DBHelper.getHelper(getActivity()).createDamagedItem(item);
+                    item.isSent = 1;
+
+                    ItemsDamagedTable dmgTable = new ItemsDamagedTable();
+                    item.id = DBHelper.getInstance().insert(dmgTable, dmgTable.getContentValues(item));
 
                     DamageWidget view = DamageWidget_.build(getContext());
                     view.setDamage(item);
@@ -88,17 +97,28 @@ public class DamagesWidget extends LinearLayout implements InspectionWidgetInter
                 .setNegativeButton(R.string.cancel_label, (dialog1, which1) -> {
                     damageDialogShouldBeOpen = false;
                 })
-                .show();
+                .create();
+        damageDialog.setOnShowListener(dialog -> {
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(et.et, InputMethodManager.SHOW_IMPLICIT);
+        });
+        damageDialog.show();
     }
 
-    private void onRemoveDamage(View viewToRemove) {
-        // TODO remove dmg from db
+    private void onRemoveDamage(DamageWidget viewToRemove) {
+        DBHelper.getInstance().removeDamagedItemById(viewToRemove.getDmgId());
         damagesContainer.removeView(viewToRemove);
     }
 
     @Override
     public Object getValue() {
-        return null;
+        List<ItemsDamagedObject> damages = new ArrayList<>();
+        for(int i=0;i<damagesContainer.getChildCount();i++){
+            if(damagesContainer.getChildAt(i) instanceof DamageWidget){
+                damages.add(((DamageWidget)damagesContainer.getChildAt(i)).getDamage());
+            }
+        }
+        return damages;
     }
 
     @Override

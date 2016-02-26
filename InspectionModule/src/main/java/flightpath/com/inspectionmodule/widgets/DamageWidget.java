@@ -68,4 +68,7 @@ public class DamageWidget extends RelativeLayout {
         return damage.id;
     }
 
+    public ItemsDamagedObject getDamage() {
+        return damage;
+    }
 }
