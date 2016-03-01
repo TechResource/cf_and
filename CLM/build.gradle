@@ -37,6 +37,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             resValue "string", "app_name", "CLM"
         }
+        release2 {
+            signingConfig signingConfigs.buildIn
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "app_name", "CLM 2"
+            applicationIdSuffix ".clm2"
+        }
         beta{
             initWith release
             applicationIdSuffix ".beta"
