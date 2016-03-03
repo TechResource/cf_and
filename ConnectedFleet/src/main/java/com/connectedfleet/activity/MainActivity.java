@@ -21,6 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.connectedfleet.R;
+import com.crashlytics.android.Crashlytics;
 import com.flightpathcore.acceleration.AccelerationService;
 import com.flightpathcore.adapters.PagerAdapter;
 import com.flightpathcore.database.DBHelper;
@@ -100,9 +101,11 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         di().inject(this);
         SynchronizationHelper.initInstance(fpModel);
         currentUser = ((UserObject) DBHelper.getInstance().getLast(new DriverTable()));
+        Crashlytics.setUserIdentifier(currentUser.driverId+"");
         if (currentUser != null) {
             pointCollectInterval = 1000 * currentUser.gpsPointPer;
         }
@@ -214,9 +217,20 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
         Utilities.styleAlertDialog(new AlertDialog.Builder(this, R.style.BlueAlertDialog)
                 .setTitle(R.string.close_app_title)
                 .setMessage(R.string.close_app_msg)
-                .setPositiveButton(R.string.yes_label, (dialog, which1) -> MainActivity.this.finish())
+                .setPositiveButton(R.string.yes_label, (dialog, which1) -> closeOrGoBgApp())
                 .setNegativeButton(R.string.no_label, null)
                 .show());
+    }
+
+    private void closeOrGoBgApp() {
+        if(mapFragment.isOnTrip()){
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_MAIN);
+            i.addCategory(Intent.CATEGORY_HOME);
+            this.startActivity(i);
+        }else {
+            MainActivity.this.finish();
+        }
     }
 
     @Override
@@ -362,6 +376,7 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
         InputWidget inputWidget = InputWidget_.build(this);
         inputWidget.setOnlyNumbersInput();
         inputWidget.setText(null, getString(R.string.end_mileage_label));
+        inputWidget.setLargeTextSize();
         inputWidget.setOnEditorActionListener((v1, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 if (stopTripDialog != null)
@@ -385,10 +400,10 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
                 .create();
         stopTripDialog.setOnShowListener(dialog -> {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(inputWidget.et, InputMethodManager.SHOW_IMPLICIT);
+            imm.showSoftInput(inputWidget.et, InputMethodManager.RESULT_UNCHANGED_SHOWN);
         });
         stopTripDialog.show();
-        Utilities.styleAlertDialog(stopTripDialog);
+        Utilities.styleAlertDialog(stopTripDialog, getResources().getDimension(com.flightpathcore.R.dimen.text_size_extra_large));
         stopTripDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             Integer endMileage = null;
             try {

@@ -61,7 +61,6 @@ public class LoginActivity extends CLMBaseActivity implements LoginCallbacks{
         @Override
         public void onSuccess(UserObject response) {
             LoginActivity.this.response = response;
-
             loginFragment.setLoginBtnEnabled(false);
             DBHelper.getInstance().updateOrInsert(new DriverTable(), new DriverTable().getContentValues(response), DriverTable.HELPER_ID + "");
             SPHelper.saveData(LoginActivity.this, SPHelper.USER_SESSION_KEY, new Gson().toJson(response));

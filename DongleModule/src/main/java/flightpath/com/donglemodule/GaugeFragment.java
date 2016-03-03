@@ -79,7 +79,7 @@ public class GaugeFragment extends BaseFragment implements DongleDataHelper.Dong
     @UiThread
     @Override
     public void onDongleDataReceived(Map<String, String> dongleData) {
-        if (needUpdate()) {
+        if (needUpdate() && speedometer != null && dongleData != null) {
             speedometer.setSpeed(getMilesFromKilometres(getDecimalValue(dongleData.get(ObdConfig.SPEED))), true);
             speedVal.setText(getMilesFromKilometres(getDecimalValue(dongleData.get(ObdConfig.SPEED))) + "");
             rpmmeter.setSpeed(getDecimalValue(dongleData.get(ObdConfig.RPM)), true);

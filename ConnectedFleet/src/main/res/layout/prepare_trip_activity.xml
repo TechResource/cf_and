@@ -34,6 +34,7 @@
                 app:hint="@string/current_mileage_hint"
                 app:is_required="true"
                 app:only_digits="true"
+                app:large_text="true"
                 />
 
             <com.flightpathcore.widgets.InputWidget_
@@ -42,6 +43,8 @@
                 android:layout_height="wrap_content"
                 app:hint="@string/vehicle_registration_number_hint"
                 app:is_required="true"
+                app:registration="true"
+                app:large_text="true"
                 />
 
             <Spinner

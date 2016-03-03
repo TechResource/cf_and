@@ -73,7 +73,6 @@ public class BaseSpinnerAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View viewToReuse, ViewGroup parentToGetAttached) {
         if (viewToReuse == null) {
-
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             viewToReuse = inflater.inflate(R.layout.simple_dropdown_item_custom, parentToGetAttached, false);
         }

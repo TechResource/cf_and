@@ -32,6 +32,8 @@ import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -156,6 +158,13 @@ public class ClosePeriodActivity extends CFBaseActivity implements HeaderFragmen
 
         public void setItems(List<PeriodResponse.Trip> items){
             this.items.clear();
+            Collections.sort(items, (lhs, rhs) -> {
+                if(lhs.id > rhs.id){
+                    return 1;
+                }else {
+                    return -1;
+                }
+            });
             this.items.addAll(items);
             notifyDataSetChanged();
         }

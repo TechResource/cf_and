@@ -138,7 +138,7 @@ public class PrepareTripActivity extends CFBaseActivity implements HeaderFragmen
         newTrip.startDateAsTimestamp = Utilities.getTimestamp();
         DBHelper.getInstance().insert(new TripTable(), new TripTable().getContentValues(newTrip));
         tripStatusHelper.startNewTrip(newTrip, l);
-        if (!driver.vehicleRegistration.equals(registrationNumber.getValue())) {
+        if (driver.vehicleRegistration == null || !driver.vehicleRegistration.equals(registrationNumber.getValue())) {
             driver.vehicleRegistration = registrationNumber.getValue();
             DBHelper.getInstance().updateOrInsert(new DriverTable(), new DriverTable().getContentValues(driver), driver.driverId + "");
         }

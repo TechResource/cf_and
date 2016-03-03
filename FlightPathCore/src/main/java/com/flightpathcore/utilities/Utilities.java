@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -156,7 +158,11 @@ public class Utilities {
         }
     }
 
-    public static void styleAlertDialog(AlertDialog dialog) {
+    public static void styleAlertDialog(AlertDialog dialog){
+        styleAlertDialog(dialog, null);
+    }
+
+    public static void styleAlertDialog(AlertDialog dialog, Float textSize) {
         int textViewId = dialog.getContext().getResources().getIdentifier("app:id/alertTitle", null, null);
         if (textViewId != 0) {
             TextView tv = (TextView) dialog.findViewById(textViewId);
@@ -167,11 +173,17 @@ public class Utilities {
 
         Button posBtn = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
         if(posBtn != null) {
+            if(textSize != null) {
+                posBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+            }
             posBtn.setTextColor(dialog.getContext().getResources().getColor(R.color.blue_bg));
             posBtn.setTypeface(posBtn.getTypeface(), Typeface.BOLD);
         }
         Button negBtn = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
         if(negBtn != null) {
+            if(textSize != null) {
+                negBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+            }
             negBtn.setTextColor(dialog.getContext().getResources().getColor(R.color.gray_dark));
             negBtn.setTypeface(negBtn.getTypeface(), Typeface.BOLD);
         }
