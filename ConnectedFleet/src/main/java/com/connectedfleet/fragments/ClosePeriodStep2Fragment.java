@@ -99,15 +99,15 @@ public class ClosePeriodStep2Fragment extends BaseFragment {
             periodEndDate.setError("Field can't be empty.");
             isValid = false;
         }
-        try {
-            if (Integer.parseInt(periodEndMileage.getText().toString()) < periodResponse.period.startMileage) {
-                periodEndMileage.setError("End mileage can't be lower than Start mileage.");
-                isValid = false;
-            }
-        } catch (NumberFormatException e) {
-            periodEndMileage.setError("Wrong number format.");
-            isValid = false;
-        }
+//        try {
+//            if (Integer.parseInt(periodEndMileage.getText().toString()) < periodResponse.period.startMileage) {
+//                periodEndMileage.setError("End mileage can't be lower than Start mileage.");
+//                isValid = false;
+//            }
+//        } catch (NumberFormatException e) {
+//            periodEndMileage.setError("Wrong number format.");
+//            isValid = false;
+//        }
 
         return isValid;
     }

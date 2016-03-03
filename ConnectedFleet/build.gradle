@@ -60,7 +60,7 @@ android {
             signingConfig signingConfigs.buildIn
             applicationIdSuffix ".dev"
             testCoverageEnabled = "true"
-            resValue "string", "app_name", "Connected Fleet.dev"
+            resValue "string", "app_name", "CF.dev"
         }
     }
 }

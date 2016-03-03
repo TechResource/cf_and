@@ -8,7 +8,9 @@ import com.connectedfleet.R;
 import com.flightpathcore.base.AppCore;
 import com.flightpathcore.base.BaseActivity;
 import com.flightpathcore.base.NavigatorAbstract;
+import com.flightpathcore.objects.UserObject;
 import com.flightpathcore.utilities.SPHelper;
+import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -37,7 +39,8 @@ public class SplashScreenActivity extends CFBaseActivity implements SplashScreen
 
     @AfterViews
     protected void init(){
-        if (SPHelper.getUserSession(SplashScreenActivity.this) != null) {
+        UserObject userObject = SPHelper.getUserSession(SplashScreenActivity.this);
+        if (userObject != null && userObject.email != null && !userObject.email.isEmpty()) {
             navigator.loginSuccessfully();
         } else {
             splashScreenFragment.showPager(this);

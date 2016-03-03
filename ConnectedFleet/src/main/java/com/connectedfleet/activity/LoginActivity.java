@@ -58,8 +58,12 @@ public class LoginActivity extends CFBaseActivity implements LoginCallbacks{
 
     }
 
+    private String email, password;
+
     @Override
     public void onLogin(String login, String password) {
+        this.email = login;
+        this.password = password;
         fpModel.fpApi.login(
                 new LoginRequest(login, password), loginCallback);
     }
@@ -67,6 +71,8 @@ public class LoginActivity extends CFBaseActivity implements LoginCallbacks{
     private MyCallback<UserObject> loginCallback = new MyCallback<UserObject>() {
         @Override
         public void onSuccess(UserObject response) {
+            response.email = email;
+            response.password = password;
             LoginActivity.this.response = response;
 
             loginFragment.setLoginBtnEnabled(false);

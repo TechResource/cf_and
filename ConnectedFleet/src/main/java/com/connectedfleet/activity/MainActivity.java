@@ -24,6 +24,7 @@ import com.connectedfleet.R;
 import com.crashlytics.android.Crashlytics;
 import com.flightpathcore.acceleration.AccelerationService;
 import com.flightpathcore.adapters.PagerAdapter;
+import com.flightpathcore.base.BaseApplication;
 import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.database.tables.DriverTable;
 import com.flightpathcore.fragments.HeaderFragment;
@@ -104,15 +105,15 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
 
         di().inject(this);
         SynchronizationHelper.initInstance(fpModel);
-        currentUser = ((UserObject) DBHelper.getInstance().getLast(new DriverTable()));
-        Crashlytics.setUserIdentifier(currentUser.driverId+"");
+        currentUser = (UserObject) DBHelper.getInstance().get(new DriverTable(), DriverTable.HELPER_ID+"");
         if (currentUser != null) {
+            if(!BaseApplication.isDebug(this))
+                Crashlytics.setUserIdentifier(currentUser.driverId+"");
             pointCollectInterval = 1000 * currentUser.gpsPointPer;
         }
         tripStatusHelper.addListener(this);
         tripStatusHelper.setStopTripListener(this);
         handler.post(dataCollector);
-
 
         Intent i = new Intent(this, AccelerationService.class);
         i.addCategory(AccelerationService.tag);

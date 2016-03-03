@@ -127,7 +127,6 @@ public class PrepareTripActivity extends CFBaseActivity implements HeaderFragmen
         }
 
     }
-
     private void startNewTrip(Integer startMileage){
         TripObject newTrip = new TripObject(reasonSpinner.getSelectedItem().toString(), startMileage, registrationNumber.getValue(), driver.driverId);
         Location l = locationHandler.getLocation();
@@ -140,7 +139,7 @@ public class PrepareTripActivity extends CFBaseActivity implements HeaderFragmen
         tripStatusHelper.startNewTrip(newTrip, l);
         if (driver.vehicleRegistration == null || !driver.vehicleRegistration.equals(registrationNumber.getValue())) {
             driver.vehicleRegistration = registrationNumber.getValue();
-            DBHelper.getInstance().updateOrInsert(new DriverTable(), new DriverTable().getContentValues(driver), driver.driverId + "");
+            DBHelper.getInstance().updateOrInsert(new DriverTable(), new DriverTable().getContentValues(driver), DriverTable.HELPER_ID+"");
         }
 
         finish();

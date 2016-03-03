@@ -24,6 +24,8 @@ public class UserObject {
     public UpdateAppObject update;
     public String name;
 
+    public String email, password;
+
     public UserObject(){
 
     }

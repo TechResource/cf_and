@@ -52,14 +52,20 @@ public class LoginActivity extends CLMBaseActivity implements LoginCallbacks{
         loginFragment.setCallback(this);
     }
 
+    private String email, password;
+
     @Override
     public void onLogin(String login, String password) {
+        this.email = login;
+        this.password = password;
         fpModel.fpApi.login(new LoginRequest(login, password), loginCallback);
     }
 
     private MyCallback loginCallback =  new MyCallback<UserObject>() {
         @Override
         public void onSuccess(UserObject response) {
+            response.email = email;
+            response.password = password;
             LoginActivity.this.response = response;
             loginFragment.setLoginBtnEnabled(false);
             DBHelper.getInstance().updateOrInsert(new DriverTable(), new DriverTable().getContentValues(response), DriverTable.HELPER_ID + "");
