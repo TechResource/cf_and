@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.connectedfleet.R;
 import com.flightpathcore.adapters.BaseSpinnerAdapter;
@@ -109,6 +110,7 @@ public class PrepareTripActivity extends CFBaseActivity implements HeaderFragmen
     public void onHeaderLeftBtnClick() {
         finish();
     }
+
 
     @Override
     public void onHeaderRightBtnClick() {

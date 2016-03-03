@@ -37,7 +37,7 @@ public class HeaderFragment extends BaseFragment {
     protected void init(){
         Utilities.setOswaldTypeface(getActivity().getAssets(), appName, versionName, leftBtn, rightBtn);
         appName.setText(AppCore.getInstance().getAppInfo().appName);
-        versionName.setText(AppCore.getInstance().getAppInfo().appVersion);
+        versionName.setText(AppCore.getInstance().getAppInfo().appVersion +"-"+AppCore.getInstance().getAppInfo().appVersionCode);
         if(viewType != null){
             setupView();
         }

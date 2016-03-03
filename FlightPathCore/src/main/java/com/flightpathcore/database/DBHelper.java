@@ -87,7 +87,11 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onCreate(db);
+        if (oldVersion < 15) {
+            db.execSQL("ALTER TABLE " + TripTable.TABLE_NAME + " ADD COLUMN " + TripTable.TRIP_DONGLE_CONNECTION_TIME + " INTEGER DEFAULT -1");
+        }
         if (oldVersion < 16) {
+            db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_NAME + " TEXT DEFAULT ''");
             db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_HELPER_ID + " INTEGER DEFAULT 1");
             db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_ACCESS + " INTEGER");
             db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_TOKEN_ID + " INTEGER");
