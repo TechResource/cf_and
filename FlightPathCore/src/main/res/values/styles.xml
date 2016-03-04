@@ -109,7 +109,6 @@
     <style name="BlueAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowTitleStyle">@style/MyAlertTitleTextStyle</item>
         <item name="colorAccent">@color/blue_bg</item>
-        <item name="android:textAppearance">@android:style/TextAppearance.DeviceDefault.Large</item>
     </style>
 
     <style name="TextInputTextSizeLargeStyle" parent="TextAppearance.Design.Hint" >

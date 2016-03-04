@@ -51,11 +51,11 @@ public class Utilities {
      * @return path+"/";
      */
     private static String getBaseDirectoryPath() {
-        File f = new File(Environment.getExternalStorageDirectory() + "/" + DIRECTORY_NAME);
+        File f = new File(Environment.getExternalStorageDirectory() + File.separator + DIRECTORY_NAME);
         if(!f.exists()){
             f.mkdir();
         }
-        return Environment.getExternalStorageDirectory() + "/" + DIRECTORY_NAME + "/";
+        return Environment.getExternalStorageDirectory() + File.separator + DIRECTORY_NAME + File.separator;
     }
 
     public static void hideSoftKeyboard(final Activity activity) {

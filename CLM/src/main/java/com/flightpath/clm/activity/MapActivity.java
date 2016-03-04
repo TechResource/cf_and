@@ -17,8 +17,10 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.flightpath.clm.R;
 import com.flightpathcore.acceleration.AccelerationService;
+import com.flightpathcore.base.BaseApplication;
 import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.database.tables.DriverTable;
 import com.flightpathcore.database.tables.JobsTable;
@@ -91,6 +93,8 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
         SynchronizationHelper.initInstance(fpModel);
         currentUser = ((UserObject) DBHelper.getInstance().getLast(new DriverTable()));
         if (currentUser != null) {
+            if(!BaseApplication.isDebug(this))
+                Crashlytics.setUserIdentifier(currentUser.driverId + "");
             pointCollectInterval = 1000 * currentUser.gpsPointPer;
         }
         tripStatusHelper.addListener(this);

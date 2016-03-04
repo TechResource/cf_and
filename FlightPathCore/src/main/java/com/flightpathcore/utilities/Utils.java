@@ -32,7 +32,7 @@ import java.util.TimeZone;
 public class Utils {
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public final static String DIRECTORY_NAME = "FlightPath";
-	
+
 	public static SimpleDateFormat getGlobalDateFormat(){
 		return sdf;
 	}
@@ -119,7 +119,7 @@ public class Utils {
 
         // Create directory if doesnt exists
         File directory = new File(Environment.getExternalStorageDirectory() + File.separator + DIRECTORY_NAME);
-        if (!directory.isDirectory()) {
+        if (!directory.exists()) {
             directory.mkdir();
         }
 

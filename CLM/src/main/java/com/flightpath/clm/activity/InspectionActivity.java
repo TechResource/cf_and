@@ -3,9 +3,11 @@ package com.flightpath.clm.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.flightpath.clm.CLMApplication;
 import com.flightpath.clm.R;
 import com.flightpathcore.objects.BaseWidgetObject;
 import com.flightpathcore.objects.InspectionStructureResponse;
+import com.flightpathcore.utilities.Utilities;
 import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
@@ -41,33 +43,62 @@ public class InspectionActivity extends CLMBaseActivity implements InspectionMod
         inspectionContainerFragment.buildInspection(structureResponse);
     }
 
-
     private InspectionStructureResponse buildStep1Inspection() {
         List<BaseWidgetObject> list = new ArrayList<>();
-        InspectionStructureResponse inspStructure = new Gson().fromJson("{\"inspection\":[{\"type\":\"spinner\",\"property\":\"jobId\",\"hint\":null,\"value\":" +
-                "\"jobs\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":\"spinner\",\"property\":\"jobType\",\"hint\":null,\"value\":" +
-                "\"job_type\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":\"input\",\"property\":\"refNumber\",\"hint\":" +
-                "\"Reference Number\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":" +
-                "\"customerName\",\"hint\":\"Customer Name\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":" +
-                "\"section_header\",\"property\":null,\"hint\":null,\"value\":\"Address\",\"is_required\":null,\"is_editable\":null,\"input_type\":" +
-                "null},{\"type\":\"input\",\"property\":\"homeNumber\",\"hint\":\"Home Name/Number\",\"value\":null,\"is_required\":true,\"is_editable\":" +
-                "true,\"input_type\":null},{\"type\":\"input\",\"property\":\"addressLine1\",\"hint\":\"Address Line 1\",\"value\":null,\"is_required\":" +
-                "false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":\"addressLine2\",\"hint\":\"Address Line 2\",\"value\":" +
-                "null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":\"city\",\"hint\":\"City\",\"value\":" +
-                "null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":\"postcode\",\"hint\":\"PostCode\",\"value\":" +
-                "null,\"is_required\":true,\"is_editable\":true,\"input_type\":null},{\"type\":\"section_header\",\"property\":null,\"hint\":null,\"value\":" +
-                "\"Vehicle\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":\"input\",\"property\":registration,\"hint\":" +
-                "\"Registration\",\"value\":null,\"is_required\":true,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":" +
-                "manufacturer,\"hint\":\"Manufacturer\",\"value\":null,\"is_required\":true,\"is_editable\":true,\"input_type\":null},{\"type\":" +
-                "\"input\",\"property\":model,\"hint\":\"Model\",\"value\":null,\"is_required\":true,\"is_editable\":true,\"input_type\":null},{\"type\":" +
-                "\"section_header\",\"property\":null,\"hint\":null,\"value\":\"Damages\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":" +
-                "\"damages\",\"property\":\"damagedItems\",\"hint\":null,\"value\":null,\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":" +
-                "\"input\",\"property\":\"mileage\",\"hint\":\"Mileage\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":" +
-                "\"number\"},{\"type\":\"section_header\",\"property\":null,\"hint\":null,\"value\":\"Loose Items\",\"is_required\":null,\"is_editable\":" +
-                "null,\"input_type\":null},{\"type\":\"loose_items\",\"property\":\"looseItemsChecked\",\"hint\":null,\"value\":null,\"is_required\":" +
-                "null,\"is_editable\":null,\"input_type\":null},{\"type\":\"input\",\"property\":\"driverNotes\",\"hint\":\"Notes\",\"value\":null,\"is_required\":" +
-                "false,\"is_editable\":true,\"input_type\":null},{\"type\":\"check_box\",\"property\":\"includeCustomerSignature\",\"hint\":" +
-                "\"I would like to include Customer signature\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null}]}", InspectionStructureResponse.class);
+        InspectionStructureResponse inspStructure;
+        //CLM 1
+        if(!((CLMApplication)getApplication()).isCLM2(this)) {
+            inspStructure = new Gson().fromJson("{\"inspection\":[{\"type\":\"spinner\",\"property\":\"jobId\",\"hint\":null,\"value\":" +
+                    "\"jobs\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":\"spinner\",\"property\":\"jobType\",\"hint\":null,\"value\":" +
+                    "\"job_type\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":\"input\",\"property\":\"refNumber\",\"hint\":" +
+                    "\"Reference Number\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":" +
+                    "\"customerName\",\"hint\":\"Customer Name\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":" +
+                    "\"section_header\",\"property\":null,\"hint\":null,\"value\":\"Address\",\"is_required\":null,\"is_editable\":null,\"input_type\":" +
+                    "null},{\"type\":\"input\",\"property\":\"homeNumber\",\"hint\":\"Home Name/Number\",\"value\":null,\"is_required\":true,\"is_editable\":" +
+                    "true,\"input_type\":null},{\"type\":\"input\",\"property\":\"addressLine1\",\"hint\":\"Address Line 1\",\"value\":null,\"is_required\":" +
+                    "false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":\"addressLine2\",\"hint\":\"Address Line 2\",\"value\":" +
+                    "null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":\"city\",\"hint\":\"City\",\"value\":" +
+                    "null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":\"postcode\",\"hint\":\"PostCode\",\"value\":" +
+                    "null,\"is_required\":true,\"is_editable\":true,\"input_type\":null},{\"type\":\"section_header\",\"property\":null,\"hint\":null,\"value\":" +
+                    "\"Vehicle\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":\"input\",\"property\":registration,\"hint\":" +
+                    "\"Registration\",\"value\":null,\"is_required\":true,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":" +
+                    "manufacturer,\"hint\":\"Manufacturer\",\"value\":null,\"is_required\":true,\"is_editable\":true,\"input_type\":null},{\"type\":" +
+                    "\"input\",\"property\":model,\"hint\":\"Model\",\"value\":null,\"is_required\":true,\"is_editable\":true,\"input_type\":null},{\"type\":" +
+                    "\"section_header\",\"property\":null,\"hint\":null,\"value\":\"Damages\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":" +
+                    "\"damages\",\"property\":\"damagedItems\",\"hint\":null,\"value\":null,\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":" +
+                    "\"input\",\"property\":\"mileage\",\"hint\":\"Mileage\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":" +
+                    "\"number\"},{\"type\":\"section_header\",\"property\":null,\"hint\":null,\"value\":\"Loose Items\",\"is_required\":null,\"is_editable\":" +
+                    "null,\"input_type\":null},{\"type\":\"loose_items\",\"property\":\"looseItemsChecked\",\"hint\":null,\"value\":null,\"is_required\":" +
+                    "null,\"is_editable\":null,\"input_type\":null},{\"type\":\"input\",\"property\":\"driverNotes\",\"hint\":\"Notes\",\"value\":null,\"is_required\":" +
+                    "false,\"is_editable\":true,\"input_type\":null},{\"type\":\"check_box\",\"property\":\"includeCustomerSignature\",\"hint\":" +
+                    "\"I would like to include Customer signature\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null}]}", InspectionStructureResponse.class);
+        }else {
+            //CLM 2
+            inspStructure = new Gson().fromJson("{\"inspection\":[{\"type\":\"spinner\",\"property\":\"jobId\",\"hint\":null,\"value\":" +
+                    "\"jobs\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":\"spinner\",\"property\":\"jobType\",\"hint\":null,\"value\":" +
+                    "\"job_type\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":\"input\",\"property\":\"refNumber\",\"hint\":" +
+                    "\"Reference Number\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":" +
+                    "\"customerName\",\"hint\":\"Customer Name\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":" +
+                    "\"section_header\",\"property\":null,\"hint\":null,\"value\":\"Address\",\"is_required\":null,\"is_editable\":null,\"input_type\":" +
+                    "null},{\"type\":\"input\",\"property\":\"homeNumber\",\"hint\":\"Home Name/Number\",\"value\":null,\"is_required\":false,\"is_editable\":" +
+                    "true,\"input_type\":null},{\"type\":\"input\",\"property\":\"addressLine1\",\"hint\":\"Address Line 1\",\"value\":null,\"is_required\":" +
+                    "false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":\"addressLine2\",\"hint\":\"Address Line 2\",\"value\":" +
+                    "null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":\"city\",\"hint\":\"City\",\"value\":" +
+                    "null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":\"postcode\",\"hint\":\"PostCode\",\"value\":" +
+                    "null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"section_header\",\"property\":null,\"hint\":null,\"value\":" +
+                    "\"Vehicle\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":\"input\",\"property\":registration,\"hint\":" +
+                    "\"Registration\",\"value\":null,\"is_required\":true,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":" +
+                    "manufacturer,\"hint\":\"Manufacturer\",\"value\":null,\"is_required\":true,\"is_editable\":true,\"input_type\":null},{\"type\":" +
+                    "\"input\",\"property\":model,\"hint\":\"Model\",\"value\":null,\"is_required\":true,\"is_editable\":true,\"input_type\":null},{\"type\":" +
+                    "\"section_header\",\"property\":null,\"hint\":null,\"value\":\"Damages\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":" +
+                    "\"damages\",\"property\":\"damagedItems\",\"hint\":null,\"value\":null,\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":" +
+                    "\"input\",\"property\":\"mileage\",\"hint\":\"Mileage\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":" +
+                    "\"number\"},{\"type\":\"section_header\",\"property\":null,\"hint\":null,\"value\":\"Loose Items\",\"is_required\":null,\"is_editable\":" +
+                    "null,\"input_type\":null},{\"type\":\"loose_items\",\"property\":\"looseItemsChecked\",\"hint\":null,\"value\":null,\"is_required\":" +
+                    "null,\"is_editable\":null,\"input_type\":null},{\"type\":\"input\",\"property\":\"driverNotes\",\"hint\":\"Notes\",\"value\":null,\"is_required\":" +
+                    "false,\"is_editable\":true,\"input_type\":null},{\"type\":\"check_box\",\"property\":\"includeCustomerSignature\",\"hint\":" +
+                    "\"I would like to include Customer signature\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null}]}", InspectionStructureResponse.class);
+        }
 
         return inspStructure;
     }

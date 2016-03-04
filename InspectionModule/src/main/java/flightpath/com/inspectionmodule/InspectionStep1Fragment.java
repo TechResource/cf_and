@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.flightpathcore.base.BaseFragment;
 import com.flightpathcore.objects.ItemsDamagedObject;
 import com.flightpathcore.objects.JobObject;
+import com.flightpathcore.utilities.Utilities;
 import com.flightpathcore.utilities.Utils;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;

@@ -16,6 +16,7 @@ import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.database.tables.ItemsDamagedTable;
 import com.flightpathcore.objects.BaseWidgetObject;
 import com.flightpathcore.objects.ItemsDamagedObject;
+import com.flightpathcore.utilities.Utilities;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
@@ -39,7 +40,7 @@ public class DamagesWidget extends LinearLayout implements InspectionWidgetInter
     @ViewById
     protected LinearLayout damagesContainer;
     private DamagesCallback damagesCallback;
-    protected Dialog damageDialog = null;
+    protected AlertDialog damageDialog = null;
     private boolean damageDialogShouldBeOpen = false;
     private DamagesObject data;
 
@@ -73,7 +74,7 @@ public class DamagesWidget extends LinearLayout implements InspectionWidgetInter
     }
 
     public void addNewDamage(Uri photoFile){
-        InputWidget et = InputWidget_.build(getContext());
+        final InputWidget et = InputWidget_.build(getContext());
         et.setData(new InputObject(null, getResources().getString(R.string.description_label), null, null, true, true));
         damageDialogShouldBeOpen = true;
         damageDialog = new AlertDialog.Builder(getContext(), R.style.BlueAlertDialog)
@@ -97,9 +98,10 @@ public class DamagesWidget extends LinearLayout implements InspectionWidgetInter
                 .create();
         damageDialog.setOnShowListener(dialog -> {
             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(et.et, InputMethodManager.SHOW_IMPLICIT);
+            imm.showSoftInput(et.et, InputMethodManager.RESULT_UNCHANGED_SHOWN);
         });
         damageDialog.show();
+        Utilities.styleAlertDialog(damageDialog);
     }
 
     private void addDamageWidget(ItemsDamagedObject item) {
