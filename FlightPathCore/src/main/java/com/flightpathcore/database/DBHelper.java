@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.flightpathcore.database.tables.AbstractTable;
+import com.flightpathcore.database.tables.CollectionDamagesTable;
 import com.flightpathcore.database.tables.DriverTable;
 import com.flightpathcore.database.tables.EventTable;
 import com.flightpathcore.database.tables.ItemsDamagedTable;
@@ -15,6 +16,7 @@ import com.flightpathcore.database.tables.JobsTable;
 import com.flightpathcore.database.tables.PointsTable;
 import com.flightpathcore.database.tables.TripTable;
 import com.flightpathcore.network.SynchronizationHelper;
+import com.flightpathcore.objects.CollectionDamagesObject;
 import com.flightpathcore.objects.EventObject;
 import com.flightpathcore.objects.ItemsDamagedObject;
 import com.flightpathcore.objects.TripObject;
@@ -33,7 +35,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static DBHelper instance = null;
 
     public static final String DATABASE_NAME = "fp.db";
-    private static final int DATABASE_VERSION = 19;
+    private static final int DATABASE_VERSION = 23;
 
     private String allColumnsEvent = null;
 
@@ -71,6 +73,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TripTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + JobsTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + ItemsDamagedTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + CollectionDamagesTable.TABLE_NAME);
         onCreate(getWritableDatabase());
     }
 
@@ -82,6 +85,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(TripTable.CREATE_TABLE);
         db.execSQL(JobsTable.CREATE_TABLE);
         db.execSQL(ItemsDamagedTable.CREATE_TABLE);
+        db.execSQL(CollectionDamagesTable.CREATE_TABLE);
     }
 
     @Override
@@ -105,6 +109,26 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         if (oldVersion < 18) {
             db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_NAME + " TEXT");
+        }
+
+        if(oldVersion < 21){
+            db.execSQL("ALTER TABLE " + ItemsDamagedTable.TABLE_NAME + " ADD COLUMN " + ItemsDamagedTable.COLLECTION_ID+ " INTEGER");
+        }
+
+        if(oldVersion < 22){
+            try {
+                db.execSQL("ALTER TABLE " + CollectionDamagesTable.TABLE_NAME + " ADD COLUMN " + CollectionDamagesTable.C_DESCRIPTION + " TEXT DEFAULT ''");
+            } catch (Exception e) {
+
+            }
+        }
+
+        if(oldVersion < 23){
+            try {
+                db.execSQL("ALTER TABLE " + CollectionDamagesTable.TABLE_NAME + " ADD COLUMN " + CollectionDamagesTable.C_DOUBLE_TYRES + " INTEGER DEFAULT 0");
+            } catch (Exception e) {
+
+            }
         }
     }
 
@@ -135,6 +159,10 @@ public class DBHelper extends SQLiteOpenHelper {
         for (ContentValues value : values) {
             getWritableDatabase().insertWithOnConflict(table.getTableName(), null, value, SQLiteDatabase.CONFLICT_REPLACE);
         }
+    }
+
+    public void remove(AbstractTable table, String id){
+        getWritableDatabase().delete(table.getTableName(), table.getWhereClause(id), null);
     }
 
     public Object get(AbstractTable table, String id) {
@@ -345,6 +373,30 @@ public class DBHelper extends SQLiteOpenHelper {
         ItemsDamagedTable idt = new ItemsDamagedTable();
         ArrayList<ItemsDamagedObject> items = new ArrayList<>();
         Cursor cursor = getReadableDatabase().query(idt.TABLE_NAME, idt.getAllColumns(), idt.EVENT_ID + " = " + value , null, null, null, idt.DAMAGE_ID);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            items.add(new ItemsDamagedObject(cursor));
+            cursor.moveToNext();
+        }
+        return items;
+    }
+
+    public List<CollectionDamagesObject> getCollectionsByEventId(String value) {
+        CollectionDamagesTable ct = new CollectionDamagesTable();
+        ArrayList<CollectionDamagesObject> items = new ArrayList<>();
+        Cursor cursor = getReadableDatabase().query(ct.TABLE_NAME, ct.getAllColumns(), ct.EVENT_ID + " = " + value , null, null, null, ct.COLLECTION_ID);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            items.add(new CollectionDamagesObject(cursor));
+            cursor.moveToNext();
+        }
+        return items;
+    }
+
+    public List<ItemsDamagedObject> getDamagesByCollectionId(String value) {
+        ItemsDamagedTable idt = new ItemsDamagedTable();
+        ArrayList<ItemsDamagedObject> items = new ArrayList<>();
+        Cursor cursor = getReadableDatabase().query(idt.TABLE_NAME, idt.getAllColumns(), idt.COLLECTION_ID + " = " + value , null, null, null, idt.DAMAGE_ID);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             items.add(new ItemsDamagedObject(cursor));

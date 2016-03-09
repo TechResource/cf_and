@@ -3,6 +3,7 @@ package flightpath.com.inspectionmodule;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
@@ -45,6 +46,7 @@ import java.util.List;
 
 import flightpath.com.inspectionmodule.widgets.objects.CheckBoxObject;
 import flightpath.com.inspectionmodule.widgets.objects.DamagesObject;
+import flightpath.com.inspectionmodule.widgets.objects.DamagesWithSquashedFrogObject;
 import flightpath.com.inspectionmodule.widgets.objects.InputObject;
 import flightpath.com.inspectionmodule.widgets.objects.LooseItemsObject;
 import flightpath.com.inspectionmodule.widgets.objects.SectionHeaderObject;
@@ -75,14 +77,20 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
     private List<BaseWidgetObject> widgetStep1;
     private EventObject currentEventObject = null;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        InspectionsUtilities.createImageLoaderInstance(getActivity().getApplicationContext());
+    }
+
     @AfterViews
     protected void init() {
-        if ( currentEventObject == null) {
+        if (currentEventObject == null) {
             String savedInpsEventId = SPHelper.getData(getContext(), SPHelper.SAVED_INSPECTION_EVENT_ID);
             if (savedInpsEventId != null && !savedInpsEventId.isEmpty()) {
                 currentEventObject = (EventObject) DBHelper.getInstance().get(new EventTable(), savedInpsEventId);
             }
-            if(currentEventObject == null){
+            if (currentEventObject == null) {
                 currentEventObject = new EventObject();
                 currentEventObject.driverId = ((UserObject) DBHelper.getInstance().getLast(new DriverTable())).driverId;
                 currentEventObject.timestamp = Utilities.getTimestamp() + "";
@@ -96,12 +104,11 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
 
         headerFragment = (HeaderFragment) getChildFragmentManager().findFragmentById(R.id.headerFragment);
         Utilities.setOswaldTypeface(getActivity().getAssets(), addInspectionBtn);
-        createImageLoaderInstance(getContext());
 
-        String savedInspection = SPHelper.getData(getContext(),SPHelper.SAVED_INSPECTION);
+        String savedInspection = SPHelper.getData(getContext(), SPHelper.SAVED_INSPECTION);
         headerFragment.setViewType(HeaderFragment.ViewType.INSPECTION);
         headerFragment.setRightBtnText(getString(R.string.save_label));
-        headerFragment.setLeftBtnText( (savedInspection == null || savedInspection.isEmpty() ) ? null : getString(R.string.delete_label));
+        headerFragment.setLeftBtnText((savedInspection == null || savedInspection.isEmpty()) ? null : getString(R.string.delete_label));
         headerFragment.setHeaderCallback(this);
 
         fragments.clear();
@@ -127,10 +134,10 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
         }
         JSONObject json = new JSONObject();
         try {
-            JSONObject step1 = ((InspectionStep1Fragment) pagerAdapter.getItem(0)).collectData();
-            if(pager.isSwipeAble()) {
+            JSONObject step1 = ((InspectionStep1Fragment) pagerAdapter.getItem(0)).collectData(currentEventObject.eventId);
+            if (pager.isSwipeAble()) {
                 json = ((InspectionStep2Fragment) pagerAdapter.getItem(1)).collectData(step1);
-            }else{
+            } else {
                 json = step1;
             }
         } catch (JSONException e) {
@@ -141,12 +148,13 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
 
         currentEventObject.isSent = false;
         currentEventObject.customEventObject = json.toString();
-        currentEventObject.timestamp = Utilities.getTimestamp()+"";
+        currentEventObject.timestamp = Utilities.getTimestamp() + "";
         EventTable et = new EventTable();
         DBHelper.getInstance().updateOrInsert(et, et.getContentValues(currentEventObject), currentEventObject.eventId + "");
         DBHelper.getInstance().markDamagesReadyToSend(currentEventObject.eventId);
 
-        SPHelper.saveData(getContext(),SPHelper.SAVED_INSPECTION, null);
+        SPHelper.saveData(getContext(), SPHelper.SAVED_INSPECTION_EVENT_ID, null);
+        SPHelper.saveData(getContext(), SPHelper.SAVED_INSPECTION, null);
         SynchronizationHelper.getInstance().updateCounter();
         ((InspectionModuleInterfaces.InspectionCompleteListener) getActivity()).onCompleteListener();
     }
@@ -172,13 +180,13 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
 
     public void buildInspection(InspectionStructureResponse inspectionStructure) {
         String savedInspection = SPHelper.getData(getContext(), SPHelper.SAVED_INSPECTION);
-        if(savedInspection != null && !savedInspection.isEmpty()){
+        if (savedInspection != null && !savedInspection.isEmpty()) {
             widgetStep1 = null;
             InspectionStructureResponse savedStructure = new Gson().fromJson(savedInspection, InspectionStructureResponse.class);
-            if(savedStructure != null){
+            if (savedStructure != null) {
                 this.inspectionStructure = savedStructure;
             }
-        }else {
+        } else {
             this.inspectionStructure = inspectionStructure;
         }
     }
@@ -254,6 +262,8 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
                         widgetStep1.add(new DamagesObject(base, currentEventObject.eventId));
                     } else if (base.type.equalsIgnoreCase(InspectionWidgetTypes.LOOSE_ITEMS)) {
                         widgetStep1.add(new LooseItemsObject(base));
+                    } else if (base.type.equalsIgnoreCase(InspectionWidgetTypes.DAMAGES_WITH_SQUASHED_FROG)) {
+                        widgetStep1.add(new DamagesWithSquashedFrogObject(base, currentEventObject.eventId));
                     }
                 }
             }
@@ -264,19 +274,6 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
     @Override
     public List<BaseWidgetObject> getWidgetStep2() {
         return inspectionStructure.widgetsStep2;
-    }
-
-    private void createImageLoaderInstance(Context context) {
-        if (ImageLoader.getInstance().isInited())
-            return;
-
-        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().cacheInMemory(true).cacheOnDisk(true)
-                .considerExifParams(true).imageScaleType(ImageScaleType.EXACTLY)
-                .build();
-
-        ImageLoaderConfiguration imageConfiguration = new ImageLoaderConfiguration.Builder(context).defaultDisplayImageOptions(
-                defaultOptions).threadPriority(Thread.MIN_PRIORITY).build();
-        ImageLoader.getInstance().init(imageConfiguration);
     }
 
     @Override
@@ -307,7 +304,7 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
         inspectionStructure.inspection = ((InspectionStep1Fragment) pagerAdapter.getItem(0)).collectStructure();
         inspectionStructure.widgetsStep2 = ((InspectionStep2Fragment) pagerAdapter.getItem(1)).collectStructure();
         SPHelper.saveData(getContext(), SPHelper.SAVED_INSPECTION, new Gson().toJson(inspectionStructure));
-        SPHelper.saveData(getContext(), SPHelper.SAVED_INSPECTION_EVENT_ID, currentEventObject.eventId+"");
+        SPHelper.saveData(getContext(), SPHelper.SAVED_INSPECTION_EVENT_ID, currentEventObject.eventId + "");
         getActivity().finish();
     }
 

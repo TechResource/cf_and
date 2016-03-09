@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.flightpathcore.widgets.InputWidget_
+            android:id="@+id/spareET"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/black_border"
+            android:layout_marginTop="40dp"
+            app:hint="Spare"
+            app:only_digits="true"
+            />
+
+
+        <com.flightpathcore.widgets.InputWidget_
+            android:id="@+id/driverBackET"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/black_border"
+            android:layout_marginTop="175dp"
+            android:layout_marginLeft="20dp"
+            app:hint="Driver Back"
+            app:only_digits="true"
+            />
+
+        <com.flightpathcore.widgets.InputWidget_
+            android:id="@+id/passengerBackET"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/black_border"
+            android:layout_marginTop="175dp"
+            android:layout_marginRight="15dp"
+            app:hint="Passenger Back"
+            app:only_digits="true"
+            />
+
+
+        <com.flightpathcore.widgets.InputWidget_
+            android:id="@+id/driverFrontET"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/black_border"
+            app:hint="Driver Front"
+            app:only_digits="true"
+            />
+
+        <com.flightpathcore.widgets.InputWidget_
+            android:id="@+id/passengerFrontET"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/black_border"
+            app:hint="Passenger Front"
+            app:only_digits="true"
+            />
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/black_color"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/spareET"
+            android:layout_above="@+id/bottomLine"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/black_color"
+            android:layout_alignBottom="@+id/driverBackET"
+            android:layout_toRightOf="@+id/driverBackET"
+            android:layout_toLeftOf="@+id/passengerBackET"
+            android:layout_marginBottom="25dp"
+            />
+
+        <View
+            android:id="@+id/bottomLine"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/black_color"
+            android:layout_alignBottom="@+id/passengerFrontET"
+            android:layout_toRightOf="@+id/driverFrontET"
+            android:layout_toLeftOf="@+id/passengerFrontET"
+            android:layout_marginBottom="25dp"
+            />
+
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/driverBackET"
+            android:layout_alignBottom="@+id/driverFrontET"
+            android:layout_marginLeft="35dp"
+            >
+            <CheckBox
+                android:id="@+id/dualTyresCB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Dual Tyres"
+                android:textSize="@dimen/text_size_extra_large"
+                />
+        </FrameLayout>
+
+
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -15,16 +15,18 @@ public class ItemsDamagedTable implements AbstractTable<ItemsDamagedObject> {
     private static final String DMG_DESCRIPTION = "i_dmg_description";
     private static final String PHOTO_FILE = "photo_path";
     public static final String IS_SENT = "is_sent";
+    public static final String COLLECTION_ID = "collection_id";
 
     public static final String CREATE_TABLE = "create table IF NOT EXISTS " + TABLE_NAME + " (" +
             DAMAGE_ID + " integer primary key autoincrement," +
             EVENT_ID + " integer, " +
             DMG_DESCRIPTION + " text, " +
             PHOTO_FILE + " text, " +
-            IS_SENT + " integer " +
+            IS_SENT + " integer, " +
+            COLLECTION_ID + " integer " +
             ");";
 
-    private static final String[] allColumns = {DAMAGE_ID, EVENT_ID, DMG_DESCRIPTION, PHOTO_FILE, IS_SENT};
+    private static final String[] allColumns = {DAMAGE_ID, EVENT_ID, DMG_DESCRIPTION, PHOTO_FILE, IS_SENT, COLLECTION_ID};
 
     @Override
     public String getTableName() {
@@ -63,6 +65,7 @@ public class ItemsDamagedTable implements AbstractTable<ItemsDamagedObject> {
         values.put(DMG_DESCRIPTION, object.dmgDescription);
         values.put(PHOTO_FILE, object.imagePath);
         values.put(IS_SENT, object.isSent);
+        values.put(COLLECTION_ID, object.collectionId);
         return values;
     }
 }

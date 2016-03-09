@@ -62,6 +62,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="true"
+                    android:imeOptions="flagNoFullscreen"
                     android:focusable="false"
                     android:hint="@string/period_end_date_hint"
                     />
@@ -79,6 +80,7 @@
                     style="@style/Base.Input.ET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:imeOptions="flagNoFullscreen"
                     android:inputType="numberSigned"
                     android:hint="@string/period_end_mileage_hint"
                     />
@@ -96,6 +98,7 @@
                 style="@style/Base.Input.ET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="flagNoFullscreen"
                 android:inputType="textEmailAddress"
                 android:hint="@string/period_agent_email_hint"
                 />

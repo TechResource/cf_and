@@ -4,6 +4,7 @@
     <application
         android:name=".RunwayApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/fp_icon"
         android:label="@string/app_name"
         android:theme="@style/BaseTheme.AppTheme">

@@ -188,6 +188,7 @@ public class ClosePeriodStep2Fragment extends BaseFragment {
         });
 
         DatePicker dp = (DatePicker) dialog.findViewById(R.id.datePicker);
+
         final Calendar c = Calendar.getInstance();
         year = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);

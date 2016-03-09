@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@drawable/cf_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:tag="headerFragment"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:name="com.flightpathcore.fragments.HeaderFragment_"
+        tools:layout="@layout/fragment_header"
+        />
+
+    <fragment
+        android:tag="loginFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="flightpath.com.loginmodule.LoginFragment_"
+        tools:layout="@layout/fragment_login"/>
+
+</LinearLayout>

@@ -11,7 +11,8 @@ import android.support.annotation.StringDef;
     InspectionWidgetTypes.INPUT,
     InspectionWidgetTypes.DAMAGES,
     InspectionWidgetTypes.LOOSE_ITEMS,
-    InspectionWidgetTypes.CHECK_BOX
+    InspectionWidgetTypes.CHECK_BOX,
+    InspectionWidgetTypes.DAMAGES_WITH_SQUASHED_FROG
 })
 public @interface InspectionWidgetTypes {
     String SPINNER = "spinner";
@@ -20,4 +21,5 @@ public @interface InspectionWidgetTypes {
     String DAMAGES = "damages";
     String LOOSE_ITEMS = "loose_items";
     String CHECK_BOX = "check_box";
+    String DAMAGES_WITH_SQUASHED_FROG = "damagesWithSquashedFrog";
 }

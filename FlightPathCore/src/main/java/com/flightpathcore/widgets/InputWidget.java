@@ -13,6 +13,7 @@ import android.text.method.DigitsKeyListener;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -74,6 +75,12 @@ public class InputWidget extends FrameLayout {
         }
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//        input.measure();
+    }
+
     @AfterViews
     protected void init(){
         if(onlyDigits){
@@ -91,6 +98,11 @@ public class InputWidget extends FrameLayout {
         if(registration){
             setRegistrationMode();
         }
+    }
+
+    @Override
+    public void setOnFocusChangeListener(OnFocusChangeListener l) {
+        et.setOnFocusChangeListener(l);
     }
 
     private void setRegistrationMode() {

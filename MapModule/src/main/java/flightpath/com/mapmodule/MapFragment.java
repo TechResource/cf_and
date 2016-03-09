@@ -264,11 +264,13 @@ public class MapFragment extends BaseFragment implements TripStatusHelper.TripSt
 
     @UiThread
     protected void checkGpsStatus() {
-        LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
-        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            gpStatus.setVisibility(View.GONE);
-        }else{
-            gpStatus.setVisibility(View.VISIBLE);
+        if(getContext() != null) {
+            LocationManager locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                gpStatus.setVisibility(View.GONE);
+            } else {
+                gpStatus.setVisibility(View.VISIBLE);
+            }
         }
     }
 

@@ -14,6 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.flightpathcore.base.BaseFragment;
+import com.flightpathcore.database.DBHelper;
+import com.flightpathcore.objects.CollectionDamagesObject;
 import com.flightpathcore.objects.ItemsDamagedObject;
 import com.flightpathcore.objects.JobObject;
 import com.flightpathcore.utilities.Utilities;
@@ -38,6 +40,8 @@ import flightpath.com.inspectionmodule.widgets.CheckBoxWidget_;
 import flightpath.com.inspectionmodule.widgets.DamageWidget;
 import flightpath.com.inspectionmodule.widgets.DamagesWidget;
 import flightpath.com.inspectionmodule.widgets.DamagesWidget_;
+import flightpath.com.inspectionmodule.widgets.DamagesWithSquashedFrogWidget;
+import flightpath.com.inspectionmodule.widgets.DamagesWithSquashedFrogWidget_;
 import flightpath.com.inspectionmodule.widgets.InputWidget;
 import flightpath.com.inspectionmodule.widgets.InputWidget_;
 import flightpath.com.inspectionmodule.widgets.LooseItemsWidget;
@@ -50,6 +54,7 @@ import flightpath.com.inspectionmodule.widgets.InspectionWidgetInterface;
 import com.flightpathcore.objects.BaseWidgetObject;
 import flightpath.com.inspectionmodule.widgets.objects.CheckBoxObject;
 import flightpath.com.inspectionmodule.widgets.objects.DamagesObject;
+import flightpath.com.inspectionmodule.widgets.objects.DamagesWithSquashedFrogObject;
 import flightpath.com.inspectionmodule.widgets.objects.InputObject;
 import flightpath.com.inspectionmodule.widgets.objects.LooseItemsObject;
 import flightpath.com.inspectionmodule.widgets.objects.SectionHeaderObject;
@@ -129,11 +134,17 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
                 liw.setData((LooseItemsObject) widget);
                 liw.setTag(R.integer.view_tag_loose_items);
                 widgetsContainer.addView(liw);
+            }else if(widget instanceof DamagesWithSquashedFrogObject){
+                DamagesWithSquashedFrogWidget dwsfw = DamagesWithSquashedFrogWidget_.build(getContext());
+                dwsfw.setData((DamagesWithSquashedFrogObject)widget);
+                dwsfw.setTag(R.integer.view_tag_damages);
+                dwsfw.setCalback(this);
+                widgetsContainer.addView(dwsfw);
             }
         }
     }
 
-    public JSONObject collectData() throws JSONException {
+    public JSONObject collectData(long eventId) throws JSONException {
         JSONObject json = new JSONObject();
         for (int i=0;i<widgetsContainer.getChildCount();i++){
             InspectionWidgetInterface w = (InspectionWidgetInterface)widgetsContainer.getChildAt(i);
@@ -151,6 +162,26 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
                         e.printStackTrace();
                         json.accumulate("damagedItemsCount", 0);
                     }
+                }else if(w instanceof DamagesWithSquashedFrogWidget){
+                    JSONArray jAr = new JSONArray();
+                    List<ItemsDamagedObject> arr = (List<ItemsDamagedObject>) w.getValue();
+                    for (ItemsDamagedObject o : arr) {
+                        jAr.put(o.getJson());
+                    }
+                    json.put(w.getProperty(), jAr);
+                    try {
+                        json.accumulate("damagedItemsCount", ((List) w.getValue()).size());
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        json.accumulate("damagedItemsCount", 0);
+                    }
+
+                    JSONArray jArExtra = new JSONArray();
+                    List<CollectionDamagesObject> arrExtra = DBHelper.getInstance().getCollectionsByEventId(eventId+"");
+                    for (CollectionDamagesObject o : arrExtra) {
+                        jArExtra.put(o.getJson());
+                    }
+                    json.put("collections", jArExtra);
                 }else {
                     json.accumulate(w.getProperty(), w.getValue());
                 }

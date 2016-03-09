@@ -22,6 +22,7 @@
     <color name="yellow_transparent">#aaFFBB33</color>
     <color name="red_transparent">#aaFF4444</color>
     <color name="black_transparent">#aa000000</color>
+    <color name="black_color">#000000</color>
     <color name="dark_blue_color">#004c82</color>
     <color name="blue_color">#00548f</color>
     <color name="blue_color_transparent">#8800548f</color>

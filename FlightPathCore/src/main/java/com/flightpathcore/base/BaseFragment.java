@@ -6,8 +6,6 @@ import android.view.View;
 
 import com.flightpathcore.utilities.Utilities;
 
-import javax.inject.Inject;
-
 /**
  * Created by Tomasz Szafran ( tomek@appsvisio.com ) on 2015-10-20.
  */

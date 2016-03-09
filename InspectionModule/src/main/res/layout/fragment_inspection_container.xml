@@ -93,6 +93,8 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:drawableLeft="@drawable/ic_add"
+            android:clickable="false"
+            android:focusable="false"
             android:drawablePadding="@dimen/margin_small"
             android:padding="@dimen/margin_normal"
             android:text="@string/add_inspection_text"

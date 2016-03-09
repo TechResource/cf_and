@@ -43,8 +43,6 @@ public class DrawingPanel extends View implements OnTouchListener {
 		paths.add(mPath);
 	}
 
-	private static final String TAG = "DrawView";
-
 	private static final float MINP = 0.25f;
 	private static final float MAXP = 0.75f;
 

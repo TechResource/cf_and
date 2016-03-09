@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/hFr"
+        class="com.flightpathcore.fragments.HeaderFragment_"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:tag="headerFragment"
+        tools:layout="@layout/fragment_header"/>
+
+    <com.flightpathcore.utilities.SwipeableViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/hFr"
+        >
+
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/pagerTabStrip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@color/menu_bg"
+            android:paddingBottom="@dimen/margin_very_small"
+            android:paddingTop="@dimen/margin_very_small"
+            android:textColor="@android:color/white"/>
+
+    </com.flightpathcore.utilities.SwipeableViewPager>
+
+    <RelativeLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/hFr"
+        >
+    </RelativeLayout>
+
+</RelativeLayout>

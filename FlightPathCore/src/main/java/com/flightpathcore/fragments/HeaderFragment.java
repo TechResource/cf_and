@@ -59,8 +59,6 @@ public class HeaderFragment extends BaseFragment {
                 break;
             case PREPARE_TRIP:
                 menu.setVisibility(View.GONE);
-//                leftBtn.setVisibility(View.VISIBLE);
-//                leftBtn.setText(R.string.cancel_label);
                 rightBtn.setVisibility(View.GONE);
                 rightBtn.setText(R.string.done_label);
                 break;
@@ -69,13 +67,15 @@ public class HeaderFragment extends BaseFragment {
                 break;
             case INSPECTION:
                 menu.setVisibility(View.GONE);
-//                leftBtn.setVisibility(View.VISIBLE);
-//                leftBtn.setText(R.string.cancel_label);
                 break;
             case CLOSE_PERIOD:
                 menu.setVisibility(View.GONE);
-//                leftBtn.setVisibility(View.VISIBLE);
-//                leftBtn.setText(R.string.cancel_label);
+                break;
+            case CLEAR:
+                leftBtn.setVisibility(View.GONE);
+                rightBtn.setVisibility(View.GONE);
+                menu.setVisibility(View.GONE);
+                break;
         }
     }
 
@@ -147,7 +147,8 @@ public class HeaderFragment extends BaseFragment {
         PREPARE_TRIP,
         MAIN_ACTIVITY,
         CLOSE_PERIOD,
-        INSPECTION
+        INSPECTION,
+        CLEAR
     }
 
 }
