@@ -114,13 +114,15 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
         fragments.clear();
         fragments.add("android:switcher:" + pager.getId() + ":" + 0);
         fragments.add("android:switcher:" + pager.getId() + ":" + 1);
-        InspectionStep1Fragment step1Fragment = InspectionStep1Fragment_.builder().build();
-        InspectionStep2Fragment step2Fragment = InspectionStep2Fragment_.builder().build();
-        step1Fragment.setCallback(this);
-        getChildFragmentManager().beginTransaction()
-                .add(pager.getId(), step1Fragment, fragments.get(0))
-                .add(pager.getId(), step2Fragment, fragments.get(1))
-                .commit();
+        if(getChildFragmentManager().findFragmentByTag(fragments.get(0)) == null) {
+            InspectionStep1Fragment step1Fragment = InspectionStep1Fragment_.builder().build();
+            InspectionStep2Fragment step2Fragment = InspectionStep2Fragment_.builder().build();
+            step1Fragment.setCallback(this);
+            getChildFragmentManager().beginTransaction()
+                    .add(pager.getId(), step1Fragment, fragments.get(0))
+                    .add(pager.getId(), step2Fragment, fragments.get(1))
+                    .commit();
+        }
         pagerAdapter = new PagerAdapter(getChildFragmentManager(), fragments);
         pager.addOnPageChangeListener(this);
         pager.setAdapter(pagerAdapter);

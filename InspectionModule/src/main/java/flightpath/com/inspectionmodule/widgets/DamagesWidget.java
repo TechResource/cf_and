@@ -98,7 +98,7 @@ public class DamagesWidget extends LinearLayout implements InspectionWidgetInter
                 .create();
         damageDialog.setOnShowListener(dialog -> {
             InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(et.et, InputMethodManager.RESULT_UNCHANGED_SHOWN);
+            imm.showSoftInput(et.et, InputMethodManager.SHOW_IMPLICIT);
         });
         damageDialog.show();
         Utilities.styleAlertDialog(damageDialog);

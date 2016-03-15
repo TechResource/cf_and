@@ -3,9 +3,11 @@ package flightpath.com.mapmodule;
 import android.location.Location;
 
 import com.flightpathcore.database.DBHelper;
+import com.flightpathcore.database.tables.DriverTable;
 import com.flightpathcore.database.tables.TripTable;
 import com.flightpathcore.objects.EventObject;
 import com.flightpathcore.objects.TripObject;
+import com.flightpathcore.objects.UserObject;
 import com.flightpathcore.utilities.Utilities;
 
 import java.util.ArrayList;
@@ -93,6 +95,7 @@ public class TripStatusHelper {
         EventObject eventObject = new EventObject();
         eventObject.timestamp = Utilities.getTimestamp()+"";
         eventObject.tripId = currentTrip.tripId;
+        eventObject.driverId = ((UserObject) DBHelper.getInstance().get(new DriverTable(), DriverTable.HELPER_ID + "")).driverId;
         if(currentLocation != null){
             eventObject.longitude = currentLocation.getLongitude();
             eventObject.latitude = currentLocation.getLatitude();

@@ -369,6 +369,12 @@ public class DBHelper extends SQLiteOpenHelper {
         getWritableDatabase().delete(idt.getTableName(), idt.DAMAGE_ID + "=" + id, null);
     }
 
+    public void markDamagedItemsAsSent(Long id){
+        ContentValues values = new ContentValues();
+        values.put(ItemsDamagedTable.IS_SENT, 1);
+        getWritableDatabase().update(ItemsDamagedTable.TABLE_NAME, values, ItemsDamagedTable.DAMAGE_ID + "=" + id, null);
+    }
+
     public List<ItemsDamagedObject> getDamagesByEventId(String value) {
         ItemsDamagedTable idt = new ItemsDamagedTable();
         ArrayList<ItemsDamagedObject> items = new ArrayList<>();

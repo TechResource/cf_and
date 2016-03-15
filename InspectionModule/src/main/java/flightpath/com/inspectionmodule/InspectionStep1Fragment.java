@@ -25,6 +25,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.ViewById;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -78,7 +79,8 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
     protected RelativeLayout fullImgContainer;
 
     private List<Integer> allTags = new ArrayList<>();
-    private Uri photoFile = null;
+    @InstanceState
+    protected Uri photoFile = null;
     private InspectionStep1Callback callback;
 
     @AfterViews
@@ -247,8 +249,12 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == Activity.RESULT_OK) {
             try {
+                if(photoFile == null){
+                    photoFile = new Uri.Builder().build();
+                }
                 Utils.decodeUri(getActivity(), photoFile, 400);
 //                ((DamagesWidget)widgetsContainer.findViewWithTag(R.integer.view_tag_damages)).addNewDamage(photoFile);
                 for (int i=0;i<widgetsContainer.getChildCount();i++){

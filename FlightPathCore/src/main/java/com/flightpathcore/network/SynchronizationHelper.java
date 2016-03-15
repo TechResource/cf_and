@@ -117,6 +117,9 @@ public class SynchronizationHelper {
                             } catch (RetrofitError e) {
                                 response = null;
                             }
+                            if(response != null){
+                                DBHelper.getInstance().setEventsSuccess(eventsToSend);
+                            }
                         }else{
                             response = 1;
                         }
@@ -130,10 +133,9 @@ public class SynchronizationHelper {
                                     try {
                                         imgResponse = instance.fpModel.fpApi.sendMultipleFiles(output);
                                         if (imgResponse != null) {
-                                            if (eventsToSend.size() > 0) {
-                                                for (ItemsDamagedObject e : DBHelper.getInstance().getDamagedItemsToSend(eventsToSend.get(eventsToSend.size() - 1).eventId)) {
-                                                    DBHelper.getInstance().removeDamagedItemById(e.id);
-                                                }
+                                            List<ItemsDamagedObject> items = DBHelper.getInstance().getDamagedItemsToSend(lastSendEvent.eventId);
+                                            for (ItemsDamagedObject e : items) {
+                                                DBHelper.getInstance().markDamagedItemsAsSent(e.id);
                                             }
                                         }
                                     } catch (RetrofitError e) {
@@ -150,7 +152,6 @@ public class SynchronizationHelper {
                         instance.lastSyncDate = Utilities.getCurrentDateFormatted();
                         if (response != null && imgResponse != null ) {
                             instance.syncState = SyncState.STATE_OK;
-                            DBHelper.getInstance().setEventsSuccess(eventsToSend);
                         } else {
                             if (instance.syncState == SyncState.STATE_OK) {
                                 instance.syncState = SyncState.STATE_LAST_SYNC_FAILED;

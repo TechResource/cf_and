@@ -10,6 +10,8 @@ import com.flightpathcore.utilities.SPHelper;
 import com.flightpathcore.utilities.ServerChooser;
 import com.squareup.okhttp.OkHttpClient;
 
+import java.util.concurrent.TimeUnit;
+
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 
@@ -27,6 +29,10 @@ public class FPModel {
     }
 
     public void changeServerAddress(Context context, String hostAddress) {
+        OkHttpClient okClient = new OkHttpClient();
+        okClient.setConnectTimeout(60, TimeUnit.SECONDS);
+        okClient.setReadTimeout(60, TimeUnit.SECONDS);
+        okClient.setWriteTimeout(60, TimeUnit.SECONDS);
         restAdapter = new RestAdapter.Builder()
                 .setEndpoint(hostAddress)
                 .setLogLevel(BaseApplication.isDebug(context) ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
@@ -46,7 +52,7 @@ public class FPModel {
                     request.addHeader("DEVICE_MODEL", Build.MANUFACTURER + " " + Build.MODEL);
                     request.addHeader("APP_TYPE", AppCore.getInstance().getAppInfo().appType);
                 })
-                .setClient(new OkClient(new OkHttpClient()))
+                .setClient(new OkClient(okClient))
                 .build();
         fpApi = restAdapter.create(FPApi.class);
     }
