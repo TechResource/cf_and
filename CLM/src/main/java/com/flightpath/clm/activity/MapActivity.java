@@ -304,7 +304,7 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
                 .setView(inputWidget)
                 .setPositiveButton(R.string.ok_label, (dialog1, which) -> {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInputFromInputMethod(inputWidget.getWindowToken(), InputMethodManager.SHOW_FORCED);
+                    imm.showSoftInput(inputWidget.et, InputMethodManager.SHOW_IMPLICIT);
                 })
                 .setNegativeButton(R.string.cancel_text, (dialog1, which) -> {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

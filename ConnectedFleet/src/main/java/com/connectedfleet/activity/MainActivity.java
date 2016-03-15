@@ -391,17 +391,17 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
                 .setView(inputWidget)
                 .setPositiveButton(R.string.ok_label, (dialog1, which) -> {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInputFromInputMethod(inputWidget.getWindowToken(), InputMethodManager.SHOW_FORCED);
+                    imm.showSoftInput(inputWidget.et, InputMethodManager.SHOW_IMPLICIT);
                 })
                 .setNegativeButton(R.string.cancel_text, (dialog1, which) -> {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInputFromInputMethod(inputWidget.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+                    imm.hideSoftInputFromWindow(inputWidget.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
                 })
                 .setCancelable(false)
                 .create();
         stopTripDialog.setOnShowListener(dialog -> {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(inputWidget.et, InputMethodManager.RESULT_UNCHANGED_SHOWN);
+            imm.showSoftInput(inputWidget.et, InputMethodManager.SHOW_IMPLICIT);
         });
         stopTripDialog.show();
         Utilities.styleAlertDialog(stopTripDialog, getResources().getDimension(com.flightpathcore.R.dimen.text_size_extra_large));
