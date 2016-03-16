@@ -29,7 +29,6 @@
 
             <Button
                 android:id="@+id/cancel"
-                style="@style/Base.BlueButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -39,7 +38,6 @@
 
             <Button
                 android:id="@+id/ok"
-                style="@style/Base.BlueButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

@@ -135,14 +135,14 @@ public class DongleDataHelper implements ObdReaderServiceConnection.OBDServiceHa
     }
 
     @Override
-    public void onOBDDisconnected() {
+    public void onOBDDisconnected(Throwable error) {
         isDongleConnected = false;
         if(collectDongleDataThread != null){
             collectDongleDataThread.stop = true;
         }
         for(DongleServiceListener dongleServiceListener : dongleServiceListeners) {
             if (dongleServiceListener != null) {
-                dongleServiceListener.onDongleDisconnected();
+                dongleServiceListener.onDongleDisconnected(error);
             }
         }
         currentDongleData = new HashMap<>();
@@ -167,7 +167,7 @@ public class DongleDataHelper implements ObdReaderServiceConnection.OBDServiceHa
 
     public interface DongleServiceListener{
         void onDongleConnected();
-        void onDongleDisconnected();
+        void onDongleDisconnected(Throwable error);
     }
 
     private class CollectDongleDataThread extends Thread{

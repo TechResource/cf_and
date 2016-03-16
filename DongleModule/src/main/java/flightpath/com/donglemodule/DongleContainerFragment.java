@@ -8,6 +8,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 
+import com.flightpathcore.base.BaseActivity;
+import com.flightpathcore.base.BaseApplication;
 import com.flightpathcore.base.BaseFragment;
 
 import org.androidannotations.annotations.AfterViews;
@@ -127,25 +129,27 @@ public class DongleContainerFragment extends BaseFragment implements DongleDataH
                     chartsContainerFragment = ChartsContainerFragment_.builder().build();
                     getChildFragmentManager().beginTransaction()
                             .replace(R.id.fragmentContainer, chartsContainerFragment, "chartsContainerFragment")
-                            .commit();
+                            .commitAllowingStateLoss();
                 }
             } else {
                 getChildFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainer, chartsContainerFragment, "chartsContainerFragment")
-                        .commit();
+                        .commitAllowingStateLoss();
             }
         }
         devicePickerShowing = false;
     }
 
     @Override
-    public void onDongleDisconnected() {
+    public void onDongleDisconnected(Throwable error) {
+        ((BaseApplication)getActivity().getApplication()).logCrash(error);
+
         showDevicePicker();
         devicePickerFragment.reset();
     }
 
     private void showDevicePicker(){
-        if(getActivity() == null){
+        if(getActivity() == null || devicePickerShowing){
             return;
         }
         if(devicePickerFragment == null){

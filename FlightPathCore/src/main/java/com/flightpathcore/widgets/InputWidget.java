@@ -184,7 +184,7 @@ public class InputWidget extends FrameLayout {
     }
 
     public void setLargeTextSize(){
-        et.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_size_extra_large));
+        et.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.text_size_large_input));
         input.setHintTextAppearance(R.style.TextInputTextSizeLargeStyle);
     }
 }

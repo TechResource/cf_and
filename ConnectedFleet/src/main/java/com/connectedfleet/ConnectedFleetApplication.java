@@ -10,6 +10,7 @@ import com.flightpathcore.base.BaseApplication;
 import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.network.SynchronizationHelper;
 import io.fabric.sdk.android.Fabric;
+import io.fabric.sdk.android.services.common.Crash;
 
 /**
  * Created by Tomasz Szafran ( tomek@appsvisio.com ) on 2015-10-20.
@@ -35,6 +36,14 @@ public class ConnectedFleetApplication extends BaseApplication {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
             throw new IllegalArgumentException("can't get version name");
+        }
+    }
+
+    @Override
+    public void logCrash(Throwable error) {
+        if(!isDebug(this)){
+            if(error != null)
+                Crashlytics.logException(error);
         }
     }
 

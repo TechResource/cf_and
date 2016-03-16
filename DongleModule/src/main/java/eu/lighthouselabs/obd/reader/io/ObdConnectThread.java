@@ -11,14 +11,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import android.Manifest;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+
+import com.flightpathcore.base.BaseApplication;
 
 import eu.lighthouselabs.obd.reader.command.ObdCommand;
 import eu.lighthouselabs.obd.reader.io.ObdReaderServiceConnection.OBDServiceHandler;
@@ -45,7 +50,7 @@ public class ObdConnectThread extends Thread implements LocationListener {
     protected final OBDServiceHandler additionalHandler;
 
     public ObdConnectThread(BluetoothDevice dev, LocationManager locationManager, final ObdReaderService service, int updateCycle, double engineDisplacement,
-            double volumetricEfficiency, boolean imperialUnits, boolean enableGps, ArrayList<ObdCommand> cmds, OBDServiceHandler connectionHandler) {
+                            double volumetricEfficiency, boolean imperialUnits, boolean enableGps, ArrayList<ObdCommand> cmds, OBDServiceHandler connectionHandler) {
         this.dev = dev;
         this.cmds = cmds;
         this.updateCycle = updateCycle;
@@ -63,7 +68,7 @@ public class ObdConnectThread extends Thread implements LocationListener {
     }
 
     protected void startDevice() throws IOException, InterruptedException {
-        if(sock != null && sock.isConnected()){
+        if (sock != null && sock.isConnected()) {
             sock.close();
         }
         sock = this.dev.createRfcommSocketToServiceRecord(MY_UUID);
@@ -84,6 +89,7 @@ public class ObdConnectThread extends Thread implements LocationListener {
     }
 
     public void run() {
+        Throwable error = null;
 
         try {
             startDevice();
@@ -105,32 +111,35 @@ public class ObdConnectThread extends Thread implements LocationListener {
 
                 try {
                     cmd = getCopy(cmd); // make a copy because thread can only
-                                        // run once
+                    // run once
                     String desc = cmd.getDesc();
                     String result = runCommand(cmd);
                     results.put(desc, result);
                     data.put(desc, cmd.getRawValue());
-                    if(!result.isEmpty() && !result.equals("NODATA")) {
+                    if (!result.isEmpty() && !result.equals("NODATA")) {
                         lastSuccesCmdTimestamp = System.currentTimeMillis();
                     }
                 } catch (Exception e) {
-                    Log.d("ObdConnectThread", "error "+e.getMessage());
+                    Log.d("ObdConnectThread", "error " + e.getMessage());
                     e.printStackTrace();
+                    error = e;
                     results.put(cmd.getDesc(), "--");
-                }finally {
-                    if( lastSuccesCmdTimestamp+20000 < System.currentTimeMillis() ) {
-                        additionalHandler.onOBDDisconnected();
+                } finally {
+                    if (lastSuccesCmdTimestamp + 20000 < System.currentTimeMillis()) {
+                        additionalHandler.onOBDDisconnected(error);
                     }
+                    error = null;
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
             mService.notifyMessage("Bluetooth Connection Error", e.getMessage(), ObdReaderService.CONNECT_ERROR_NOTIFY);
             mService.popupWrongDevice();
-            additionalHandler.onOBDDisconnected();
+            additionalHandler.onOBDDisconnected(e);
+
         } catch (Exception e) {
             e.printStackTrace();
-            additionalHandler.onOBDDisconnected();
+            additionalHandler.onOBDDisconnected(e);
         } finally {
             closeConnectThread();
         }

@@ -47,9 +47,12 @@
     <string name="postcode_hint">Postcode</string>
 
 
-    <string name="period_end_date_hint">Period End Date</string>
-    <string name="period_end_mileage_hint">Period End Mileage</string>
-    <string name="period_agent_email_hint">Agent email address</string>
+    <string name="period_end_date_hint">Period End Date:</string>
+    <string name="period_end_mileage_hint">Period End Mileage:</string>
+    <string name="period_agent_email_hint">Agent email address:</string>
+    <string name="period_end_date_hint2">date</string>
+    <string name="period_end_mileage_hint2">end mileage</string>
+    <string name="period_agent_email_hint2">email address</string>
     <string name="period_start_date">"Start date: "</string>
     <string name="period_start_mileage">"Start mileage: "</string>
     <string name="period_closed_message">Thank you for closing your last month. The log has gone to your line manager for authorisation and the deduction will be calculated and reported back to you prior to being submitted to payroll.</string>

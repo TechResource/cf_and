@@ -10,7 +10,7 @@ public class ObdReaderServiceConnection implements ServiceConnection {
         void serviceConnected();
         void onOBDConnected();
         void serviceDisconnected();
-        void onOBDDisconnected();
+        void onOBDDisconnected(Throwable error);
     }
 
     public ObdReaderService service = null;

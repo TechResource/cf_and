@@ -14,17 +14,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Pick date:" />
-
             <DatePicker
                 android:id="@+id/datePicker"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:calendarViewShown="false" />
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -33,12 +29,6 @@
             android:visibility="gone"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Pick time:" />
 
             <TimePicker
                 android:id="@+id/timePicker"

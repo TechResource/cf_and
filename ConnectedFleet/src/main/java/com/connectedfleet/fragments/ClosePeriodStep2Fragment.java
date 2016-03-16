@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Patterns;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -177,7 +178,7 @@ public class ClosePeriodStep2Fragment extends BaseFragment {
     private void createDialogWithDateAndTimePicker() {
 
         final Dialog dialog = new Dialog(getContext());
-        dialog.setTitle(R.string.period_end_date_hint);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.date_and_time_picker_layout);
         dialog.setCancelable(true);
         dialog.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {

@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.flightpathcore.adapters.ListAdapter;
 import com.flightpathcore.adapters.ViewWrapper;
+import com.flightpathcore.base.BaseApplication;
 import com.flightpathcore.base.BaseFragment;
 import com.flightpathcore.objects.LoaderObject;
 import com.flightpathcore.widgets.ProgressListItem_;
@@ -75,22 +76,24 @@ public class BTDevicePickerFragment extends BaseFragment implements BTReceiver.B
         adapter.setItems(new ArrayList<>());
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        onBtEnabled(bluetoothAdapter.getState());
-        checkBtEnabled();
+        if(bluetoothAdapter != null) {
+            onBtEnabled(bluetoothAdapter.getState());
+            checkBtEnabled();
 
-        btReceiver = new BTReceiver(this);
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-        intentFilter.addAction(BluetoothDevice.ACTION_FOUND);
-        intentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
-        intentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-        intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
-        getActivity().registerReceiver(btReceiver, intentFilter);
+            btReceiver = new BTReceiver(this);
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+            intentFilter.addAction(BluetoothDevice.ACTION_FOUND);
+            intentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+            intentFilter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+            intentFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+            intentFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+            getActivity().registerReceiver(btReceiver, intentFilter);
+        }
+
     }
 
     private int errorCounter = 0;
-    private String deviceWithError = null;
 
     @UiThread
     public void reset() {
@@ -99,11 +102,6 @@ public class BTDevicePickerFragment extends BaseFragment implements BTReceiver.B
             pairedDevice = DonglePreferences.getPairedDevice(getContext());
         }
         if(pairedDevice != null && !pairedDevice.isEmpty()) {
-            if(deviceWithError == null){
-                deviceWithError = pairedDevice;
-                errorCounter = 0;
-            }
-            errorCounter++;
             if(errorCounter > 1) {
                 status.setText("OBD service error (" + errorCounter + " attempts).\nPlease wait or select another device.");
             }else{
@@ -255,14 +253,13 @@ public class BTDevicePickerFragment extends BaseFragment implements BTReceiver.B
         public void onBindViewHolder(ViewWrapper<View> holder, int position) {
             int viewType = getItemViewType(position);
             if (viewType == 0) {
-                ((SingleDeviceWidget) holder.getView()).setData((BluetoothDevice) items.get(position));
+                ((SingleDeviceWidget) holder.getView()).setData(items.get(position));
                 holder.getView().getRootView().setOnClickListener(v -> {
                     errorCounter = 0;
-                    deviceWithError = null;
-                    if (((BluetoothDevice) items.get(position)).getBondState() == BluetoothDevice.BOND_BONDED) {
-                        onDeviceBound((BluetoothDevice) items.get(position));
+                    if (( items.get(position)).getBondState() == BluetoothDevice.BOND_BONDED) {
+                        onDeviceBound( items.get(position));
                     } else {
-                        boundWithDevice((BluetoothDevice) items.get(position));
+                        boundWithDevice(items.get(position));
                     }
                 });
             }

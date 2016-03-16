@@ -112,14 +112,16 @@ public class DBHelper extends SQLiteOpenHelper {
         }
 
         if(oldVersion < 21){
-            db.execSQL("ALTER TABLE " + ItemsDamagedTable.TABLE_NAME + " ADD COLUMN " + ItemsDamagedTable.COLLECTION_ID+ " INTEGER");
+            try {
+                db.execSQL("ALTER TABLE " + ItemsDamagedTable.TABLE_NAME + " ADD COLUMN " + ItemsDamagedTable.COLLECTION_ID+ " INTEGER");
+            }catch (Exception e){
+            }
         }
 
         if(oldVersion < 22){
             try {
                 db.execSQL("ALTER TABLE " + CollectionDamagesTable.TABLE_NAME + " ADD COLUMN " + CollectionDamagesTable.C_DESCRIPTION + " TEXT DEFAULT ''");
             } catch (Exception e) {
-
             }
         }
 
@@ -127,7 +129,6 @@ public class DBHelper extends SQLiteOpenHelper {
             try {
                 db.execSQL("ALTER TABLE " + CollectionDamagesTable.TABLE_NAME + " ADD COLUMN " + CollectionDamagesTable.C_DOUBLE_TYRES + " INTEGER DEFAULT 0");
             } catch (Exception e) {
-
             }
         }
     }
