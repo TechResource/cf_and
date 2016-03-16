@@ -24,6 +24,8 @@ public class CheckBoxObject extends BaseWidgetObject {
             this.isChecked = Boolean.parseBoolean(base.value);
         }
         this.text = base.hint;
-        this.isPagerBlocker = true;
+        if(this.jsonProperty.equalsIgnoreCase("includeCustomerSignature")) {
+            this.isPagerBlocker = true;
+        }
     }
 }

@@ -31,6 +31,14 @@ public class GeminiApplication extends BaseApplication {
     }
 
     @Override
+    public void logCrash(Throwable error) {
+        if(!isDebug(this)){
+            if(error != null)
+                Crashlytics.logException(error);
+        }
+    }
+
+    @Override
     public AppObject getAppObject() {
         DI.di().withApp(this);
         try {

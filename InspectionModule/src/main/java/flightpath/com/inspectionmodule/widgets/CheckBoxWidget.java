@@ -72,6 +72,10 @@ public class CheckBoxWidget extends LinearLayout implements InspectionWidgetInte
         this.data = data;
         checkbox.setChecked(data.isChecked);
         text.setText(data.text);
+        if(!data.isPagerBlocker){
+            root.setBackgroundResource(0);
+            text.setBackgroundResource(0);
+        }
     }
 
     @Override

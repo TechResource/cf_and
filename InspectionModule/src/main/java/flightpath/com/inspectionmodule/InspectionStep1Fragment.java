@@ -102,8 +102,9 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
             }else if(widget instanceof InputObject){
                 InputWidget iw = InputWidget_.build(getContext());
                 iw.setData((InputObject) widget);
-                iw.setTag(widget.getViewTag());
-                allTags.add(widget.getViewTag());
+                Integer tag = getTagFromProperty(widget.jsonProperty);
+                iw.setTag(tag);
+                allTags.add(tag);
                 widgetsContainer.addView(iw);
             }else if(widget instanceof SpinnerObject){
                 SpinnerWidget sw = SpinnerWidget_.build(getContext() );
@@ -144,6 +145,27 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
                 widgetsContainer.addView(dwsfw);
             }
         }
+    }
+
+    private Integer getTagFromProperty(String property){
+        if(property.equalsIgnoreCase("homeNumber")){
+            return R.integer.view_tag_home_number;
+        }else if(property.equalsIgnoreCase("addressLine1")){
+            return R.integer.view_tag_address_line_1;
+        }else if(property.equalsIgnoreCase("addressLine2")){
+            return R.integer.view_tag_address_line_2;
+        }else if(property.equalsIgnoreCase("city")){
+            return R.integer.view_tag_city;
+        }else if(property.equalsIgnoreCase("postcode")){
+            return R.integer.view_tag_postcode;
+        }else if(property.equalsIgnoreCase("registration")){
+            return R.integer.view_tag_registration;
+        }else if(property.equalsIgnoreCase("manufacturer")){
+            return R.integer.view_tag_manufacturer;
+        }else if(property.equalsIgnoreCase("model")) {
+            return R.integer.view_tag_model;
+        }
+        return null;
     }
 
     public JSONObject collectData(long eventId) throws JSONException {
@@ -243,6 +265,12 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
             }
         }else if(viewTag == R.integer.view_tag_loan_duration){
             return job.loan;
+        }else if(viewTag == R.integer.view_tag_address_line_1){
+            return job.address;
+        }else if(viewTag == R.integer.view_tag_postcode){
+            return job.postcode;
+        }else if(viewTag == R.integer.view_tag_city){
+            return job.city;
         }
         return null;
     }

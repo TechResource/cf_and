@@ -43,6 +43,8 @@ public class JobObject {
     public String postcode;
     public String description;
     public String loan;
+    public String street;
+    public String city;
 
     public boolean[] selectedLooseItems;
 
@@ -72,6 +74,8 @@ public class JobObject {
         postcode = job.postcode;
         description = job.description;
         loan = job.loan;
+        city = job.city;
+        street = job.street;
     }
 
 }
