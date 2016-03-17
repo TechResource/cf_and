@@ -49,11 +49,13 @@ public class SpinnerWidget extends Spinner implements InspectionWidgetInterface<
 
     @Override
     public Object getValue() {
-        switch (data.spinnerType){
-            case JOBS:
-                return ((JobObject)adapter.getItem(getSelectedItemPosition())).id;
-            case JOB_TYPE:
-                return values.get(getSelectedItemPosition());
+        if(getVisibility() == VISIBLE) {
+            switch (data.spinnerType) {
+                case JOBS:
+                    return ((JobObject) adapter.getItem(getSelectedItemPosition())).id;
+                case JOB_TYPE:
+                    return values.get(getSelectedItemPosition());
+            }
         }
         return null;
     }
@@ -87,7 +89,23 @@ public class SpinnerWidget extends Spinner implements InspectionWidgetInterface<
 
     @Override
     public void setValue(String value) {
+        if(data.spinnerType == SpinnerObject.SpinnerType.JOB_TYPE && value != null) {
+            if (value.equalsIgnoreCase("COLLECTION")) {
+                setSelection(0);
+            }else if(value.equalsIgnoreCase("DELIVERY")){
+                setSelection(1);
+            }
+        }
+    }
 
+    public void disable(){
+        setEnabled(false);
+        setClickable(false);
+    }
+
+    public void enable(){
+        setEnabled(true);
+        setClickable(true);
     }
 
     @Override
@@ -98,7 +116,11 @@ public class SpinnerWidget extends Spinner implements InspectionWidgetInterface<
 
     @Override
     public String getProperty() {
-        return data.jsonProperty;
+        if(getVisibility() == VISIBLE) {
+            return data.jsonProperty;
+        }else {
+            return null;
+        }
     }
 
     @Override

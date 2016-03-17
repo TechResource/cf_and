@@ -46,6 +46,19 @@ public class JobObject {
     public String street;
     public String city;
 
+    public String insurer;
+    public String vatstatus;
+    @SerializedName("customer_name")
+    public String customerName;
+    @SerializedName("courtesy_car")
+    public boolean courtesyCar;
+    @SerializedName("work_phone")
+    public String workPhone;
+    @SerializedName("home_phone")
+    public String homePhone;
+    public String excess;
+
+
     public boolean[] selectedLooseItems;
 
     public JobObject(){
@@ -76,6 +89,13 @@ public class JobObject {
         loan = job.loan;
         city = job.city;
         street = job.street;
+        insurer = job.insurer;
+        vatstatus = job.vatstatus;
+        customerName = job.customerName;
+        courtesyCar = job.courtesyCar;
+        workPhone = job.workPhone;
+        homePhone = job.homePhone;
+        excess = job.excess;
     }
 
 }

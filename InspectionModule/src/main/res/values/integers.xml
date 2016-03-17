@@ -18,4 +18,9 @@
     <integer name="view_tag_damages">15</integer>
     <integer name="view_tag_loose_items">16</integer>
     <integer name="view_tag_signature">17</integer>
+    <integer name="view_tag_insurer">18</integer>
+    <integer name="view_tag_excess">19</integer>
+    <integer name="view_tag_vat_status">20</integer>
+    <integer name="view_tag_customer_phone">21</integer>
+    <integer name="view_tag_courtesy_car">22</integer>
 </resources>

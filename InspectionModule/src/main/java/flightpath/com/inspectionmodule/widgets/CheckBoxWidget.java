@@ -102,4 +102,8 @@ public class CheckBoxWidget extends LinearLayout implements InspectionWidgetInte
         data.value = checkbox.isChecked()+"";
         return data;
     }
+
+    public void setChecked(boolean checked) {
+        checkbox.setChecked(checked);
+    }
 }

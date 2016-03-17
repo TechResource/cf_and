@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.flightpathcore.base.AppCore;
 import com.flightpathcore.base.BaseFragment;
 import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.objects.CollectionDamagesObject;
@@ -110,12 +111,15 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
                 SpinnerWidget sw = SpinnerWidget_.build(getContext() );
                 sw.setData((SpinnerObject) widget);
                 sw.setCallback(this);
-                sw.setTag(widget.getViewTag());
-                allTags.add(widget.getViewTag());
+                Integer tag = getTagFromProperty(widget.jsonProperty);
+                sw.setTag(tag);
+                allTags.add(tag);
                 widgetsContainer.addView(sw);
             }else if(widget instanceof CheckBoxObject){
                 CheckBoxWidget cbw = CheckBoxWidget_.build(getContext());
                 cbw.setData((CheckBoxObject) widget);
+                Integer tag = getTagFromProperty(widget.jsonProperty);
+                cbw.setTag(tag);
                 if(((CheckBoxObject) widget).isPagerBlocker){
                     cbw.setOnCheckedChange((buttonView, isChecked) -> {
                         if(isChecked){
@@ -129,18 +133,18 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
             }else if(widget instanceof DamagesObject){
                 DamagesWidget dw = DamagesWidget_.build(getContext());
                 dw.setData((DamagesObject) widget);
-                dw.setTag(R.integer.view_tag_damages);
+                dw.setTag(getResources().getInteger(R.integer.view_tag_damages));
                 dw.setCalback(this);
                 widgetsContainer.addView(dw);
             }else if(widget instanceof LooseItemsObject){
                 LooseItemsWidget liw = LooseItemsWidget_.build(getContext()/*new ContextThemeWrapper(getContext(), R.style.Inspection_Select), null,0*/);
                 liw.setData((LooseItemsObject) widget);
-                liw.setTag(R.integer.view_tag_loose_items);
+                liw.setTag(getResources().getInteger(R.integer.view_tag_loose_items));
                 widgetsContainer.addView(liw);
             }else if(widget instanceof DamagesWithSquashedFrogObject){
                 DamagesWithSquashedFrogWidget dwsfw = DamagesWithSquashedFrogWidget_.build(getContext());
                 dwsfw.setData((DamagesWithSquashedFrogObject)widget);
-                dwsfw.setTag(R.integer.view_tag_damages);
+                dwsfw.setTag(getResources().getInteger(R.integer.view_tag_damages));
                 dwsfw.setCalback(this);
                 widgetsContainer.addView(dwsfw);
             }
@@ -149,21 +153,35 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
 
     private Integer getTagFromProperty(String property){
         if(property.equalsIgnoreCase("homeNumber")){
-            return R.integer.view_tag_home_number;
+            return getResources().getInteger(R.integer.view_tag_home_number);
         }else if(property.equalsIgnoreCase("addressLine1")){
-            return R.integer.view_tag_address_line_1;
+            return getResources().getInteger(R.integer.view_tag_address_line_1);
         }else if(property.equalsIgnoreCase("addressLine2")){
-            return R.integer.view_tag_address_line_2;
+            return getResources().getInteger(R.integer.view_tag_address_line_2);
         }else if(property.equalsIgnoreCase("city")){
-            return R.integer.view_tag_city;
+            return getResources().getInteger(R.integer.view_tag_city);
         }else if(property.equalsIgnoreCase("postcode")){
-            return R.integer.view_tag_postcode;
+            return getResources().getInteger(R.integer.view_tag_postcode);
         }else if(property.equalsIgnoreCase("registration")){
-            return R.integer.view_tag_registration;
+            return getResources().getInteger(R.integer.view_tag_registration);
         }else if(property.equalsIgnoreCase("manufacturer")){
-            return R.integer.view_tag_manufacturer;
+            return getResources().getInteger(R.integer.view_tag_manufacturer);
         }else if(property.equalsIgnoreCase("model")) {
-            return R.integer.view_tag_model;
+            return getResources().getInteger(R.integer.view_tag_model);
+        }else if(property.equalsIgnoreCase("insurer")){
+            return getResources().getInteger(R.integer.view_tag_insurer);
+        }else if(property.equalsIgnoreCase("exceess")){
+            return getResources().getInteger(R.integer.view_tag_excess);
+        }else if(property.equalsIgnoreCase("vat_status")){
+            return getResources().getInteger(R.integer.view_tag_vat_status);
+        }else if(property.equalsIgnoreCase("customer_phone")){
+            return getResources().getInteger(R.integer.view_tag_customer_phone);
+        }else if(property.equalsIgnoreCase("courtesy_car")){
+            return getResources().getInteger(R.integer.view_tag_courtesy_car);
+        }else if(property.equalsIgnoreCase("customer_name")){
+            return getResources().getInteger(R.integer.view_tag_customer_name);
+        }else if(property.equalsIgnoreCase("jobType")){
+            return getResources().getInteger(R.integer.view_tag_spinner_job_type);
         }
         return null;
     }
@@ -232,6 +250,22 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
 
     @Override
     public void onJobSelected(JobObject job) {
+        if(AppCore.getInstance().getAppInfo().appType.equalsIgnoreCase("GEMINI")){
+            SpinnerWidget v = (SpinnerWidget)widgetsContainer.findViewWithTag(getTagFromProperty("jobType"));
+            if(v != null){
+                if(job.id == 0 || job.id == -1){
+                    v.enable();
+                }else{
+                    v.disable();
+                    if(job.type.equalsIgnoreCase("D")) {
+                        v.setValue("DELIVERY");
+                    }else{
+                        v.setValue("COLLECTION");
+                    }
+                }
+            }
+        }
+
         String value = null;
         InspectionWidgetInterface widget = null;
         for (Integer tag : allTags) {
@@ -241,9 +275,12 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
                 widget.setValue(value);
             }
         }
-        if(widgetsContainer.findViewWithTag(R.integer.view_tag_loose_items) != null){
-            ((LooseItemsWidget)widgetsContainer.findViewWithTag(R.integer.view_tag_loose_items))
+        if(widgetsContainer.findViewWithTag(getResources().getInteger(R.integer.view_tag_loose_items)) != null){
+            ((LooseItemsWidget)widgetsContainer.findViewWithTag(getResources().getInteger(R.integer.view_tag_loose_items)))
                     .setJobData(job.selectedLooseItems, job.looseItems);
+        }
+        if(widgetsContainer.findViewWithTag(getResources().getInteger(R.integer.view_tag_courtesy_car)) != null){
+            ((CheckBoxWidget)widgetsContainer.findViewWithTag(getResources().getInteger(R.integer.view_tag_courtesy_car))).setChecked(job.courtesyCar);
         }
         if(callback != null){
             callback.onJobChanged(job);
@@ -251,26 +288,38 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
     }
 
     private String getJobValueByViewTag(JobObject job, Integer viewTag){
-        if(viewTag == R.integer.view_tag_registration) {
+        if(viewTag == getResources().getInteger(R.integer.view_tag_registration)) {
             if(job.vehicle != null){
                 return job.vehicle.registration;
             }
-        }else if(viewTag == R.integer.view_tag_manufacturer){
+        }else if(viewTag == getResources().getInteger(R.integer.view_tag_manufacturer)){
             if(job.vehicle != null) {
                 return job.vehicle.manufacturer.name;
             }
-        }else if(viewTag == R.integer.view_tag_model){
+        }else if(viewTag == getResources().getInteger(R.integer.view_tag_model)){
             if(job.vehicle != null) {
                 return job.vehicle.model.name;
             }
-        }else if(viewTag == R.integer.view_tag_loan_duration){
+        }else if(viewTag == getResources().getInteger(R.integer.view_tag_loan_duration)){
             return job.loan;
-        }else if(viewTag == R.integer.view_tag_address_line_1){
+        }else if(viewTag == getResources().getInteger(R.integer.view_tag_address_line_1)){
             return job.address;
-        }else if(viewTag == R.integer.view_tag_postcode){
+        }else if(viewTag == getResources().getInteger(R.integer.view_tag_postcode)){
             return job.postcode;
-        }else if(viewTag == R.integer.view_tag_city){
+        }else if(viewTag == getResources().getInteger(R.integer.view_tag_city)){
             return job.city;
+        }else if(viewTag == getResources().getInteger(R.integer.view_tag_notes)){
+            return job.notes;
+        }else if(viewTag == getResources().getInteger(R.integer.view_tag_insurer)){
+            return job.insurer;
+        }else if(viewTag == getResources().getInteger(R.integer.view_tag_excess)){
+            return job.excess;
+        }else if(viewTag == getResources().getInteger(R.integer.view_tag_vat_status)){
+            return job.vatstatus;
+        }else if(viewTag == getResources().getInteger(R.integer.view_tag_customer_phone)){
+            return (job.workPhone != null && job.workPhone.isEmpty()) ? job.workPhone : job.homePhone;
+        }else if(viewTag == getResources().getInteger(R.integer.view_tag_customer_name)){
+            return job.customerName;
         }
         return null;
     }
