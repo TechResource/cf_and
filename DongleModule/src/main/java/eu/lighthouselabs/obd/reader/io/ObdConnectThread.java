@@ -72,7 +72,22 @@ public class ObdConnectThread extends Thread implements LocationListener {
             sock.close();
         }
         sock = this.dev.createRfcommSocketToServiceRecord(MY_UUID);
-        sock.connect();
+        try {
+            sock.connect();
+        } catch (IOException e){
+            try {
+                Log.d("OBDCONNECTTHREAD", "trying fallback...");
+
+                sock =(BluetoothSocket) dev.getClass().getMethod("createRfcommSocket", new Class[] {int.class}).invoke(dev,1);
+                sock.connect();
+
+                Log.d("OBDCONNECTTHREAD","Connected");
+            }
+            catch (Exception e2) {
+                Log.d("OBDCONNECTTHREAD", "Couldn't establish Bluetooth connection!");
+            }
+        }
+        
         if (additionalHandler != null) {
             additionalHandler.onOBDConnected();
         }
