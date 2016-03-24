@@ -37,6 +37,34 @@
                 app:large_text="true"
                 />
 
+            <LinearLayout
+                android:id="@+id/changeMileageContainer"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                >
+
+                <com.flightpathcore.widgets.InputWidget_
+                    android:id="@+id/changeMileageCode"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:hint="@string/change_mileage_code_hint"
+                    app:large_text="true"
+                    app:only_digits="true"
+                    />
+
+                <Button
+                    style="@style/Base.BlueButton"
+                    android:background="@color/gray_dark"
+                    android:id="@+id/changeMileageBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/ok_label"
+                    />
+            </LinearLayout>
+
             <com.flightpathcore.widgets.InputWidget_
                 android:id="@+id/registrationNumber"
                 android:layout_width="match_parent"
@@ -54,6 +82,8 @@
                 android:entries="@array/spinnerReasonItems"
                 >
             </Spinner>
+
+
         </LinearLayout>
 
     </ScrollView>

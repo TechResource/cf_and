@@ -132,6 +132,8 @@ public class LoginFragment extends BaseFragment implements HeaderFragment.Header
         View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_with_edit_text, null);
         final EditText et = (EditText) v.findViewById(R.id.securityCode);
         et.setInputType(InputType.TYPE_CLASS_TEXT);
+        et.setText(ServerChooser.getHostAddress(getContext()));
+        et.setSelection(et.length());
         TextInputLayout til = (TextInputLayout) v.findViewById(R.id.til);
         til.setHint(getString(R.string.server_address_label));
         Utilities.styleAlertDialog(new AlertDialog.Builder(getContext())

@@ -44,7 +44,6 @@ public abstract class ListAdapter<V extends View, T > extends RecyclerView.Adapt
         return items.size();
     }
 
-
     public void removeItem(T d){
         items.remove(d);
         notifyDataSetChanged();

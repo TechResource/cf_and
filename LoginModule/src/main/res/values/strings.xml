@@ -14,6 +14,8 @@
     <string name="update_new_version_msg">New app version available.\nDo you want to update it now?</string>
     <string name="current_mileage_hint">Start Trip Mileage</string>
     <string name="vehicle_registration_number_hint">Vehicle Registration Number</string>
+    <string name="change_mileage_code_hint">Change Mileage Code</string>
+    <string name="wrong_code_error">"Wrong code.</string>
 
     <string-array name="spinnerReasonItems">
         <item>Business trip.</item>

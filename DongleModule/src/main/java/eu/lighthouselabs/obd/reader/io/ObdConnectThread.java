@@ -87,7 +87,7 @@ public class ObdConnectThread extends Thread implements LocationListener {
                 Log.d("OBDCONNECTTHREAD", "Couldn't establish Bluetooth connection!");
             }
         }
-        
+
         if (additionalHandler != null) {
             additionalHandler.onOBDConnected();
         }
