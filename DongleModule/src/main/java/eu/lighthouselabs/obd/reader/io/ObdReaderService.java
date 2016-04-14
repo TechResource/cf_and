@@ -1,6 +1,7 @@
 package eu.lighthouselabs.obd.reader.io;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Map;
 
 import android.app.Notification;
@@ -136,7 +137,7 @@ public class ObdReaderService extends Service {
         int period = ObdReaderConfigActivity.getUpdatePeriod(prefs);
         double ve = ObdReaderConfigActivity.getVolumetricEfficieny(prefs);
         double ed = ObdReaderConfigActivity.getEngineDisplacement(prefs);
-        boolean imperialUnits = prefs.getBoolean(ObdReaderConfigActivity.IMPERIAL_UNITS_KEY, false);
+        boolean imperialUnits = true;//prefs.getBoolean(ObdReaderConfigActivity.IMPERIAL_UNITS_KEY, false);
         boolean gps = prefs.getBoolean(ObdReaderConfigActivity.ENABLE_GPS_KEY, false);
         ArrayList<ObdCommand> cmds = ObdReaderConfigActivity.getObdCommands(prefs);
 

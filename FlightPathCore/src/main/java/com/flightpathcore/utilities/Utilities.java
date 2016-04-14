@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.util.TypedValue;
@@ -25,7 +24,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Type;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.NumberFormat;
@@ -55,7 +53,7 @@ public class Utilities {
      */
     private static String getBaseDirectoryPath() {
         File f = new File(Environment.getExternalStorageDirectory() + File.separator + DIRECTORY_NAME);
-        if(!f.exists()){
+        if (!f.exists()) {
             f.mkdir();
         }
         return Environment.getExternalStorageDirectory() + File.separator + DIRECTORY_NAME + File.separator;
@@ -75,7 +73,7 @@ public class Utilities {
         return formatNumber(number, 5);
     }
 
-    public static String formatNumber(double number, int digitsFraction){
+    public static String formatNumber(double number, int digitsFraction) {
         NumberFormat numberFormat = NumberFormat.getInstance();
         numberFormat.setMaximumFractionDigits(digitsFraction);
         numberFormat.setMinimumFractionDigits(digitsFraction);
@@ -90,7 +88,7 @@ public class Utilities {
         return sdf.format(new Date(getTimestamp()));
     }
 
-    public static String getDateFromTimestamp(long timestmap){
+    public static String getDateFromTimestamp(long timestmap) {
         return sdf.format(new Date(timestmap));
     }
 
@@ -115,8 +113,8 @@ public class Utilities {
                     overrideFonts(context, child);
                 }
             } else if (v instanceof TextView) {
-                if (((TextView) v).getTypeface() != null ) {
-                    if(((TextView) v).getTypeface() != oswaldTypeface) {
+                if (((TextView) v).getTypeface() != null) {
+                    if (((TextView) v).getTypeface() != oswaldTypeface) {
                         if (((TextView) v).getTypeface().isBold()) {
                             ((TextView) v).setTypeface(Typeface.createFromAsset(context.getAssets(), "OpenSans-Bold.ttf"));
                         } else if (((TextView) v).getTypeface().isItalic()) {
@@ -129,7 +127,7 @@ public class Utilities {
                     ((TextView) v).setTypeface(Typeface.createFromAsset(context.getAssets(), "OpenSans-Regular.ttf"));
                 }
             } else if (v instanceof EditText) {
-                if(((EditText) v).getTypeface() == null || ((EditText) v).getTypeface() != oswaldTypeface)
+                if (((EditText) v).getTypeface() == null || ((EditText) v).getTypeface() != oswaldTypeface)
                     ((EditText) v).setTypeface(Typeface.createFromAsset(context.getAssets(), "OpenSans-Regular.ttf"));
             }
 
@@ -161,7 +159,7 @@ public class Utilities {
         }
     }
 
-    public static void styleAlertDialog(AlertDialog dialog){
+    public static void styleAlertDialog(AlertDialog dialog) {
         styleAlertDialog(dialog, null);
     }
 
@@ -169,22 +167,22 @@ public class Utilities {
         int textViewId = dialog.getContext().getResources().getIdentifier("app:id/alertTitle", null, null);
         if (textViewId != 0) {
             TextView tv = (TextView) dialog.findViewById(textViewId);
-            if(tv != null) {
+            if (tv != null) {
                 tv.setTypeface(tv.getTypeface(), Typeface.BOLD);
             }
         }
 
         Button posBtn = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
-        if(posBtn != null) {
-            if(textSize != null) {
+        if (posBtn != null) {
+            if (textSize != null) {
                 posBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
             }
             posBtn.setTextColor(dialog.getContext().getResources().getColor(R.color.blue_bg));
             posBtn.setTypeface(posBtn.getTypeface(), Typeface.BOLD);
         }
         Button negBtn = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-        if(negBtn != null) {
-            if(textSize != null) {
+        if (negBtn != null) {
+            if (textSize != null) {
                 negBtn.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
             }
             negBtn.setTextColor(dialog.getContext().getResources().getColor(R.color.gray_dark));
@@ -220,5 +218,13 @@ public class Utilities {
             while (two_halfs++ < 1);
         }
         return buf.toString();
+    }
+
+    public static String formatMPGtoKML(double mpg) {
+        return String.format("%.1f %s", (mpg * 0.425143), "kml");
+    }
+
+    public static int MPHtoKMH(double mph) {
+        return (int) (mph * 1.60934400);
     }
 }

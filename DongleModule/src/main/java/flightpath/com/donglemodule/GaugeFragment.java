@@ -80,8 +80,8 @@ public class GaugeFragment extends BaseFragment implements DongleDataHelper.Dong
     @Override
     public void onDongleDataReceived(Map<String, String> dongleData) {
         if (needUpdate() && speedometer != null && dongleData != null) {
-            speedometer.setSpeed(getMilesFromKilometres(getDecimalValue(dongleData.get(ObdConfig.SPEED))), true);
-            speedVal.setText(getMilesFromKilometres(getDecimalValue(dongleData.get(ObdConfig.SPEED))) + "");
+            speedometer.setSpeed(getDecimalValue(dongleData.get(ObdConfig.SPEED)), true);
+            speedVal.setText(getDecimalValue(dongleData.get(ObdConfig.SPEED)) + "");
             rpmmeter.setSpeed(getDecimalValue(dongleData.get(ObdConfig.RPM)), true);
             rpmVal.setText(getDecimalValue(dongleData.get(ObdConfig.RPM)) + "");
         }
@@ -94,12 +94,6 @@ public class GaugeFragment extends BaseFragment implements DongleDataHelper.Dong
             return true;
         }
         return false;
-    }
-
-    private final static double kilometresInMile = 1.60934400;
-
-    private int getMilesFromKilometres(int kilometres) {
-        return (int) ((double) kilometres / kilometresInMile);
     }
 
     private int getDecimalValue(String value) {
