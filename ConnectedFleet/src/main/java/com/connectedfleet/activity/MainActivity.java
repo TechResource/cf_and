@@ -118,6 +118,8 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
         Intent i = new Intent(this, AccelerationService.class);
         i.addCategory(AccelerationService.tag);
         bindService(i, mConnection, Context.BIND_AUTO_CREATE);
+
+        DBHelper.getInstance().setLocationHandler(locationHandler);
     }
 
     @AfterViews

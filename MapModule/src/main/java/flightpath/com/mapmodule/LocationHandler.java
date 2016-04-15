@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.flightpathcore.base.BaseApplication;
+import com.flightpathcore.base.LocationInterfacce;
 import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.database.tables.DriverTable;
 import com.flightpathcore.database.tables.PointsTable;
@@ -24,7 +25,7 @@ import javax.inject.Inject;
 /**
  * Created by Tomasz Szafran ( tomek@appsvisio.com ) on 2015-10-22.
  */
-public class LocationHandler  {
+public class LocationHandler implements LocationInterfacce {
 
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 2; // meters
     private static final long MIN_TIME_BW_UPDATES = 1000 * 1; // 1 second
@@ -82,6 +83,7 @@ public class LocationHandler  {
         isReady = false;
     }
 
+    @Override
     public Location getLocation(){
         if(gpsService != null && gpsService.getLocation() != null) {
             return gpsService.getLocation();

@@ -104,6 +104,8 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
         Intent i = new Intent(this, AccelerationService.class);
         i.addCategory(AccelerationService.tag);
         bindService(i, mConnection, Context.BIND_AUTO_CREATE);
+
+        DBHelper.getInstance().setLocationHandler(locationHandler);
     }
 
     @AfterViews

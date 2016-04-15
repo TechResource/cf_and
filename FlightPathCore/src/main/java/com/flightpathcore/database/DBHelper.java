@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.flightpathcore.base.LocationInterfacce;
 import com.flightpathcore.database.tables.AbstractTable;
 import com.flightpathcore.database.tables.CollectionDamagesTable;
 import com.flightpathcore.database.tables.DriverTable;
@@ -20,6 +21,7 @@ import com.flightpathcore.objects.CollectionDamagesObject;
 import com.flightpathcore.objects.EventObject;
 import com.flightpathcore.objects.ItemsDamagedObject;
 import com.flightpathcore.objects.TripObject;
+import com.flightpathcore.utilities.Utilities;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Constructor;
@@ -38,6 +40,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 23;
 
     private String allColumnsEvent = null;
+    private LocationInterfacce locationHandler = null;
 
     public static void initInstance(Context context) {
         if (instance == null) {
@@ -276,6 +279,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public List<EventObject> getEventsToSend(int limit) {
         List<EventObject> eventsToSend = new ArrayList<>();
+        if(locationHandler != null && locationHandler.getLocation() != null)
+            eventsToSend.add(new EventObject(locationHandler.getLocation().getLongitude(), locationHandler.getLocation().getLatitude(), EventObject.EventType.LOCATION, Utilities.getUtcDateTime(Utilities.getTimestamp())));
         Cursor cursor;
         try {
 //            cursor = getReadableDatabase().query(EventTable.TABLE_NAME, EventTable.allColumns, EventTable.EVENT_IS_SENT +" = 0 ", null, null, null, EventTable.EVENT_ID, limit+"");
@@ -410,5 +415,9 @@ public class DBHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
         return items;
+    }
+
+    public void setLocationHandler(LocationInterfacce locationHandler) {
+        this.locationHandler = locationHandler;
     }
 }

@@ -61,13 +61,13 @@ android {
         beta{
             initWith release
             applicationIdSuffix ".beta"
-            resValue "string", "app_name", "CLM New.BETA"
+            resValue "string", "app_name", "CLM.BETA"
         }
         debug{
             signingConfig signingConfigs.buildIn
             applicationIdSuffix ".dev"
             testCoverageEnabled = "true"
-            resValue "string", "app_name", "CLM New.dev"
+            resValue "string", "app_name", "CLM.dev"
         }
     }
 }

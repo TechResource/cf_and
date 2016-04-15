@@ -8,9 +8,11 @@ import com.flightpath.clm.di.DI;
 import com.flightpathcore.base.AppCore;
 import com.flightpathcore.base.AppObject;
 import com.flightpathcore.base.BaseApplication;
+import com.flightpathcore.base.LocationInterfacce;
 import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.network.SynchronizationHelper;
 
+import flightpath.com.mapmodule.LocationHandler;
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -50,6 +52,14 @@ public class CLMApplication extends BaseApplication {
 
     }
 
+    @Override
+    public void logCrash(Throwable error) {
+        if(!isDebug(this)){
+            if(error != null)
+                Crashlytics.logException(error);
+        }
+    }
+
     public static boolean isCLM2(Context context){
         String pName = context.getPackageName();
         if (pName != null && ( pName.endsWith(".clm2") )) {
@@ -58,4 +68,5 @@ public class CLMApplication extends BaseApplication {
             return false;
         }
     }
+
 }

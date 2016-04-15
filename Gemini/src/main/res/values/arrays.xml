@@ -2,8 +2,8 @@
 <resources>
     <array name="host_addresses">
         <!-- PRODUCTION -->
-        <item>http://46.17.215.204:47666</item>
         <item>http://46.17.215.204:42365</item>
+        <item>http://46.17.215.204:47666</item>
         <!--KICHA-->
         <item>http://192.168.0.109:8001</item>
         <item>http://192.168.0.102:42551</item>
