@@ -41,7 +41,7 @@ android {
         targetSdkVersion 23
         versionCode 52
         versionName "2.2"
-        archivesBaseName = "GEMINI_"+versionName+"_"+versionCode
+        archivesBaseName = "Gemini_"+versionName+"_"+versionCode
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
