@@ -27,6 +27,7 @@ android {
         targetSdkVersion 23
         versionCode 36
         versionName "2.2"
+        archivesBaseName = "RUNWAY_"+versionName+"_"+versionCode
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
