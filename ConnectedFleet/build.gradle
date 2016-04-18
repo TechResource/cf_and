@@ -42,7 +42,7 @@ android {
         targetSdkVersion 23
         versionCode 49
         versionName "2.2"
-        archivesBaseName = "ConnectedFleet_"+versionName+"_"+versionCode
+        archivesBaseName = "ConnectedFleet_"+versionName+"_"+versionCode+"_"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
