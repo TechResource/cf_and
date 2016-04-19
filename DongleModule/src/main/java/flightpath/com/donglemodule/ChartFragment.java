@@ -39,9 +39,9 @@ public class ChartFragment extends BaseFragment implements DongleDataHelper.Dong
     @Inject
     protected DongleDataHelper dongleDataHelper;
     @ViewById
-    protected TextView vehicleSpeed, engineRpm, fuelEconomy, fuelEconomy2;
+    protected TextView vehicleSpeed, engineRpm, /*fuelEconomy,*/ fuelEconomy2;
     @ViewById
-    protected LineChart speedChart, rpmChart, economyFuelChart, economyFuelChart2;
+    protected LineChart speedChart, rpmChart, /*economyFuelChart,*/ economyFuelChart2;
     private ArrayList<String> xValues = new ArrayList<>();
     private Map<String, LineDataSet> lineDataSetMap = new HashMap<>();
     private Map<String, ArrayList<Entry>> horizontalValuesMap = new HashMap<>();
@@ -63,23 +63,23 @@ public class ChartFragment extends BaseFragment implements DongleDataHelper.Dong
         dongleDataHelper.addListener(this);
         horizontalValuesMap.put(ObdConfig.SPEED, new ArrayList<>());
         horizontalValuesMap.put(ObdConfig.RPM, new ArrayList<>());
-        horizontalValuesMap.put(ObdConfig.FUEL_ECON, new ArrayList<>());
+//        horizontalValuesMap.put(ObdConfig.FUEL_ECON, new ArrayList<>());
         horizontalValuesMap.put(ObdConfig.FUEL_ECON2, new ArrayList<>());
         chartsMap.put(ObdConfig.SPEED, speedChart);
         chartsMap.put(ObdConfig.RPM, rpmChart);
-        chartsMap.put(ObdConfig.FUEL_ECON, economyFuelChart);
+//        chartsMap.put(ObdConfig.FUEL_ECON, economyFuelChart);
         chartsMap.put(ObdConfig.FUEL_ECON2, economyFuelChart2);
         chartsMap.get(ObdConfig.SPEED).setDescription("[mph]");
         chartsMap.get(ObdConfig.RPM).setDescription("[RPM]");
-        chartsMap.get(ObdConfig.FUEL_ECON).setDescription("[mpg]");
+//        chartsMap.get(ObdConfig.FUEL_ECON).setDescription("[mpg]");
         chartsMap.get(ObdConfig.FUEL_ECON2).setDescription("[mpg]");
         lineDataMap.put(ObdConfig.SPEED, new LineData());
         lineDataMap.put(ObdConfig.RPM, new LineData());
-        lineDataMap.put(ObdConfig.FUEL_ECON, new LineData());
+//        lineDataMap.put(ObdConfig.FUEL_ECON, new LineData());
         lineDataMap.put(ObdConfig.FUEL_ECON2, new LineData());
         lineDataSetsMap.put(ObdConfig.SPEED, new LineDataSet(horizontalValuesMap.get(ObdConfig.SPEED), ObdConfig.SPEED));
         lineDataSetsMap.put(ObdConfig.RPM, new LineDataSet(horizontalValuesMap.get(ObdConfig.RPM), ObdConfig.RPM));
-        lineDataSetsMap.put(ObdConfig.FUEL_ECON, new LineDataSet(horizontalValuesMap.get(ObdConfig.FUEL_ECON), ObdConfig.FUEL_ECON));
+//        lineDataSetsMap.put(ObdConfig.FUEL_ECON, new LineDataSet(horizontalValuesMap.get(ObdConfig.FUEL_ECON), ObdConfig.FUEL_ECON));
         lineDataSetsMap.put(ObdConfig.FUEL_ECON2, new LineDataSet(horizontalValuesMap.get(ObdConfig.FUEL_ECON2), ObdConfig.FUEL_ECON2));
 
         for (int i = SPEED_PERIODS_NUMBER; i > 0; i -= 5) {
@@ -87,11 +87,11 @@ public class ChartFragment extends BaseFragment implements DongleDataHelper.Dong
         }
         lineDataSetMap.put(ObdConfig.SPEED, new LineDataSet(horizontalValuesMap.get(ObdConfig.SPEED), ObdConfig.SPEED));
         lineDataSetMap.put(ObdConfig.RPM, new LineDataSet(horizontalValuesMap.get(ObdConfig.RPM), ObdConfig.RPM));
-        lineDataSetMap.put(ObdConfig.FUEL_ECON, new LineDataSet(horizontalValuesMap.get(ObdConfig.FUEL_ECON), ObdConfig.FUEL_ECON));
+//        lineDataSetMap.put(ObdConfig.FUEL_ECON, new LineDataSet(horizontalValuesMap.get(ObdConfig.FUEL_ECON), ObdConfig.FUEL_ECON));
         lineDataSetMap.put(ObdConfig.FUEL_ECON2, new LineDataSet(horizontalValuesMap.get(ObdConfig.FUEL_ECON2), ObdConfig.FUEL_ECON2));
         lineDataSetsArraysMap.put(ObdConfig.SPEED, new ArrayList<>());
         lineDataSetsArraysMap.put(ObdConfig.RPM, new ArrayList<>());
-        lineDataSetsArraysMap.put(ObdConfig.FUEL_ECON, new ArrayList<>());
+//        lineDataSetsArraysMap.put(ObdConfig.FUEL_ECON, new ArrayList<>());
         lineDataSetsArraysMap.put(ObdConfig.FUEL_ECON2, new ArrayList<>());
         viewReady = true;
     }
@@ -112,7 +112,7 @@ public class ChartFragment extends BaseFragment implements DongleDataHelper.Dong
         if (needUpdate() && dongleData != null) {
             setData(dongleData.get(ObdConfig.RPM), ObdConfig.RPM);
             setData(dongleData.get(ObdConfig.SPEED), ObdConfig.SPEED);
-            setData(dongleData.get(ObdConfig.FUEL_ECON), ObdConfig.FUEL_ECON);
+//            setData(dongleData.get(ObdConfig.FUEL_ECON), ObdConfig.FUEL_ECON);
             setData(dongleData.get(ObdConfig.FUEL_ECON2), ObdConfig.FUEL_ECON2);
             Log.d("DONGLE_DATA", new Gson().toJson(dongleData));
         }
@@ -123,7 +123,7 @@ public class ChartFragment extends BaseFragment implements DongleDataHelper.Dong
         if (!viewReady) {
             return;
         }
-        float decimalValue = 0f;
+        double decimalValue = 0f;
 
         if (horizontalValuesMap.get(cmd).size() >= SPEED_PERIODS_NUMBER / 5) {
             horizontalValuesMap.get(cmd).remove(0);
@@ -133,7 +133,7 @@ public class ChartFragment extends BaseFragment implements DongleDataHelper.Dong
         }
         decimalValue = getDecimalValue(value);
 
-        Entry c1e1 = new Entry(decimalValue, horizontalValuesMap.get(cmd).size());
+        Entry c1e1 = new Entry((float) decimalValue, horizontalValuesMap.get(cmd).size());
         horizontalValuesMap.get(cmd).add(c1e1);
         lineDataSetsMap.put(cmd, new LineDataSet(horizontalValuesMap.get(cmd), cmd));
         lineDataSetsArraysMap.get(cmd).clear();
@@ -145,10 +145,12 @@ public class ChartFragment extends BaseFragment implements DongleDataHelper.Dong
             vehicleSpeed.setText(Locale.getDefault().getLanguage().equalsIgnoreCase("pl") ? Utilities.MPHtoKMH(decimalValue)+" km/h" : value);
         } else if (cmd.equals(ObdConfig.RPM)) {
             engineRpm.setText(value);
-        } else if (cmd.equals(ObdConfig.FUEL_ECON)) {
-            fuelEconomy.setText(Locale.getDefault().getLanguage().equalsIgnoreCase("pl") ? Utilities.formatMPGtoKML(decimalValue) : value);
+//        } else if (cmd.equals(ObdConfig.FUEL_ECON)) {
+//            decimalValue = 235.214583 / decimalValue;
+//            fuelEconomy.setText(Locale.getDefault().getLanguage().equalsIgnoreCase("pl") ? String.format("%.1f %s", decimalValue,"kml") : value);
         }else if (cmd.equals(ObdConfig.FUEL_ECON2)) {
-            fuelEconomy2.setText(Locale.getDefault().getLanguage().equalsIgnoreCase("pl") ? Utilities.formatMPGtoKML(decimalValue) : value);
+            decimalValue = 235.214583 / decimalValue ;
+            fuelEconomy2.setText(Locale.getDefault().getLanguage().equalsIgnoreCase("pl") ? String.format("%.1f %s", decimalValue,"kml") : value);
         }
     }
 
@@ -161,11 +163,11 @@ public class ChartFragment extends BaseFragment implements DongleDataHelper.Dong
         return false;
     }
 
-    private float getDecimalValue(String value) {
-        float decimalValue = 0;
+    private double getDecimalValue(String value) {
+        double decimalValue = 0;
         try {
             String[] val = value.replace(",",".").split("\\s+");
-            decimalValue = Float.parseFloat(val[0]);
+            decimalValue = Double.parseDouble(val[0]);
         } catch (Exception e) {
             //value could be "--"
         }

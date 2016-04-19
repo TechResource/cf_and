@@ -24,6 +24,7 @@ public class FuelEconomyObdCommand extends ObdCommand {
 			runCmd(maf);
 			maf.formatResult();
 			double mafV = maf.getMAF();
+
 			if (mafV == -9999.0) {
 				fuelEcon = -9999.0;
 			}

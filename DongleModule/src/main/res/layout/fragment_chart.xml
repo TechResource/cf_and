@@ -109,54 +109,54 @@
                     android:textSize="@dimen/text_size_extra_large" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/separator_height"
-                android:background="@color/gray_dark" />
+            <!--<View-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/separator_height"-->
+                <!--android:background="@color/gray_dark" />-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@color/gray"
-                android:gravity="center_vertical"
-                android:paddingLeft="@dimen/margin_normal"
-                android:paddingRight="@dimen/margin_normal" >
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:background="@color/gray"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:paddingLeft="@dimen/margin_normal"-->
+                <!--android:paddingRight="@dimen/margin_normal" >-->
 
-                <TextView
-                    android:id="@+id/mpgTV"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:gravity="left"
-                    android:text="FUEL ECONOMY" />
-            </RelativeLayout>
+                <!--<TextView-->
+                    <!--android:id="@+id/mpgTV"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="0dp"-->
+                    <!--android:gravity="left"-->
+                    <!--android:text="FUEL ECONOMY" />-->
+            <!--</RelativeLayout>-->
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/economyFuelChart"
-                android:layout_width="match_parent"
-                android:layout_height="200dp" />
+            <!--<com.github.mikephil.charting.charts.LineChart-->
+                <!--android:id="@+id/economyFuelChart"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="200dp" />-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" >-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Fuel Economy"
-                    />
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="Fuel Economy"-->
+                    <!--/>-->
 
-                <TextView
-                    android:id="@+id/fuelEconomy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:gravity="right"
-                    android:text="0"
-                    android:textSize="@dimen/text_size_extra_large" />
-            </LinearLayout>
+                <!--<TextView-->
+                    <!--android:id="@+id/fuelEconomy"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="right"-->
+                    <!--android:gravity="right"-->
+                    <!--android:text="0"-->
+                    <!--android:textSize="@dimen/text_size_extra_large" />-->
+            <!--</LinearLayout>-->
 
             <View
                 android:layout_width="match_parent"
@@ -179,7 +179,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0dp"
                     android:gravity="left"
-                    android:text="FUEL ECONOMY2" />
+                    android:text="FUEL ECONOMY" />
             </RelativeLayout>
 
             <com.github.mikephil.charting.charts.LineChart
