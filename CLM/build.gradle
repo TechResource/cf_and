@@ -39,8 +39,9 @@ android {
         applicationId "com.flightpath.clm"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 48
+        versionCode 49
         versionName "2.2"
+        archivesBaseName = "CLM_"+versionName+"_"+versionCode+"_"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -61,13 +62,13 @@ android {
         beta{
             initWith release
             applicationIdSuffix ".beta"
-            resValue "string", "app_name", "CLM New.BETA"
+            resValue "string", "app_name", "CLM.BETA"
         }
         debug{
             signingConfig signingConfigs.buildIn
             applicationIdSuffix ".dev"
             testCoverageEnabled = "true"
-            resValue "string", "app_name", "CLM New.dev"
+            resValue "string", "app_name", "CLM.dev"
         }
     }
 }

@@ -9,6 +9,7 @@ import eu.lighthouselabs.obd.reader.command.EngineRPMObdCommand;
 import eu.lighthouselabs.obd.reader.command.FuelEconomyCommandedMAPObdCommand;
 import eu.lighthouselabs.obd.reader.command.FuelEconomyMAPObdCommand;
 import eu.lighthouselabs.obd.reader.command.FuelEconomyObdCommand;
+import eu.lighthouselabs.obd.reader.command.FuelEconomyObdCommand2;
 import eu.lighthouselabs.obd.reader.command.FuelPressureObdCommand;
 import eu.lighthouselabs.obd.reader.command.FuelTrimObdCommand;
 import eu.lighthouselabs.obd.reader.command.MAFAirFlowObdCommand;
@@ -22,6 +23,7 @@ public class ObdConfig {
 
     public final static String COOLANT_TEMP = "coolant_temp";
     public final static String FUEL_ECON = "fuel_economy";
+    public final static String FUEL_ECON2 = "fuel_economy2";
     public final static String FUEL_ECON_MAP = "fuel_economy_map";
     public final static String RPM = "engine_rpm";
     public final static String RUN_TIME = "engine_runtime";
@@ -52,6 +54,7 @@ public class ObdConfig {
 //        cmds.add(new ThrottleObdCommand("0104", ENGINE_LOAD, "%"));
         cmds.add(new MAFAirFlowObdCommand());
         cmds.add(new FuelEconomyObdCommand());
+        cmds.add(new FuelEconomyObdCommand2());
         cmds.add(new AverageFuelEconomyObdCommand());
 
 //         cmds.add(new FuelEconomyMAPObdCommand());

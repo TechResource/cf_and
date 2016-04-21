@@ -29,7 +29,6 @@ public abstract class BaseApplication extends Application {
         }
     }
 
-
     protected abstract void initInstances();
     public abstract AppObject getAppObject();
     public abstract void getComponent();

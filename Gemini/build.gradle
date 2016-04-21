@@ -39,8 +39,9 @@ android {
         applicationId "com.flightpath.gemini"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 51
+        versionCode 52
         versionName "2.2"
+        archivesBaseName = "Gemini_"+versionName+"_"+versionCode+"_"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

@@ -16,10 +16,10 @@ public class EventObject{
     public transient boolean isSent = false;
     public int driverId;
     @SerializedName("bt")
-    public int btEnabled;
+    public Integer btEnabled;
     @SerializedName("dongle")
-    public int dongleEnabled;
-    public long tripId;
+    public Integer dongleEnabled;
+    public long tripId = -1;
     public boolean onPause;
     public String customEventObject = null;
     @SerializedName("lat")
@@ -33,9 +33,16 @@ public class EventObject{
 
     }
 
+    public EventObject(double latitude, double longitude, EventType type, String timestamp) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.type = type;
+        this.timestamp = timestamp;
+    }
+
     public EventObject(Cursor cursor){
         this.eventId = cursor.getInt(0);
-        this.type = getTypeFromString(cursor.getString(1));
+        this.type = cursor.getString(1) != null ? getTypeFromString(cursor.getString(1)) : null;
         this.latitude = cursor.getDouble(2);
         this.longitude = cursor.getDouble(3);
         this.tripId = cursor.getInt(4);
