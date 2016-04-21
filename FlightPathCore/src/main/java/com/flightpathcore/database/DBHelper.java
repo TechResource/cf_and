@@ -108,7 +108,10 @@ public class DBHelper extends SQLiteOpenHelper {
             }
         }
         if (oldVersion < 18) {
-            db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_NAME + " TEXT");
+            try {
+                db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_NAME + " TEXT");
+            }catch (Exception e) {
+            }
         }
 
         if(oldVersion < 21){
