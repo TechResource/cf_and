@@ -3,20 +3,13 @@ package eu.lighthouselabs.obd.reader.config;
 import java.util.ArrayList;
 
 import eu.lighthouselabs.obd.reader.command.AverageFuelEconomyObdCommand;
-import eu.lighthouselabs.obd.reader.command.CommandEquivRatioObdCommand;
 import eu.lighthouselabs.obd.reader.command.DtcNumberObdCommand;
 import eu.lighthouselabs.obd.reader.command.EngineRPMObdCommand;
-import eu.lighthouselabs.obd.reader.command.FuelEconomyCommandedMAPObdCommand;
-import eu.lighthouselabs.obd.reader.command.FuelEconomyMAPObdCommand;
-import eu.lighthouselabs.obd.reader.command.FuelEconomyObdCommand;
 import eu.lighthouselabs.obd.reader.command.FuelEconomyObdCommand2;
-import eu.lighthouselabs.obd.reader.command.FuelPressureObdCommand;
-import eu.lighthouselabs.obd.reader.command.FuelTrimObdCommand;
 import eu.lighthouselabs.obd.reader.command.MAFAirFlowObdCommand;
 import eu.lighthouselabs.obd.reader.command.ObdCommand;
 import eu.lighthouselabs.obd.reader.command.SpeedObdCommand;
 import eu.lighthouselabs.obd.reader.command.TempObdCommand;
-import eu.lighthouselabs.obd.reader.command.ThrottleObdCommand;
 import eu.lighthouselabs.obd.reader.command.TroubleCodesObdCommand;
 
 public class ObdConfig {

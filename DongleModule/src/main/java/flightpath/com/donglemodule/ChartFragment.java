@@ -150,7 +150,7 @@ public class ChartFragment extends BaseFragment implements DongleDataHelper.Dong
 //            fuelEconomy.setText(Locale.getDefault().getLanguage().equalsIgnoreCase("pl") ? String.format("%.1f %s", decimalValue,"kml") : value);
         }else if (cmd.equals(ObdConfig.FUEL_ECON)) {
             decimalValue = 235.214583 / decimalValue ;
-            fuelEconomy2.setText(Locale.getDefault().getLanguage().equalsIgnoreCase("pl") ? String.format("%.1f %s", decimalValue,"kml") : value);
+            fuelEconomy2.setText(Locale.getDefault().getLanguage().equalsIgnoreCase("pl") ? String.format("%.1f %s", decimalValue,"l/100km") : value);
         }
     }
 
