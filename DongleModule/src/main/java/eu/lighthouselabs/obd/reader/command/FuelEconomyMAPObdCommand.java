@@ -3,7 +3,7 @@ package eu.lighthouselabs.obd.reader.command;
 import eu.lighthouselabs.obd.reader.config.ObdConfig;
 
 
-public class FuelEconomyMAPObdCommand extends FuelEconomyObdCommand {
+public class FuelEconomyMAPObdCommand extends FuelEconomyObdCommand2 {
 
 	public static final double AIR_FUEL_RATIO = 14.64;
 	public static final double FUEL_DENSITY_GRAMS_PER_LITER = 720.0;
