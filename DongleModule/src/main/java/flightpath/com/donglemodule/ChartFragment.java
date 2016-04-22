@@ -64,23 +64,23 @@ public class ChartFragment extends BaseFragment implements DongleDataHelper.Dong
         horizontalValuesMap.put(ObdConfig.SPEED, new ArrayList<>());
         horizontalValuesMap.put(ObdConfig.RPM, new ArrayList<>());
 //        horizontalValuesMap.put(ObdConfig.FUEL_ECON, new ArrayList<>());
-        horizontalValuesMap.put(ObdConfig.FUEL_ECON2, new ArrayList<>());
+        horizontalValuesMap.put(ObdConfig.FUEL_ECON, new ArrayList<>());
         chartsMap.put(ObdConfig.SPEED, speedChart);
         chartsMap.put(ObdConfig.RPM, rpmChart);
 //        chartsMap.put(ObdConfig.FUEL_ECON, economyFuelChart);
-        chartsMap.put(ObdConfig.FUEL_ECON2, economyFuelChart2);
+        chartsMap.put(ObdConfig.FUEL_ECON, economyFuelChart2);
         chartsMap.get(ObdConfig.SPEED).setDescription("[mph]");
         chartsMap.get(ObdConfig.RPM).setDescription("[RPM]");
 //        chartsMap.get(ObdConfig.FUEL_ECON).setDescription("[mpg]");
-        chartsMap.get(ObdConfig.FUEL_ECON2).setDescription("[mpg]");
+        chartsMap.get(ObdConfig.FUEL_ECON).setDescription("[mpg]");
         lineDataMap.put(ObdConfig.SPEED, new LineData());
         lineDataMap.put(ObdConfig.RPM, new LineData());
 //        lineDataMap.put(ObdConfig.FUEL_ECON, new LineData());
-        lineDataMap.put(ObdConfig.FUEL_ECON2, new LineData());
+        lineDataMap.put(ObdConfig.FUEL_ECON, new LineData());
         lineDataSetsMap.put(ObdConfig.SPEED, new LineDataSet(horizontalValuesMap.get(ObdConfig.SPEED), ObdConfig.SPEED));
         lineDataSetsMap.put(ObdConfig.RPM, new LineDataSet(horizontalValuesMap.get(ObdConfig.RPM), ObdConfig.RPM));
 //        lineDataSetsMap.put(ObdConfig.FUEL_ECON, new LineDataSet(horizontalValuesMap.get(ObdConfig.FUEL_ECON), ObdConfig.FUEL_ECON));
-        lineDataSetsMap.put(ObdConfig.FUEL_ECON2, new LineDataSet(horizontalValuesMap.get(ObdConfig.FUEL_ECON2), ObdConfig.FUEL_ECON2));
+        lineDataSetsMap.put(ObdConfig.FUEL_ECON, new LineDataSet(horizontalValuesMap.get(ObdConfig.FUEL_ECON), ObdConfig.FUEL_ECON));
 
         for (int i = SPEED_PERIODS_NUMBER; i > 0; i -= 5) {
             xValues.add(i + ".s");
@@ -88,11 +88,11 @@ public class ChartFragment extends BaseFragment implements DongleDataHelper.Dong
         lineDataSetMap.put(ObdConfig.SPEED, new LineDataSet(horizontalValuesMap.get(ObdConfig.SPEED), ObdConfig.SPEED));
         lineDataSetMap.put(ObdConfig.RPM, new LineDataSet(horizontalValuesMap.get(ObdConfig.RPM), ObdConfig.RPM));
 //        lineDataSetMap.put(ObdConfig.FUEL_ECON, new LineDataSet(horizontalValuesMap.get(ObdConfig.FUEL_ECON), ObdConfig.FUEL_ECON));
-        lineDataSetMap.put(ObdConfig.FUEL_ECON2, new LineDataSet(horizontalValuesMap.get(ObdConfig.FUEL_ECON2), ObdConfig.FUEL_ECON2));
+        lineDataSetMap.put(ObdConfig.FUEL_ECON, new LineDataSet(horizontalValuesMap.get(ObdConfig.FUEL_ECON), ObdConfig.FUEL_ECON));
         lineDataSetsArraysMap.put(ObdConfig.SPEED, new ArrayList<>());
         lineDataSetsArraysMap.put(ObdConfig.RPM, new ArrayList<>());
 //        lineDataSetsArraysMap.put(ObdConfig.FUEL_ECON, new ArrayList<>());
-        lineDataSetsArraysMap.put(ObdConfig.FUEL_ECON2, new ArrayList<>());
+        lineDataSetsArraysMap.put(ObdConfig.FUEL_ECON, new ArrayList<>());
         viewReady = true;
     }
 
@@ -113,7 +113,7 @@ public class ChartFragment extends BaseFragment implements DongleDataHelper.Dong
             setData(dongleData.get(ObdConfig.RPM), ObdConfig.RPM);
             setData(dongleData.get(ObdConfig.SPEED), ObdConfig.SPEED);
 //            setData(dongleData.get(ObdConfig.FUEL_ECON), ObdConfig.FUEL_ECON);
-            setData(dongleData.get(ObdConfig.FUEL_ECON2), ObdConfig.FUEL_ECON2);
+            setData(dongleData.get(ObdConfig.FUEL_ECON), ObdConfig.FUEL_ECON);
             Log.d("DONGLE_DATA", new Gson().toJson(dongleData));
         }
     }
@@ -148,7 +148,7 @@ public class ChartFragment extends BaseFragment implements DongleDataHelper.Dong
 //        } else if (cmd.equals(ObdConfig.FUEL_ECON)) {
 //            decimalValue = 235.214583 / decimalValue;
 //            fuelEconomy.setText(Locale.getDefault().getLanguage().equalsIgnoreCase("pl") ? String.format("%.1f %s", decimalValue,"kml") : value);
-        }else if (cmd.equals(ObdConfig.FUEL_ECON2)) {
+        }else if (cmd.equals(ObdConfig.FUEL_ECON)) {
             decimalValue = 235.214583 / decimalValue ;
             fuelEconomy2.setText(Locale.getDefault().getLanguage().equalsIgnoreCase("pl") ? String.format("%.1f %s", decimalValue,"kml") : value);
         }

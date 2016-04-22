@@ -142,7 +142,7 @@ public class DongleContainerFragment extends BaseFragment implements DongleDataH
 
     @Override
     public void onDongleDisconnected(Throwable error) {
-        if(getActivity() != null)
+        if(getActivity() != null && getActivity().getApplication() != null)
             ((BaseApplication)getActivity().getApplication()).logCrash(error);
 
         showDevicePicker();

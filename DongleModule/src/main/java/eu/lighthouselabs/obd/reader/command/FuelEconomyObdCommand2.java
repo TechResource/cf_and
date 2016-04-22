@@ -12,7 +12,7 @@ public class FuelEconomyObdCommand2 extends ObdCommand {
 		super(cmd,desc,resType,impType);
 	}
 	public FuelEconomyObdCommand2() {
-		super("",ObdConfig.FUEL_ECON2,"kml","mpg");
+		super("",ObdConfig.FUEL_ECON,"kml","mpg");
 	}
 	public FuelEconomyObdCommand2(FuelEconomyObdCommand2 other) {
 		super(other);
