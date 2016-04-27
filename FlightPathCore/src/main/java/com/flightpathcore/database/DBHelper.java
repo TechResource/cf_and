@@ -80,6 +80,11 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(getWritableDatabase());
     }
 
+    public void clearDB(AbstractTable table){
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("delete from " + table.getTableName());
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DriverTable.CREATE_TABLE);
@@ -113,25 +118,25 @@ public class DBHelper extends SQLiteOpenHelper {
         if (oldVersion < 18) {
             try {
                 db.execSQL("ALTER TABLE " + DriverTable.TABLE_NAME + " ADD COLUMN " + DriverTable.DRIVER_NAME + " TEXT");
-            }catch (Exception e) {
+            } catch (Exception e) {
             }
         }
 
-        if(oldVersion < 21){
+        if (oldVersion < 21) {
             try {
-                db.execSQL("ALTER TABLE " + ItemsDamagedTable.TABLE_NAME + " ADD COLUMN " + ItemsDamagedTable.COLLECTION_ID+ " INTEGER");
-            }catch (Exception e){
+                db.execSQL("ALTER TABLE " + ItemsDamagedTable.TABLE_NAME + " ADD COLUMN " + ItemsDamagedTable.COLLECTION_ID + " INTEGER");
+            } catch (Exception e) {
             }
         }
 
-        if(oldVersion < 22){
+        if (oldVersion < 22) {
             try {
                 db.execSQL("ALTER TABLE " + CollectionDamagesTable.TABLE_NAME + " ADD COLUMN " + CollectionDamagesTable.C_DESCRIPTION + " TEXT DEFAULT ''");
             } catch (Exception e) {
             }
         }
 
-        if(oldVersion < 23){
+        if (oldVersion < 23) {
             try {
                 db.execSQL("ALTER TABLE " + CollectionDamagesTable.TABLE_NAME + " ADD COLUMN " + CollectionDamagesTable.C_DOUBLE_TYRES + " INTEGER DEFAULT 0");
             } catch (Exception e) {
@@ -168,13 +173,17 @@ public class DBHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void remove(AbstractTable table, String id){
+    public void remove(AbstractTable table, String id) {
         getWritableDatabase().delete(table.getTableName(), table.getWhereClause(id), null);
     }
 
     public Object get(AbstractTable table, String id) {
+        return get(table, id, table.getWhereClause(id));
+    }
+
+    public Object get(AbstractTable table, String id, String where) {
         Cursor cursor;
-        cursor = getReadableDatabase().query(table.getTableName(), table.getAllColumns(), table.getWhereClause(id), null, null, null, null);
+        cursor = getReadableDatabase().query(table.getTableName(), table.getAllColumns(), where, null, null, null, null);
 
         Class<?> returnClass;
         Constructor<?> constructor;
@@ -248,7 +257,11 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public List<? extends Object> getMultiple(AbstractTable table, String id, String orderBy, Integer limit) {
-        Cursor cursor = getReadableDatabase().query(table.getTableName(), table.getAllColumns(), table.getWhereClause(id), null, null, null, orderBy, limit != null ? limit + "" : null);
+        return getMultiple(table, id, table.getWhereClause(id), orderBy, limit);
+    }
+
+    public List<? extends Object> getMultiple(AbstractTable table, String id, String where, String orderBy, Integer limit) {
+        Cursor cursor = getReadableDatabase().query(table.getTableName(), table.getAllColumns(), where, null, null, null, orderBy, limit != null ? limit + "" : null);
         Class<?> returnClass;
         Constructor<?> constructor;
         List<Object> toReturn = new ArrayList<>();
@@ -282,14 +295,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public List<EventObject> getEventsToSend(int limit) {
         List<EventObject> eventsToSend = new ArrayList<>();
-        if(locationHandler != null && locationHandler.getLocation() != null)
+        if (locationHandler != null && locationHandler.getLocation() != null)
             eventsToSend.add(new EventObject(locationHandler.getLocation().getLongitude(), locationHandler.getLocation().getLatitude(), EventObject.EventType.LOCATION, Utilities.getUtcDateTime(Utilities.getTimestamp())));
         Cursor cursor;
         try {
-//            cursor = getReadableDatabase().query(EventTable.TABLE_NAME, EventTable.allColumns, EventTable.EVENT_IS_SENT +" = 0 ", null, null, null, EventTable.EVENT_ID, limit+"");
             cursor = getReadableDatabase().rawQuery(
                     "SELECT " + allColumnsEvent + " FROM " + EventTable.TABLE_NAME + " events " +
-                            //                        " LEFT JOIN " + PointsTable.TABLE_NAME + " points ON events." + EventTable.EVENT_POINT_ID + " = points." + PointsTable.POINT_ID +
                             " LEFT JOIN " + TripTable.TABLE_NAME + " trips ON events." + EventTable.EVENT_TRIP_ID + " = trips." + TripTable.TRIP_ID +
                             " WHERE events." + EventTable.EVENT_IS_SENT + " = 0 LIMIT 0," + limit,
                     null
@@ -378,7 +389,7 @@ public class DBHelper extends SQLiteOpenHelper {
         getWritableDatabase().delete(idt.getTableName(), idt.DAMAGE_ID + "=" + id, null);
     }
 
-    public void markDamagedItemsAsSent(Long id){
+    public void markDamagedItemsAsSent(Long id) {
         ContentValues values = new ContentValues();
         values.put(ItemsDamagedTable.IS_SENT, 1);
         getWritableDatabase().update(ItemsDamagedTable.TABLE_NAME, values, ItemsDamagedTable.DAMAGE_ID + "=" + id, null);
@@ -387,7 +398,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public List<ItemsDamagedObject> getDamagesByEventId(String value) {
         ItemsDamagedTable idt = new ItemsDamagedTable();
         ArrayList<ItemsDamagedObject> items = new ArrayList<>();
-        Cursor cursor = getReadableDatabase().query(idt.TABLE_NAME, idt.getAllColumns(), idt.EVENT_ID + " = " + value , null, null, null, idt.DAMAGE_ID);
+        Cursor cursor = getReadableDatabase().query(idt.TABLE_NAME, idt.getAllColumns(), idt.EVENT_ID + " = " + value, null, null, null, idt.DAMAGE_ID);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             items.add(new ItemsDamagedObject(cursor));
@@ -399,7 +410,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public List<CollectionDamagesObject> getCollectionsByEventId(String value) {
         CollectionDamagesTable ct = new CollectionDamagesTable();
         ArrayList<CollectionDamagesObject> items = new ArrayList<>();
-        Cursor cursor = getReadableDatabase().query(ct.TABLE_NAME, ct.getAllColumns(), ct.EVENT_ID + " = " + value , null, null, null, ct.COLLECTION_ID);
+        Cursor cursor = getReadableDatabase().query(ct.TABLE_NAME, ct.getAllColumns(), ct.EVENT_ID + " = " + value, null, null, null, ct.COLLECTION_ID);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             items.add(new CollectionDamagesObject(cursor));
@@ -411,7 +422,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public List<ItemsDamagedObject> getDamagesByCollectionId(String value) {
         ItemsDamagedTable idt = new ItemsDamagedTable();
         ArrayList<ItemsDamagedObject> items = new ArrayList<>();
-        Cursor cursor = getReadableDatabase().query(idt.TABLE_NAME, idt.getAllColumns(), idt.COLLECTION_ID + " = " + value , null, null, null, idt.DAMAGE_ID);
+        Cursor cursor = getReadableDatabase().query(idt.TABLE_NAME, idt.getAllColumns(), idt.COLLECTION_ID + " = " + value, null, null, null, idt.DAMAGE_ID);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             items.add(new ItemsDamagedObject(cursor));

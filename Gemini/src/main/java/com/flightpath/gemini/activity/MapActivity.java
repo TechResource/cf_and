@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.flightpath.gemini.R;
 import com.flightpathcore.acceleration.AccelerationService;
 import com.flightpathcore.base.BaseApplication;
 import com.flightpathcore.database.DBHelper;
@@ -50,7 +51,6 @@ import org.androidannotations.annotations.WakeLock;
 
 import java.util.List;
 import java.util.Map;
-import com.flightpath.gemini.R;
 
 import javax.inject.Inject;
 
@@ -93,7 +93,7 @@ public class MapActivity extends GeminiBaseActivity implements MapCallbacks, Hea
         SynchronizationHelper.initInstance(fpModel);
         currentUser = ((UserObject) DBHelper.getInstance().getLast(new DriverTable()));
         if (currentUser != null) {
-            if(!BaseApplication.isDebug(this))
+            if (!BaseApplication.isDebug(this))
                 Crashlytics.setUserIdentifier(currentUser.driverId + "");
             pointCollectInterval = 1000 * currentUser.gpsPointPer;
         }
@@ -178,6 +178,7 @@ public class MapActivity extends GeminiBaseActivity implements MapCallbacks, Hea
                     .setMessage(R.string.logout_message)
                     .setPositiveButton(R.string.ok_label, (dialog, which) -> {
                         SPHelper.deleteData(this, SPHelper.USER_SESSION_KEY);
+                        DBHelper.getInstance().clearDB(new JobsTable());
                         navigator.splashScreen();
                     })
                     .setNegativeButton(R.string.cancel_text, null)
@@ -222,8 +223,12 @@ public class MapActivity extends GeminiBaseActivity implements MapCallbacks, Hea
 
     private void showJobInfoDialog() {
         JobInfoWidget jobInfoWidget = JobInfoWidget_.build(this);
-        //TODO get proper job object
-        jobInfoWidget.setJob((JobObject) DBHelper.getInstance().getLast(new JobsTable()));
+        TripObject currentTrip = tripStatusHelper.getCurrentTrip();
+        if (currentTrip != null && currentTrip.jobId != null && currentTrip.jobId != -1) {
+            jobInfoWidget.setJob((JobObject) DBHelper.getInstance().getLast(new JobsTable()));
+        }else{
+            return;
+        }
 
         Utilities.styleAlertDialog(new AlertDialog.Builder(this, R.style.BlueAlertDialog)
                 .setView(jobInfoWidget)

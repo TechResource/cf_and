@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.flightpath.gemini.R;
 import com.flightpathcore.adapters.BaseSpinnerAdapter;
 import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.database.tables.JobsTable;
@@ -30,7 +31,6 @@ import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
-import com.flightpath.gemini.R;
 
 import javax.inject.Inject;
 
@@ -69,27 +69,28 @@ public class PrepareTripActivity extends GeminiBaseActivity implements HeaderFra
     }
 
     @AfterViews
-    protected void init(){
+    protected void init() {
         headerFragment.setViewType(HeaderFragment.ViewType.PREPARE_TRIP);
         headerFragment.setHeaderCallback(this);
         fillViewWithJobs();
     }
 
-    private void fillViewWithJobs(){
-        currentlyJobList = (List<JobObject>)DBHelper.getInstance().getMultiple(new JobsTable(),null);
+    private void fillViewWithJobs() {
+        JobsTable jobsTable = new JobsTable();
+        currentlyJobList = (List<JobObject>) DBHelper.getInstance().getMultiple(new JobsTable(), null, jobsTable.getWhereTodayNotFinishedJobsWithNoJob(), null, null);
         adapter = new BaseSpinnerAdapter(this, currentlyJobList);
         jobsSpinner.setAdapter(adapter);
-        if(currentlyJobList.size() == 0){
+        if (currentlyJobList.size() == 0) {
             noJobsContainer.setVisibility(View.VISIBLE);
             tripInfoContainer.setVisibility(View.GONE);
-        }else{
+        } else {
             noJobsContainer.setVisibility(View.GONE);
             tripInfoContainer.setVisibility(View.VISIBLE);
         }
     }
 
     @AfterTextChange
-    protected void currentMileage(){
+    protected void currentMileage() {
         headerFragment.setRightBtnEnabled(!currentMileage.getText().toString().isEmpty());
     }
 
@@ -128,7 +129,7 @@ public class PrepareTripActivity extends GeminiBaseActivity implements HeaderFra
     }
 
     @Click
-    protected void getJobs(){
+    protected void getJobs() {
         fpModel.fpApi.getJobs(new JobsRequest(SPHelper.getUserSession(this)), new MyCallback<List<JobObject>>() {
             @Override
             public void onSuccess(List<JobObject> response) {

@@ -5,7 +5,9 @@ import android.content.ContentValues;
 import com.flightpathcore.objects.JobObject;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -50,6 +52,16 @@ public class JobsTable implements AbstractTable<JobObject> {
         return id == null ? null : JOB_ID + " = " + id;
     }
 
+    public String getWhereTodayNotFinishedJobs() {
+        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        return JOB_DATE + " = '" + today + "' AND " + JOB_IS_FINISHED + "='0' ";
+    }
+
+    public String getWhereTodayNotFinishedJobsWithNoJob() {
+        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        return JOB_DATE + " = '" + today + "' AND " + JOB_IS_FINISHED + "='0' OR "+JOB_ID+" = '-1'";
+    }
+
     @Override
     public String getOutputClassName() {
         return JobObject.class.getName();
@@ -73,6 +85,7 @@ public class JobsTable implements AbstractTable<JobObject> {
         values.put(JOB_ID, object.id);
         values.put(JOB_IS_FINISHED, object.isJobDone ? 1 : 0);
         values.put(JOB_CONTENT, gson.toJson(object));
+        values.put(JOB_DATE, object.date);
         return values;
     }
 

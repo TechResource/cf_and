@@ -7,8 +7,11 @@
     </array>
     <array name="host_addresses">
         <item>http://46.17.215.204:42365</item>
-        <item>http://46.17.215.204:50001</item>
-        <item>http://192.168.0.103:42551</item>
+        <item>http://46.17.215.204:47666</item>
+        <item>http://192.168.0.102:42551</item>
         <item>http://192.168.0.109:8001</item>
+        <item>http://192.168.0.110:8001</item>
+        <item>http://192.168.0.111:8001</item>
+        <item>http://192.168.0.112:8001</item>
     </array>
 </resources>
