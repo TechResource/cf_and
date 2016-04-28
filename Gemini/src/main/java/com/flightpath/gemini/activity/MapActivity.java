@@ -115,7 +115,7 @@ public class MapActivity extends GeminiBaseActivity implements MapCallbacks, Hea
 
         menuView.setCallbacks(this);
         menuView.setupMenu(DrawerMenuView.UPDATE_APP, DrawerMenuView.STATUS, DrawerMenuView.ADD_INSPECTION, DrawerMenuView.GET_JOBS,
-                /*DrawerMenuView.JOB_INFO, */DrawerMenuView.LOGOUT, DrawerMenuView.EXIT);
+                /*DrawerMenuView.JOB_INFO, */DrawerMenuView.SYNC_NOW ,DrawerMenuView.LOGOUT, DrawerMenuView.EXIT);
 
         drawer.setDrawerListener(this);
 

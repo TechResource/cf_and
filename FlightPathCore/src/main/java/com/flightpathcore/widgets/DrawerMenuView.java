@@ -37,6 +37,7 @@ public class DrawerMenuView extends LinearLayout implements View.OnClickListener
     public final static int CLOSE_PERIOD = R.id.closePeriod;
     public final static int CLEAR_DB = R.id.cleanDB;
     public final static int STORE_DB = R.id.storeDB;
+    public final static int SYNC_NOW = R.id.sendNow;
 
     @ViewById
     protected TextView driver;
@@ -107,7 +108,7 @@ public class DrawerMenuView extends LinearLayout implements View.OnClickListener
             if (v == cleanDB)
                 DBHelper.getInstance().clearDB();
             if (v == sendNow)
-                SynchronizationHelper.getInstance().sendNow();
+                SynchronizationHelper.getInstance().sendNow(getContext());
             if (v == storeDB)
                 Utilities.storeDatabase(getContext().getApplicationContext().getPackageName());
 

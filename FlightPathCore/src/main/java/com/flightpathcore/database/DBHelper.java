@@ -296,7 +296,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public List<EventObject> getEventsToSend(int limit) {
         List<EventObject> eventsToSend = new ArrayList<>();
         if (locationHandler != null && locationHandler.getLocation() != null)
-            eventsToSend.add(new EventObject(locationHandler.getLocation().getLongitude(), locationHandler.getLocation().getLatitude(), EventObject.EventType.LOCATION, Utilities.getUtcDateTime(Utilities.getTimestamp())));
+            eventsToSend.add(new EventObject(locationHandler.getLocation().getLatitude(), locationHandler.getLocation().getLongitude(), EventObject.EventType.LOCATION, Utilities.getUtcDateTime(Utilities.getTimestamp())));
         Cursor cursor;
         try {
             cursor = getReadableDatabase().rawQuery(

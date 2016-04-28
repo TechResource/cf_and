@@ -37,4 +37,9 @@ public class RunwayApplication extends BaseApplication {
     public void getComponent() {
 
     }
+
+    @Override
+    public void logCrash(Throwable error) {
+
+    }
 }

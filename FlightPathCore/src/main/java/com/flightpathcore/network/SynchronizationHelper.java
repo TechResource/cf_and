@@ -1,7 +1,9 @@
 package com.flightpathcore.network;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.flightpathcore.base.BaseApplication;
 import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.database.tables.DriverTable;
 import com.flightpathcore.database.tables.EventTable;
@@ -200,7 +202,10 @@ public class SynchronizationHelper {
         instance.notifyListeners();
     }
 
-    public void sendNow(){
+    public void sendNow(Context context){
+        if(eventsSender == null){
+            initInstance(new FPModel(context));
+        }
         if(eventsSender != null && !sending){
             synchronized (eventsSender.lockObj) {
                 eventsSender.lockObj.notify();

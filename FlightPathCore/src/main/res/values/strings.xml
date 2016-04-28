@@ -24,7 +24,7 @@
     <string name="close_period_label">Close Period</string>
     <string name="sync_label">Synchronize</string>
     <string name="clean_db_label">Clear database[dev panel]</string>
-    <string name="send_now_label">Synchronize now[dev panel]</string>
+    <string name="send_now_label">Synchronize now</string>
     <string name="device_status_label">"Status: "</string>
     <string name="store_db_label">Store database[dev panel]</string>
 
