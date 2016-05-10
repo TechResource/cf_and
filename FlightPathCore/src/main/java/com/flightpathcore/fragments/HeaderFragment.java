@@ -76,6 +76,13 @@ public class HeaderFragment extends BaseFragment {
                 rightBtn.setVisibility(View.GONE);
                 menu.setVisibility(View.GONE);
                 break;
+            case DISPOSAL_INSPECTION:
+                leftBtn.setVisibility(View.VISIBLE);
+                leftBtn.setText(R.string.cancel_label);
+                rightBtn.setVisibility(View.VISIBLE);
+                rightBtn.setText(R.string.done_label);
+                menu.setVisibility(View.GONE);
+                break;
         }
     }
 
@@ -148,6 +155,7 @@ public class HeaderFragment extends BaseFragment {
         MAIN_ACTIVITY,
         CLOSE_PERIOD,
         INSPECTION,
+        DISPOSAL_INSPECTION,
         CLEAR
     }
 

@@ -114,7 +114,7 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
         mapFragment.setCallbacks(this);
 
         menuView.setCallbacks(this);
-        menuView.setupMenu(DrawerMenuView.UPDATE_APP, DrawerMenuView.STATUS, DrawerMenuView.ADD_INSPECTION, DrawerMenuView.GET_JOBS,
+        menuView.setupMenu(DrawerMenuView.UPDATE_APP, DrawerMenuView.STATUS, DrawerMenuView.ADD_INSPECTION, DrawerMenuView.DISPOSAL_INSPECTION, DrawerMenuView.GET_JOBS,
                 /*DrawerMenuView.JOB_INFO, */DrawerMenuView.LOGOUT, DrawerMenuView.EXIT);
 
         drawer.setDrawerListener(this);
@@ -452,6 +452,8 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
                 logout();
             } else if (onMenuCloseOpenViewWithId == DrawerMenuView.EXIT) {
                 onExit();
+            } else if( onMenuCloseOpenViewWithId == DrawerMenuView.DISPOSAL_INSPECTION){
+                navigator.addDisposalInspection();
             }
         }
 

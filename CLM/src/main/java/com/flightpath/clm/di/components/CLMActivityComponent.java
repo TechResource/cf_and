@@ -1,5 +1,6 @@
 package com.flightpath.clm.di.components;
 
+import com.flightpath.clm.activity.DisposalInspectionActivity;
 import com.flightpath.clm.activity.InspectionActivity;
 import com.flightpath.clm.activity.LoginActivity;
 import com.flightpath.clm.activity.MapActivity;
@@ -28,4 +29,5 @@ public interface CLMActivityComponent extends ActivityComponent {
     void inject(MapActivity activity);
     void inject(InspectionActivity activity);
     void inject(PrepareTripActivity activity);
+    void inject(DisposalInspectionActivity activity);
 }

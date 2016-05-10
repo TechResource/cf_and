@@ -80,6 +80,8 @@ public class EventObject{
             return EventType.INSPECTION;
         }else if(type.equals("CHANGE_MILEAGE")){
             return EventType.CHANGE_MILEAGE;
+        }else if(type.equals("DISPOSAL_INSPECTION")){
+            return EventType.DISPOSAL_INSPECTION;
         }
 
         throw new IllegalArgumentException("wrong type :"+type);
@@ -105,6 +107,8 @@ public class EventObject{
                 return "INSPECTION";
             case CHANGE_MILEAGE:
                 return "CHANGE_MILEAGE";
+            case DISPOSAL_INSPECTION:
+                return "DISPOSAL_INSPECTION";
         }
         throw new IllegalArgumentException("wrong type");
     }
@@ -129,6 +133,8 @@ public class EventObject{
                 return "INSPECTION";
             case CHANGE_MILEAGE:
                 return "CHANGE_MILEAGE";
+            case DISPOSAL_INSPECTION:
+                return "DISPOSAL_INSPECTION";
         }
         throw new IllegalArgumentException("wrong type");
     }
@@ -141,6 +147,7 @@ public class EventObject{
         STOP,
         POINT,
         INSPECTION,
+        DISPOSAL_INSPECTION,
         STATUS,
         CHANGE_MILEAGE
     }

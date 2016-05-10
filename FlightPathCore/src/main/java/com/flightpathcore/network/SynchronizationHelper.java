@@ -1,15 +1,12 @@
 package com.flightpathcore.network;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.flightpathcore.base.BaseApplication;
 import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.database.tables.DriverTable;
 import com.flightpathcore.database.tables.EventTable;
-import com.flightpathcore.database.tables.ItemsDamagedTable;
-import com.flightpathcore.di.DICore;
 import com.flightpathcore.network.requests.SynchronizeRequest;
+import com.flightpathcore.objects.DisposalObject;
 import com.flightpathcore.objects.EventObject;
 import com.flightpathcore.objects.ItemsDamagedObject;
 import com.flightpathcore.objects.UserObject;
@@ -20,8 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.inject.Inject;
 
 import retrofit.RetrofitError;
 import retrofit.mime.TypedFile;
@@ -34,7 +29,7 @@ public class SynchronizationHelper {
     protected FPModel fpModel;
     private static SynchronizationHelper instance = null;
     private Thread syncThread = null;
-    private int synPerMillis = 180*1000;
+    private int synPerMillis = 180 * 1000;
     private boolean shouldRunning = true;
     private UserObject user;
     private List<SynchronizationCallback> listeners;
@@ -49,14 +44,14 @@ public class SynchronizationHelper {
     }
 
     public static void initInstance(FPModel fpModel) {
-        if(instance == null) {
+        if (instance == null) {
             instance = new SynchronizationHelper();
         }
         instance.fpModel = fpModel;
 
         instance.listeners = new ArrayList<>();
-        instance.user = (UserObject) DBHelper.getInstance().get(new DriverTable(), DriverTable.HELPER_ID+"");
-        if(instance.user != null){
+        instance.user = (UserObject) DBHelper.getInstance().get(new DriverTable(), DriverTable.HELPER_ID + "");
+        if (instance.user != null) {
             instance.synPerMillis = instance.user.synchronizationPer * 1000;
         }
         instance.eventsSender = new EventsSender();
@@ -65,21 +60,22 @@ public class SynchronizationHelper {
         instance.eventsLeft = DBHelper.getInstance().countEventsLeft();
     }
 
-    public void stopThread(){
+    public void stopThread() {
         shouldRunning = false;
         syncThread.interrupt();
     }
 
-    public void addListener(SynchronizationCallback listener){
+    public void addListener(SynchronizationCallback listener) {
         listeners.add(listener);
         listener.onSynchronization(eventsLeft, lastSyncDate, syncState);
     }
 
-    public void removeListener(SynchronizationCallback listener){
-        while(listeners.remove(listener)){}
+    public void removeListener(SynchronizationCallback listener) {
+        while (listeners.remove(listener)) {
+        }
     }
 
-    public void notifyListeners(){
+    public void notifyListeners() {
         for (SynchronizationCallback l : listeners) {
             l.onSynchronization(eventsLeft, lastSyncDate, syncState);
         }
@@ -101,8 +97,8 @@ public class SynchronizationHelper {
 
             eventTable = new EventTable();
 
-            while (instance.shouldRunning){
-                if(!instance.sending) {
+            while (instance.shouldRunning) {
+                if (!instance.sending) {
                     instance.sending = true;
                     if (instance.user == null) {
                         instance.user = (UserObject) DBHelper.getInstance().get(new DriverTable(), DriverTable.HELPER_ID + "");
@@ -119,15 +115,15 @@ public class SynchronizationHelper {
                             } catch (RetrofitError e) {
                                 response = null;
                             }
-                            if(response != null){
+                            if (response != null) {
                                 DBHelper.getInstance().setEventsSuccess(eventsToSend);
                             }
-                        }else{
+                        } else {
                             response = 1;
                         }
 
                         Integer imgResponse = 1;
-                        if(response != null) {
+                        if (response != null) {
                             EventObject lastSendEvent = DBHelper.getInstance().getLastSendEvent();
                             if (lastSendEvent != null) {
                                 Map<String, TypedFile> output = createMultipartOutput(lastSendEvent.eventId);
@@ -146,13 +142,27 @@ public class SynchronizationHelper {
                                 } else {
                                     imgResponse = 1;
                                 }
+                                Integer disposalResponse = 1;
+                                Map<String, TypedFile> outputDisposalInspection = createMultipartOutputDisposalInspection(lastSendEvent.eventId);
+                                if (outputDisposalInspection != null) {
+                                    try {
+                                        disposalResponse = instance.fpModel.fpApi.sendMultipleFiles(outputDisposalInspection);
+                                        if (disposalResponse != null) {
+                                            for (DisposalObject disposalObject : DBHelper.getInstance().getDisposalInspectionToSend(lastSendEvent.eventId)) {
+                                                DBHelper.getInstance().markDisposalAsSent(disposalObject.id);
+                                            }
+                                        }
+                                    } catch (RetrofitError e) {
+                                    }
+                                }
+
                             } else {
                                 imgResponse = 1;
                             }
                         }
 
                         instance.lastSyncDate = Utilities.getCurrentDateFormatted();
-                        if (response != null && imgResponse != null ) {
+                        if (response != null && imgResponse != null) {
                             instance.syncState = SyncState.STATE_OK;
                         } else {
                             if (instance.syncState == SyncState.STATE_OK) {
@@ -176,18 +186,18 @@ public class SynchronizationHelper {
             }
         }
 
-        private Map<String,TypedFile> createMultipartOutput( long eventIdTo) {
+        private Map<String, TypedFile> createMultipartOutput(long eventIdTo) {
 
             List<ItemsDamagedObject> items = DBHelper.getInstance().getDamagedItemsToSend(eventIdTo);
 
-            if( items == null || items.size() == 0){
+            if (items == null || items.size() == 0) {
                 return null;
             }
 
-            Map<String,TypedFile> multipartTypedOutput = new HashMap<>();
-            for(int i=0;i<items.size();i++){
-                File f = new File(items.get(i).imagePath.replace("file:",""));
-                EventObject event = (EventObject) DBHelper.getInstance().get(new EventTable(), items.get(i).eventId+"");
+            Map<String, TypedFile> multipartTypedOutput = new HashMap<>();
+            for (int i = 0; i < items.size(); i++) {
+                File f = new File(items.get(i).imagePath.replace("file:", ""));
+                EventObject event = (EventObject) DBHelper.getInstance().get(new EventTable(), items.get(i).eventId + "");
                 if (event != null) {
                     multipartTypedOutput.put(("damage_item_id[" + event.timestamp + "|" + items.get(i).id + "]"), new TypedFile("image/jpg", f));
                 }
@@ -195,29 +205,51 @@ public class SynchronizationHelper {
             return multipartTypedOutput;
         }
 
+        private Map<String, TypedFile> createMultipartOutputDisposalInspection(long eventIdTo) {
+
+            List<DisposalObject> items = DBHelper.getInstance().getDisposalInspectionToSend(eventIdTo);
+
+            if (items == null || items.size() == 0) {
+                return null;
+            }
+
+            Map<String, TypedFile> multipartTypedOutput = new HashMap<>();
+            for (int i = 0; i < items.size(); i++) {
+//                for (String imgPath : items.get(i).imagePaths) {
+                for (int p = 0; p < items.get(i).imagePaths.size(); p++) {
+                    File f = new File(items.get(i).imagePaths.get(p).replace("file:", ""));
+                    EventObject event = (EventObject) DBHelper.getInstance().get(new EventTable(), items.get(i).eventId + "");
+                    if (event != null) {
+                        multipartTypedOutput.put(("disposal_photo[" + event.timestamp + "|" + items.get(i).id + "|" + p + "]"), new TypedFile("image/jpg", f));
+                    }
+                }
+            }
+            return multipartTypedOutput;
+        }
+
     }
 
-    public void updateCounter(){
+    public void updateCounter() {
         instance.eventsLeft = DBHelper.getInstance().countEventsLeft();
         instance.notifyListeners();
     }
 
-    public void sendNow(Context context){
-        if(eventsSender == null){
+    public void sendNow(Context context) {
+        if (eventsSender == null) {
             initInstance(new FPModel(context));
         }
-        if(eventsSender != null && !sending){
+        if (eventsSender != null && !sending) {
             synchronized (eventsSender.lockObj) {
                 eventsSender.lockObj.notify();
             }
         }
     }
 
-    public interface SynchronizationCallback{
-        void onSynchronization(int eventsLeft, String dateOfLastSuccessfulSynchronization, SyncState syncState );
+    public interface SynchronizationCallback {
+        void onSynchronization(int eventsLeft, String dateOfLastSuccessfulSynchronization, SyncState syncState);
     }
 
-    public enum SyncState{
+    public enum SyncState {
         STATE_OK,
         STATE_LAST_SYNC_FAILED,
         STATE_SYNC_FAILED

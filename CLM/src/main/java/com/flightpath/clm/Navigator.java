@@ -2,6 +2,7 @@ package com.flightpath.clm;
 
 import android.app.Activity;
 
+import com.flightpath.clm.activity.DisposalInspectionActivity_;
 import com.flightpath.clm.activity.InspectionActivity_;
 import com.flightpath.clm.activity.LoginActivity_;
 import com.flightpath.clm.activity.MapActivity_;
@@ -53,5 +54,9 @@ public class Navigator extends NavigatorAbstract {
     }
 
     public void closePeriod() {
+    }
+
+    public void addDisposalInspection() {
+        DisposalInspectionActivity_.intent(activity).start();
     }
 }

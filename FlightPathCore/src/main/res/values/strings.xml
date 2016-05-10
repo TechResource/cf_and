@@ -17,6 +17,7 @@
     <string name="update_app_label">Update App</string>
     <string name="status_label">Status</string>
     <string name="add_inspection_label">Add Inspection</string>
+    <string name="add_disposal_inspection_label">Disposal Inspection</string>
     <string name="get_jobs_label">Get Jobs</string>
     <string name="job_info_label">Job Info</string>
     <string name="logout_label">Log out</string>
@@ -61,4 +62,5 @@
     <string name="field_required_error">Field can\'t be empty.</string>
     <string name="prepare_trip_no_jobs_text">Currently there is no jobs for you. Please tap below button to get newest job list from server.</string>
     <string name="end_mileage_label">End Trip Mileage</string>
+    <string name="remove_image_text">Are you sure you want to remove photo?</string>
 </resources>

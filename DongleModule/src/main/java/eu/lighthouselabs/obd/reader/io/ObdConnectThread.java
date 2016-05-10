@@ -1,5 +1,13 @@
 package eu.lighthouselabs.obd.reader.io;
 
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -11,23 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import android.Manifest;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.util.Log;
-
-
-import com.flightpathcore.base.BaseApplication;
-
 import eu.lighthouselabs.obd.reader.command.ObdCommand;
 import eu.lighthouselabs.obd.reader.io.ObdReaderServiceConnection.OBDServiceHandler;
-import flightpath.com.donglemodule.DonglePreferences;
 
 public class ObdConnectThread extends Thread implements LocationListener {
 
@@ -74,16 +67,15 @@ public class ObdConnectThread extends Thread implements LocationListener {
         sock = this.dev.createRfcommSocketToServiceRecord(MY_UUID);
         try {
             sock.connect();
-        } catch (IOException e){
+        } catch (IOException e) {
             try {
                 Log.d("OBDCONNECTTHREAD", "trying fallback...");
 
-                sock =(BluetoothSocket) dev.getClass().getMethod("createRfcommSocket", new Class[] {int.class}).invoke(dev,1);
+                sock = (BluetoothSocket) dev.getClass().getMethod("createRfcommSocket", new Class[]{int.class}).invoke(dev, 1);
                 sock.connect();
 
-                Log.d("OBDCONNECTTHREAD","Connected");
-            }
-            catch (Exception e2) {
+                Log.d("OBDCONNECTTHREAD", "Connected");
+            } catch (Exception e2) {
                 Log.d("OBDCONNECTTHREAD", "Couldn't establish Bluetooth connection!");
             }
         }

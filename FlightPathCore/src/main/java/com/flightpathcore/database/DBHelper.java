@@ -10,6 +10,7 @@ import android.util.Log;
 import com.flightpathcore.base.LocationInterfacce;
 import com.flightpathcore.database.tables.AbstractTable;
 import com.flightpathcore.database.tables.CollectionDamagesTable;
+import com.flightpathcore.database.tables.DisposalInspectionTable;
 import com.flightpathcore.database.tables.DriverTable;
 import com.flightpathcore.database.tables.EventTable;
 import com.flightpathcore.database.tables.ItemsDamagedTable;
@@ -18,6 +19,7 @@ import com.flightpathcore.database.tables.PointsTable;
 import com.flightpathcore.database.tables.TripTable;
 import com.flightpathcore.network.SynchronizationHelper;
 import com.flightpathcore.objects.CollectionDamagesObject;
+import com.flightpathcore.objects.DisposalObject;
 import com.flightpathcore.objects.EventObject;
 import com.flightpathcore.objects.ItemsDamagedObject;
 import com.flightpathcore.objects.TripObject;
@@ -37,7 +39,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static DBHelper instance = null;
 
     public static final String DATABASE_NAME = "fp.db";
-    private static final int DATABASE_VERSION = 23;
+    private static final int DATABASE_VERSION = 24;
 
     private String allColumnsEvent = null;
     private LocationInterfacce locationHandler = null;
@@ -77,6 +79,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + JobsTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + ItemsDamagedTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + CollectionDamagesTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + DisposalInspectionTable.TABLE_NAME);
         onCreate(getWritableDatabase());
     }
 
@@ -94,6 +97,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(JobsTable.CREATE_TABLE);
         db.execSQL(ItemsDamagedTable.CREATE_TABLE);
         db.execSQL(CollectionDamagesTable.CREATE_TABLE);
+        db.execSQL(DisposalInspectionTable.CREATE_TABLE);
     }
 
     @Override
@@ -142,6 +146,7 @@ public class DBHelper extends SQLiteOpenHelper {
             } catch (Exception e) {
             }
         }
+        //24 added new table @DisposalInspectionTable
     }
 
     public void updateOrInsert(AbstractTable table, ContentValues values, String id) {
@@ -433,5 +438,23 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void setLocationHandler(LocationInterfacce locationHandler) {
         this.locationHandler = locationHandler;
+    }
+
+    public List<DisposalObject> getDisposalInspectionToSend(long eventIdTo) {
+        DisposalInspectionTable dt = new DisposalInspectionTable();
+        ArrayList<DisposalObject> items = new ArrayList<>();
+        Cursor cursor = getReadableDatabase().query(dt.TABLE_NAME, dt.getAllColumns(), DisposalInspectionTable.DISPOSAL_EVENT_ID + " <= " + eventIdTo + " AND " + DisposalInspectionTable.DISPOSAL_IS_SENT + "=0 ", null, null, null, dt.getIdColumn());
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            items.add(new DisposalObject(cursor));
+            cursor.moveToNext();
+        }
+        return items;
+    }
+
+    public void markDisposalAsSent(Long id) {
+        ContentValues values = new ContentValues();
+        values.put(ItemsDamagedTable.IS_SENT, 1);
+        getWritableDatabase().update(DisposalInspectionTable.TABLE_NAME, values, DisposalInspectionTable.DISPOSAL_ID + "=" + id, null);
     }
 }

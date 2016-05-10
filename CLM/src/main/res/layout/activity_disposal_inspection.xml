@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+
+    <fragment
+        android:id="@+id/headerFragment"
+        class="com.flightpathcore.fragments.HeaderFragment_"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_columnSpan="2"
+        android:layout_rowSpan="1"
+        android:tag="headerFragment"
+        tools:layout="@layout/fragment_header"
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/addPhoto"
+        android:layout_below="@+id/headerFragment"
+        android:divider="@drawable/inspection_divider"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
+
+        <com.flightpathcore.widgets.InputWidget_
+            android:id="@+id/registration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="2"
+            android:layout_rowSpan="1"
+            app:hint="@string/registration_hint"
+            app:is_required="true"
+            />
+
+        <GridView
+            android:id="@+id/imgContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="2"
+            android:layout_margin="@dimen/margin_very_small"
+            android:listSelector="@android:color/transparent"
+            >
+        </GridView>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/addPhoto"
+        style="@style/Base.BlueButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/add_photo_text"
+        />
+</RelativeLayout>

@@ -38,6 +38,11 @@
                   android:theme="@style/BaseTheme.AppThemeTranslucentBg"
                   android:screenOrientation="portrait"
                    />
+        <activity android:name=".activity.DisposalInspectionActivity_"
+                  android:theme="@style/BaseTheme.AppThemeTranslucentBg"
+                  android:screenOrientation="portrait"
+                  android:windowSoftInputMode="stateHidden"
+            />
 
         <meta-data
             android:name="io.fabric.ApiKey"

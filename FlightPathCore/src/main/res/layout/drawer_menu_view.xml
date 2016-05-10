@@ -63,6 +63,17 @@
             />
 
         <Button
+            android:id="@+id/disposalInspection"
+            style="@style/Menu.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_disposal_inspection_label"
+            android:drawableLeft="@drawable/ic_add_inspection"
+            android:drawablePadding="@dimen/margin_small"
+            android:visibility="gone"
+            />
+
+        <Button
             android:id="@+id/getJobs"
             style="@style/Menu.Button"
             android:layout_width="match_parent"

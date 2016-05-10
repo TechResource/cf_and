@@ -1,5 +1,6 @@
 package com.flightpath.clm.di;
 
+import com.flightpath.clm.activity.DisposalInspectionActivity;
 import com.flightpath.clm.activity.InspectionActivity;
 import com.flightpath.clm.activity.LoginActivity;
 import com.flightpath.clm.activity.MapActivity;
@@ -69,6 +70,10 @@ public class DI {
         }
 
         public void inject(PrepareTripActivity activity) {
+            activityComponent(activity).inject(activity);
+        }
+
+        public void inject(DisposalInspectionActivity activity) {
             activityComponent(activity).inject(activity);
         }
     }
