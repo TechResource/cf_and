@@ -220,7 +220,7 @@ public class SynchronizationHelper {
                     File f = new File(items.get(i).imagePaths.get(p).replace("file:", ""));
                     EventObject event = (EventObject) DBHelper.getInstance().get(new EventTable(), items.get(i).eventId + "");
                     if (event != null) {
-                        multipartTypedOutput.put(("disposal_photo[" + event.timestamp + "|" + items.get(i).id + "|" + p + "]"), new TypedFile("image/jpg", f));
+                        multipartTypedOutput.put(("disposal_photo[" + event.timestamp + "|" + items.get(i).id + "|" + (p+1) + "]"), new TypedFile("image/jpg", f));
                     }
                 }
             }
