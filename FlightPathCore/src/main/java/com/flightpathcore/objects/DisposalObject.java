@@ -27,6 +27,7 @@ public class DisposalObject implements Serializable{
         id = cursor.getLong(0);
         eventId = cursor.getLong(1);
         imagePaths = new Gson().fromJson(cursor.getString(2), new TypeToken<List<String>>(){}.getType());
+        registrationNumber = cursor.getString(4);
     }
 
     public String getImage(int position) {

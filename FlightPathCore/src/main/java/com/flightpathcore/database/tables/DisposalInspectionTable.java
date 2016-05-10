@@ -18,9 +18,9 @@ public class DisposalInspectionTable implements AbstractTable<DisposalObject> {
     public static final String DISPOSAL_IS_SENT = "di_is_sent";
 
     public static final String CREATE_TABLE = "create table IF NOT EXISTS " + TABLE_NAME + " (" +
-            DISPOSAL_ID + " integer primary key," +
-            DISPOSAL_REGISTRATION_NUMBER + " text," +
-            DISPOSAL_EVENT_ID + " integer," +
+            DISPOSAL_ID + " integer primary key, " +
+            DISPOSAL_REGISTRATION_NUMBER + " text, " +
+            DISPOSAL_EVENT_ID + " integer, " +
             DISPOSAL_IMAGE_PATH + " text, " +
             DISPOSAL_IS_SENT + " integer " + ");";
 

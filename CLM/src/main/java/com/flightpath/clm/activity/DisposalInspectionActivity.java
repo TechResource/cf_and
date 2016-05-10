@@ -73,10 +73,7 @@ public class DisposalInspectionActivity extends CLMBaseActivity implements Dispo
         if(savedInstanceState != null) {
             photoFile = savedInstanceState.getParcelable("photo_file");
             disposalObject = (DisposalObject) savedInstanceState.getSerializable("disposal_object");
-            if(disposalObject != null && disposalObject.imagePaths.size() >= 8)
-                addPhoto.setVisibility(View.GONE);
-            else
-                addPhoto.setVisibility(View.VISIBLE);
+
         }
         if(disposalObject == null){
             disposalObject = new DisposalObject();
@@ -107,8 +104,10 @@ public class DisposalInspectionActivity extends CLMBaseActivity implements Dispo
     protected void init() {
         headerFragment.setViewType(HeaderFragment.ViewType.DISPOSAL_INSPECTION);
         headerFragment.setHeaderCallback(this);
+        headerFragment.setRightBtnEnabled(false);
         adapter = new DisposalImagesAdapter();
         imgContainer.setAdapter(adapter);
+        validate(false);
     }
 
     @Click
@@ -145,8 +144,7 @@ public class DisposalInspectionActivity extends CLMBaseActivity implements Dispo
             try {
                 Utils.decodeUri(this, photoFile, 400);
                 disposalObject.imagePaths.add(photoFile.toString());
-                if(disposalObject.imagePaths.size() >= 8)
-                    addPhoto.setVisibility(View.GONE);
+                validate(false);
                 adapter.notifyDataSetChanged();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -158,9 +156,7 @@ public class DisposalInspectionActivity extends CLMBaseActivity implements Dispo
     public void onRemove(int position) {
         disposalObject.imagePaths.remove(position);
         adapter.notifyDataSetChanged();
-        if(disposalObject.imagePaths.size() < 8){
-            addPhoto.setVisibility(View.VISIBLE);
-        }
+        validate(false);
     }
 
     @Override
@@ -171,7 +167,7 @@ public class DisposalInspectionActivity extends CLMBaseActivity implements Dispo
     @Override
     public void onHeaderRightBtnClick() {
         //save to db
-        if(validate()) {
+        if(validate(true)) {
             disposalObject.registrationNumber = registration.getValue();
             DisposalInspectionTable dt = new DisposalInspectionTable();
             disposalObject.id = DBHelper.getInstance().insert(dt, dt.getContentValues(disposalObject));
@@ -179,11 +175,14 @@ public class DisposalInspectionActivity extends CLMBaseActivity implements Dispo
             EventObject event = new EventObject();
             event.type = EventObject.EventType.DISPOSAL_INSPECTION;
             event.timestamp = Utilities.getTimestamp() + "";
-            event.customEventObject = new Gson().toJson(disposalObject);
 
             EventTable et = new EventTable();
             disposalObject.eventId = DBHelper.getInstance().insert(et, et.getContentValues(event));
-            DBHelper.getInstance().updateOrInsert(dt, dt.getContentValues(disposalObject), dt.getWhereClause(disposalObject.id + ""));
+            DBHelper.getInstance().updateOrInsert(dt, dt.getContentValues(disposalObject), disposalObject.id + "");
+
+            event.customEventObject = new Gson().toJson(disposalObject);
+            event.eventId = disposalObject.eventId;
+            DBHelper.getInstance().updateOrInsert(et, et.getContentValues(event), event.eventId+"");
 
             finish();
         }
@@ -194,14 +193,24 @@ public class DisposalInspectionActivity extends CLMBaseActivity implements Dispo
         finish();
     }
 
-    private boolean validate() {
+    private boolean validate(boolean check) {
+        boolean valid = true;
+
         if(registration.getValue().isEmpty()) {
-            registration.setError(getString(R.string.field_required_error));
-            return false;
-        }else if(disposalObject.imagePaths.size() == 0){
-            return false;
+            if(check)
+                registration.setError(getString(R.string.field_required_error));
+            valid = false;
         }
-        return true;
+        if(disposalObject.imagePaths.size() >= 8)
+            addPhoto.setVisibility(View.GONE);
+
+        if(disposalObject.imagePaths.size() == 0) {
+            addPhoto.setVisibility(View.VISIBLE);
+            valid = false;
+        }
+
+        headerFragment.setRightBtnEnabled(valid);
+        return valid;
     }
 
     @Override

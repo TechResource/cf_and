@@ -443,7 +443,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public List<DisposalObject> getDisposalInspectionToSend(long eventIdTo) {
         DisposalInspectionTable dt = new DisposalInspectionTable();
         ArrayList<DisposalObject> items = new ArrayList<>();
-        Cursor cursor = getReadableDatabase().query(dt.TABLE_NAME, dt.getAllColumns(), DisposalInspectionTable.DISPOSAL_EVENT_ID + " <= " + eventIdTo + " AND " + DisposalInspectionTable.DISPOSAL_IS_SENT + "=0 ", null, null, null, dt.getIdColumn());
+        Cursor cursor = getReadableDatabase().query(dt.TABLE_NAME, dt.getAllColumns(), DisposalInspectionTable.DISPOSAL_EVENT_ID + " <= " + eventIdTo + " AND " + DisposalInspectionTable.DISPOSAL_IS_SENT + "= 0 ", null, null, null, dt.getIdColumn());
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             items.add(new DisposalObject(cursor));
@@ -454,7 +454,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public void markDisposalAsSent(Long id) {
         ContentValues values = new ContentValues();
-        values.put(ItemsDamagedTable.IS_SENT, 1);
+        values.put(DisposalInspectionTable.DISPOSAL_IS_SENT, 1);
         getWritableDatabase().update(DisposalInspectionTable.TABLE_NAME, values, DisposalInspectionTable.DISPOSAL_ID + "=" + id, null);
     }
 }
