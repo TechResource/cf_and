@@ -36,6 +36,12 @@ public class FuelEconomyObdCommand2 extends ObdCommand {
 			setError(e);
 		}
 	}
+
+	@Override
+	public Object getRawValue() {
+		return fuelEcon;
+	}
+
 	public void runCmd(ObdCommand cmd) {
 		cmd.setInputStream(inStream);
 		cmd.setOutputStream(outStream);

@@ -48,7 +48,7 @@ public class ObdConfig {
         cmds.add(new MAFAirFlowObdCommand());
 //        cmds.add(new FuelEconomyObdCommand());
         cmds.add(new FuelEconomyObdCommand2());
-        cmds.add(new AverageFuelEconomyObdCommand());
+//        cmds.add(new AverageFuelEconomyObdCommand());
 
 //         cmds.add(new FuelEconomyMAPObdCommand());
 //         cmds.add(new FuelEconomyCommandedMAPObdCommand());

@@ -26,6 +26,7 @@ import com.flightpathcore.utilities.SPHelper;
 
 import eu.lighthouselabs.obd.reader.activity.ObdReaderConfigActivity;
 import eu.lighthouselabs.obd.reader.command.ObdCommand;
+import eu.lighthouselabs.obd.reader.config.ObdConfig;
 import eu.lighthouselabs.obd.reader.io.ObdReaderServiceConnection.OBDServiceHandler;
 import flightpath.com.donglemodule.DonglePreferences;
 import flightpath.com.donglemodule.R;
@@ -198,6 +199,17 @@ public class ObdReaderService extends Service {
         if (isError && this.isRunning()) {
             this.stopService();
         }
+    }
+
+    public Double getCurrentFuelEcon(){
+        if(connectThread != null && connectThread.data.get(ObdConfig.FUEL_ECON) != null){
+            try {
+                return (Double) connectThread.data.get(ObdConfig.FUEL_ECON);
+            }catch (ClassCastException e){
+                return null;
+            }
+        }
+        return null;
     }
 
     public Map<String, String> getDataMap() {

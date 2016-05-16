@@ -22,12 +22,16 @@ public class MAFAirFlowObdCommand extends ObdCommand {
         if ("NODATA".equals(res) || res.isEmpty()) {
             return "NODATA";
         }
-        String A = res.substring(4, 6);
-        String B = res.substring(6, 8);
-        int a = Integer.parseInt(A, 16);
-        int b = Integer.parseInt(B, 16);
-        maf = ((256.0 * a) + b) / 100.0;
-        return Integer.toString((int) maf);
+        try {
+            String A = res.substring(4, 6);
+            String B = res.substring(6, 8);
+            int a = Integer.parseInt(A, 16);
+            int b = Integer.parseInt(B, 16);
+            maf = ((256.0 * a) + b) / 100.0;
+            return Integer.toString((int) maf);
+        }catch (Exception e){
+            return "NODATA";
+        }
     }
 
     double getMAF() {

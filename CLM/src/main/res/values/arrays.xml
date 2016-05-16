@@ -2,6 +2,7 @@
 <resources>
     <array name="host_addresses">
         <!-- PRODUCTION -->
+        <item>http://46.17.215.204:47666</item>
         <item>http://46.17.215.204:42365</item>
         <item>http://46.17.215.204:42551</item>
         <!--KICHA-->

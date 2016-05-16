@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import eu.lighthouselabs.obd.reader.command.AverageFuelEconomyObdCommand;
 import eu.lighthouselabs.obd.reader.command.ObdCommand;
 import eu.lighthouselabs.obd.reader.io.ObdReaderServiceConnection.OBDServiceHandler;
 
@@ -77,6 +78,12 @@ public class ObdConnectThread extends Thread implements LocationListener {
                 Log.d("OBDCONNECTTHREAD", "Connected");
             } catch (Exception e2) {
                 Log.d("OBDCONNECTTHREAD", "Couldn't establish Bluetooth connection!");
+
+                if (additionalHandler != null) {
+                    if (sock == null || !sock.isConnected())
+                        additionalHandler.onOBDDisconnected(e2);
+                }
+                return;
             }
         }
 

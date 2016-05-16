@@ -122,6 +122,8 @@ public class DongleContainerFragment extends BaseFragment implements DongleDataH
 
     @Override
     public void onDongleConnected() {
+        if(getActivity() == null)
+            return;
         if(devicePickerShowing) {
             if (chartsContainerFragment == null) {
                 chartsContainerFragment = (ChartsContainerFragment) getChildFragmentManager().findFragmentByTag("chartsContainerFragment");

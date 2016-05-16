@@ -5,7 +5,8 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +15,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import eu.lighthouselabs.obd.reader.activity.ObdReaderConfigActivity;
 import eu.lighthouselabs.obd.reader.command.ObdCommand;
 import eu.lighthouselabs.obd.reader.config.ObdConfig;
 import eu.lighthouselabs.obd.reader.io.ObdReaderService;
@@ -23,7 +23,10 @@ import eu.lighthouselabs.obd.reader.io.ObdReaderServiceConnection;
 /**
  * Created by Tomasz Szafran ( tomek@appsvisio.com ) on 2015-11-13.
  */
-public class DongleDataHelper implements ObdReaderServiceConnection.OBDServiceHandler{
+public class DongleDataHelper implements ObdReaderServiceConnection.OBDServiceHandler {
+
+    private static final String AVG_FUEL_ECON = "avg_fuel_econ";
+    private static final String AVG_FUEL_ECON_COUNT = "avg_fuel_econ_count";
 
     private List<DongleDataListener> listeners;
     private Map<String, String> currentDongleData;
@@ -33,80 +36,84 @@ public class DongleDataHelper implements ObdReaderServiceConnection.OBDServiceHa
     private BluetoothDevice pairedDevice = null;
     private List<DongleServiceListener> dongleServiceListeners;
     private boolean isDongleConnected = false;
+    private Map<String, Double> avgFuelEcon;
 
     @Inject
-    public DongleDataHelper(){
+    public DongleDataHelper() {
         listeners = new ArrayList<>();
         dongleServiceListeners = new ArrayList<>();
+        avgFuelEcon = new HashMap<>();
     }
 
-    public void setDongleServiceListener(DongleServiceListener listener){
+    public void setDongleServiceListener(DongleServiceListener listener) {
         this.dongleServiceListeners.add(listener);
     }
 
-    public void startService(Activity activity){
-        if(serviceIntent != null && serviceConnection != null && !serviceConnection.isRunning()){
+    public void startService(Activity activity) {
+        if (serviceIntent != null && serviceConnection != null) {
             onDestroy(activity);
         }
         serviceIntent = new Intent(activity, ObdReaderService.class);
         serviceConnection = new ObdReaderServiceConnection(this);
-        if(!serviceConnection.isRunning()){
+        if (!serviceConnection.isRunning()) {
             activity.bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE);
         }
     }
 
-    public void setPairedDevice(BluetoothDevice device){
+    public void setPairedDevice(BluetoothDevice device) {
         this.pairedDevice = device;
     }
 
-    private void startCollectingData(){
-        if(serviceConnection != null && !serviceConnection.isRunning() && serviceConnection.getService() != null) {
+    private void startCollectingData() {
+        if (serviceConnection != null && !serviceConnection.isRunning() && serviceConnection.getService() != null) {
             serviceConnection.getService().startService();
         }
     }
 
-    public void onDestroy(Activity activity){
-        if(serviceConnection != null && serviceConnection.isRunning()) {
+    public void onDestroy(Activity activity) {
+        if (serviceConnection != null && serviceConnection.isRunning()) {
             try {
                 activity.unbindService(serviceConnection);
-            }catch (Exception e){
+            } catch (Exception e) {
 
             }
         }
-        if(activity != null && serviceIntent != null) {
+        if (activity != null && serviceIntent != null) {
             activity.stopService(serviceIntent);
         }
-        if(collectDongleDataThread != null){
+        if (collectDongleDataThread != null) {
             collectDongleDataThread.stop = true;
         }
     }
 
-    public void onDataReceived(Map<String, String> dongleData){
+    public void onDataReceived(Map<String, String> dongleData) {
         this.currentDongleData = dongleData;
         notifyAllListeners();
     }
 
-    public void addListener(DongleDataListener listener){
+    public void addListener(DongleDataListener listener) {
         listeners.add(listener);
         listener.onDongleDataReceived(currentDongleData);
     }
 
-    public void removeListener(DongleDataListener listener){
-        while (listeners.remove(listener));
+    public void removeListener(DongleDataListener listener) {
+        while (listeners.remove(listener))
+            ;
     }
 
-    private void notifyAllListeners(){
-        for (DongleDataListener l : listeners){
-            l.onDongleDataReceived(currentDongleData);
+    private void notifyAllListeners() {
+        Map<String, String> dataCpy = new HashMap<>(currentDongleData);
+        for (DongleDataListener l : listeners) {
+            l.onDongleDataReceived(dataCpy);
         }
     }
 
     @Override
     public void serviceConnected() {
-        if(serviceConnection != null && serviceConnection.getService() != null) {
+        if (serviceConnection != null && serviceConnection.getService() != null) {
             serviceConnection.getService().additionalHandler = this;
         }
-        if(pairedDevice != null){
+        if (pairedDevice != null) {
             startCollectingData();
         }
     }
@@ -114,13 +121,13 @@ public class DongleDataHelper implements ObdReaderServiceConnection.OBDServiceHa
     @Override
     public void onOBDConnected() {
         isDongleConnected = true;
-        if(collectDongleDataThread == null){
+        if (collectDongleDataThread == null) {
             collectDongleDataThread = new CollectDongleDataThread();
         }
-        if(!collectDongleDataThread.isAlive()){
+        if (!collectDongleDataThread.isAlive()) {
             collectDongleDataThread.start();
         }
-        for(DongleServiceListener dongleServiceListener : dongleServiceListeners) {
+        for (DongleServiceListener dongleServiceListener : dongleServiceListeners) {
             if (dongleServiceListener != null) {
                 dongleServiceListener.onDongleConnected();
             }
@@ -129,7 +136,7 @@ public class DongleDataHelper implements ObdReaderServiceConnection.OBDServiceHa
 
     @Override
     public void serviceDisconnected() {
-        if(collectDongleDataThread != null){
+        if (collectDongleDataThread != null) {
             collectDongleDataThread.stop = true;
         }
     }
@@ -137,10 +144,10 @@ public class DongleDataHelper implements ObdReaderServiceConnection.OBDServiceHa
     @Override
     public void onOBDDisconnected(Throwable error) {
         isDongleConnected = false;
-        if(collectDongleDataThread != null){
+        if (collectDongleDataThread != null) {
             collectDongleDataThread.stop = true;
         }
-        for(DongleServiceListener dongleServiceListener : dongleServiceListeners) {
+        for (DongleServiceListener dongleServiceListener : dongleServiceListeners) {
             if (dongleServiceListener != null) {
                 dongleServiceListener.onDongleDisconnected(error);
             }
@@ -149,7 +156,7 @@ public class DongleDataHelper implements ObdReaderServiceConnection.OBDServiceHa
         currentDongleData = clearDataMap(currentDongleData);
     }
 
-    public boolean isDongleConnected(){
+    public boolean isDongleConnected() {
         return isDongleConnected;
     }
 
@@ -158,20 +165,32 @@ public class DongleDataHelper implements ObdReaderServiceConnection.OBDServiceHa
     }
 
     public Map<String, String> getCurrentData() {
-        return currentDongleData;
+        if (currentDongleData == null) {
+            return null;
+        }
+        Map<String, String> dataCpy = new HashMap<>(currentDongleData);
+        Double avg = null;
+        if (avgFuelEcon.get(AVG_FUEL_ECON_COUNT) != null && avgFuelEcon.get(AVG_FUEL_ECON) != null && avgFuelEcon.get(AVG_FUEL_ECON_COUNT) != 0) {
+            avg = avgFuelEcon.get(AVG_FUEL_ECON) / avgFuelEcon.get(AVG_FUEL_ECON_COUNT);
+        }
+        dataCpy.put(AVG_FUEL_ECON, String.format("%.1f mpg", avg));
+        avgFuelEcon.clear();
+        Log.d("DONGLE_DATA_TO_SEND", new Gson().toJson(dataCpy));
+        return dataCpy;
     }
 
-    public interface DongleDataListener{
+    public interface DongleDataListener {
         void onDongleDataReceived(Map<String, String> dongleData);
     }
 
-    public interface DongleServiceListener{
+    public interface DongleServiceListener {
         void onDongleConnected();
+
         void onDongleDisconnected(Throwable error);
     }
 
-    private class CollectDongleDataThread extends Thread{
-        private static final long sleepTime = 500;
+    private class CollectDongleDataThread extends Thread {
+        private static final long sleepTime = 50;
         protected boolean stop = false;
         private ObdReaderService service = null;
         private Map<String, String> dataMap = null;
@@ -180,14 +199,27 @@ public class DongleDataHelper implements ObdReaderServiceConnection.OBDServiceHa
         public void run() {
             service = serviceConnection.getService();
             while (!stop) {
-                if(service != null){
+                if (service != null) {
                     dataMap = service.getDataMap();
-                    if(dataMap == null){
+                    if (dataMap == null) {
                         dataMap = new HashMap<>();
                         dataMap = clearDataMap(dataMap);
+                    } else { // collect avg fuel econ
+                        Double totalAvg = avgFuelEcon.get(AVG_FUEL_ECON);
+                        if (totalAvg == null)
+                            totalAvg = 0.0;
+                        Double currentAvg = service.getCurrentFuelEcon();
+                        if (currentAvg != null && currentAvg != 0.0) {
+                            avgFuelEcon.put(AVG_FUEL_ECON, totalAvg + currentAvg);
+                            Double currentCount = avgFuelEcon.get(AVG_FUEL_ECON_COUNT);
+                            if (currentCount == null)
+                                currentCount = 0.0;
+                            currentCount += 1;
+                            avgFuelEcon.put(AVG_FUEL_ECON_COUNT, currentCount);
+                        }
                     }
                     onDataReceived(dataMap);
-                }else{
+                } else {
                     dataMap = new HashMap<>();
                     dataMap = clearDataMap(dataMap);
                 }
@@ -203,8 +235,8 @@ public class DongleDataHelper implements ObdReaderServiceConnection.OBDServiceHa
         }
     }
 
-    private Map<String, String> clearDataMap(Map<String, String> data){
-        for(ObdCommand cmd : ObdConfig.getCommands()){
+    private Map<String, String> clearDataMap(Map<String, String> data) {
+        for (ObdCommand cmd : ObdConfig.getCommands()) {
             data.put(cmd.getDesc(), "--");
         }
         return data;
