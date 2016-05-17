@@ -55,7 +55,6 @@ public class LoginActivity extends CFBaseActivity implements LoginCallbacks{
         headerFragment.setHeaderCallback(loginFragment);
         headerFragment.setViewType(HeaderFragment.ViewType.LOGIN_ACTIVITY);
         loginFragment.setCallback(this);
-
     }
 
     private String email, password;

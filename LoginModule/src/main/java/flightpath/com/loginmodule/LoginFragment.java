@@ -36,9 +36,9 @@ import java.util.List;
 @EFragment(resName = "fragment_login")
 public class LoginFragment extends BaseFragment implements HeaderFragment.HeaderCallback {
 
-    private static final int PERMISSION_REQUEST = 2;
+    public static final int PERMISSION_REQUEST = 2;
 
-    private static final String[] permissionNeed = {
+    public static final String[] permissionNeed = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
