@@ -60,6 +60,8 @@ public class JobObject {
 
 
     public boolean[] selectedLooseItems;
+    public boolean expanded = false;
+    public float baseHeight = 0f;
 
     public JobObject(){
 

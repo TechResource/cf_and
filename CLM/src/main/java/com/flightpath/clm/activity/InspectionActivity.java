@@ -7,7 +7,6 @@ import com.flightpath.clm.CLMApplication;
 import com.flightpath.clm.R;
 import com.flightpathcore.objects.BaseWidgetObject;
 import com.flightpathcore.objects.InspectionStructureResponse;
-import com.flightpathcore.utilities.Utilities;
 import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
@@ -25,7 +24,7 @@ import flightpath.com.inspectionmodule.widgets.objects.CheckBoxObject;
  * Created by Tomasz Szafran ( tomek@appsvisio.com ) on 2016-01-21.
  */
 @EActivity(R.layout.activity_inspection)
-public class InspectionActivity extends CLMBaseActivity implements InspectionModuleInterfaces.InspectionCompleteListener {
+public class InspectionActivity extends CLMBaseActivity implements InspectionModuleInterfaces.InspectionListener {
 
     @FragmentByTag
     protected InspectionContainerFragment inspectionContainerFragment;

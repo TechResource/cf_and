@@ -91,6 +91,11 @@ public class LoginActivity extends RunwayBaseActivity implements LoginCallbacks 
     }
 
     @Override
+    public void onPermissionResult() {
+        // TODO: 20.05.2016
+    }
+
+    @Override
     public void onBackPressed() {
         SplashScreenActivity_.intent(this).start();
         finish();

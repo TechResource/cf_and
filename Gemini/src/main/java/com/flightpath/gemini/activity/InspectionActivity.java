@@ -3,9 +3,11 @@ package com.flightpath.gemini.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.flightpath.gemini.GeminiApplication;
+import com.flightpathcore.database.DBHelper;
+import com.flightpathcore.database.tables.JobsTable;
 import com.flightpathcore.objects.BaseWidgetObject;
 import com.flightpathcore.objects.InspectionStructureResponse;
+import com.flightpathcore.objects.JobObject;
 import com.google.gson.Gson;
 import com.flightpath.gemini.R;
 
@@ -16,18 +18,23 @@ import org.androidannotations.annotations.FragmentByTag;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import flightpath.com.inspectionmodule.InspectionContainerFragment;
 import flightpath.com.inspectionmodule.InspectionModuleInterfaces;
 import flightpath.com.inspectionmodule.widgets.objects.CheckBoxObject;
+import flightpath.com.mapmodule.TripStatusHelper;
 
 /**
  * Created by Tomasz Szafran ( tomek@appsvisio.com ) on 2016-01-21.
  */
 @EActivity(R.layout.activity_inspection)
-public class InspectionActivity extends GeminiBaseActivity implements InspectionModuleInterfaces.InspectionCompleteListener {
+public class InspectionActivity extends GeminiBaseActivity implements InspectionModuleInterfaces.InspectionListener {
 
     @FragmentByTag
     protected InspectionContainerFragment inspectionContainerFragment;
+    @Inject
+    protected TripStatusHelper tripStatusHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +79,17 @@ public class InspectionActivity extends GeminiBaseActivity implements Inspection
 
     @Override
     public void onCompleteListener() {
-
         finish();
+    }
+
+    @Override
+    public List<JobObject> getJobs() {
+        List<JobObject> l = new ArrayList<>();
+        JobObject selectedJob = tripStatusHelper.getSelectedJob(this);
+        if(selectedJob != null)
+            l.add(selectedJob);
+        else
+            l.add((JobObject) DBHelper.getInstance().get(new JobsTable(),"-1"));
+        return l;
     }
 }

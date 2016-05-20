@@ -85,6 +85,16 @@
             />
 
         <Button
+            android:id="@+id/jobList"
+            style="@style/Menu.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/job_list_label"
+            android:visibility="gone"
+            android:drawablePadding="@dimen/margin_small"
+            />
+
+        <Button
             android:id="@+id/jobInfo"
             style="@style/Menu.Button"
             android:layout_width="match_parent"

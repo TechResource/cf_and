@@ -33,7 +33,7 @@ public class ApiTest extends BaseUnitTest {
     protected void setUp() throws Exception {
         super.setUp();
 //        FPModel.initInstance(getInstrumentation().getTargetContext());
-        AppCore.initInstance(new AppObject("test", "2.0", "2.0", "1"));
+//        AppCore.initInstance(new AppObject("test", "2.0", "2.0", "1"));
     }
 
     public void testLoginApi(){

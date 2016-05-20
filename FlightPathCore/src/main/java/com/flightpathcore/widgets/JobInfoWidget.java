@@ -61,7 +61,9 @@ public class JobInfoWidget extends ScrollView {
     }
 
     private void fillView(){
-        jobInfoContainer.addView(getSimpleSectionHeader(R.string.job_description_label));
+        jobInfoContainer.removeAllViews();
+        if(job.id != -1)
+            jobInfoContainer.addView(getSimpleSectionHeader(R.string.job_description_label));
         if(job.booking != null && job.booking.customer != null && !job.booking.customer.isEmpty())
             jobInfoContainer.addView(getSimpleInputView(job.booking.customer, R.string.customer_hint));
         if(job.number != null && !job.number.isEmpty())
@@ -112,6 +114,7 @@ public class JobInfoWidget extends ScrollView {
     private View getSimpleInputView(String text, String hint){
         InputWidget inputWidget = InputWidget_.build(getContext());
         inputWidget.setText(text, hint);
+        inputWidget.setFocusable(false);
         return inputWidget;
     }
 }

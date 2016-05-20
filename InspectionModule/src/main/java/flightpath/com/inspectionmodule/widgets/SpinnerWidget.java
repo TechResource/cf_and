@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
+import com.flightpathcore.base.BaseActivity;
 import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.database.tables.JobsTable;
 import com.flightpathcore.objects.JobObject;
@@ -17,6 +18,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.flightpathcore.adapters.BaseSpinnerAdapter;
+
+import flightpath.com.inspectionmodule.InspectionModuleInterfaces;
 import flightpath.com.inspectionmodule.R;
 import flightpath.com.inspectionmodule.widgets.objects.SpinnerObject;
 
@@ -65,7 +68,11 @@ public class SpinnerWidget extends Spinner implements InspectionWidgetInterface<
         this.data = data;
         switch (data.spinnerType){
             case JOBS:
-                adapter = new BaseSpinnerAdapter(getContext(), (List<JobObject>) DBHelper.getInstance().getMultiple(new JobsTable(),null));
+                if(getContext() instanceof InspectionModuleInterfaces.InspectionListener){
+                    adapter = new BaseSpinnerAdapter(getContext(), ((InspectionModuleInterfaces.InspectionListener) getContext()).getJobs());
+                }else {
+                    adapter = new BaseSpinnerAdapter(getContext(), (List<JobObject>) DBHelper.getInstance().getMultiple(new JobsTable(), null));
+                }
                 setOnItemSelectedListener(this);
                 break;
             case JOB_TYPE:

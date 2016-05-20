@@ -1,14 +1,18 @@
 package flightpath.com.mapmodule;
 
+import android.content.Context;
 import android.location.Location;
 
 import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.database.tables.DriverTable;
 import com.flightpathcore.database.tables.TripTable;
 import com.flightpathcore.objects.EventObject;
+import com.flightpathcore.objects.JobObject;
 import com.flightpathcore.objects.TripObject;
 import com.flightpathcore.objects.UserObject;
+import com.flightpathcore.utilities.SPHelper;
 import com.flightpathcore.utilities.Utilities;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +27,24 @@ public class TripStatusHelper {
     private List<TripStatusListener> listeners = null;
     private TripObject currentTrip = null;
     private StopTripListener stopTripListener = null;
+    private JobObject selectedJob = null;
 
     @Inject
     public TripStatusHelper(){
         listeners = new ArrayList<>();
         currentTrip = (TripObject) DBHelper.getInstance().getLast(new TripTable());
+    }
+
+    public void setSelectedJob(Context context, JobObject job){
+        selectedJob = job;
+        SPHelper.saveData(context, SPHelper.SELECTED_JOB, new Gson().toJson(job));
+    }
+
+    public JobObject getSelectedJob(Context context){
+        if(selectedJob == null){
+            selectedJob = new Gson().fromJson(SPHelper.getData(context, SPHelper.SELECTED_JOB), JobObject.class);
+        }
+        return selectedJob;
     }
 
     public void setStopTripListener(StopTripListener listener){

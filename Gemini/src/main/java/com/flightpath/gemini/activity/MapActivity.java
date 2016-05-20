@@ -115,7 +115,7 @@ public class MapActivity extends GeminiBaseActivity implements MapCallbacks, Hea
 
         menuView.setCallbacks(this);
         menuView.setupMenu(DrawerMenuView.UPDATE_APP, DrawerMenuView.STATUS, DrawerMenuView.ADD_INSPECTION, DrawerMenuView.GET_JOBS,
-                /*DrawerMenuView.JOB_INFO, */DrawerMenuView.SYNC_NOW ,DrawerMenuView.LOGOUT, DrawerMenuView.EXIT);
+                DrawerMenuView.JOB_LIST, DrawerMenuView.SYNC_NOW ,DrawerMenuView.LOGOUT, DrawerMenuView.EXIT);
 
         drawer.setDrawerListener(this);
 
@@ -280,6 +280,7 @@ public class MapActivity extends GeminiBaseActivity implements MapCallbacks, Hea
         fpModel.fpApi.getJobs(new JobsRequest(SPHelper.getUserSession(this)), new MyCallback<List<JobObject>>() {
             @Override
             public void onSuccess(List<JobObject> response) {
+                DBHelper.getInstance().clearDB(new JobsTable());
                 DBHelper.getInstance().insertMultiple(new JobsTable(), new JobsTable().getMultipleValues(response));
             }
 
@@ -457,6 +458,8 @@ public class MapActivity extends GeminiBaseActivity implements MapCallbacks, Hea
                 logout();
             } else if (onMenuCloseOpenViewWithId == DrawerMenuView.EXIT) {
                 onExit();
+            } else if(onMenuCloseOpenViewWithId == DrawerMenuView.JOB_LIST){
+                navigator.jobList();
             }
         }
 

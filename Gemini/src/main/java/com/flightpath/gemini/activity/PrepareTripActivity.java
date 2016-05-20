@@ -3,6 +3,7 @@ package com.flightpath.gemini.activity;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -22,6 +23,7 @@ import com.flightpathcore.objects.JobObject;
 import com.flightpathcore.objects.TripObject;
 import com.flightpathcore.utilities.SPHelper;
 import com.flightpathcore.utilities.Utilities;
+import com.flightpathcore.widgets.JobInfoWidget;
 
 import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
@@ -53,6 +55,8 @@ public class PrepareTripActivity extends GeminiBaseActivity implements HeaderFra
     protected Button getJobs;
     @ViewById
     protected LinearLayout noJobsContainer, tripInfoContainer;
+    @ViewById
+    protected JobInfoWidget jobInfoWidget;
     private BaseSpinnerAdapter adapter;
     private List<JobObject> currentlyJobList = null;
     @Inject
@@ -77,9 +81,35 @@ public class PrepareTripActivity extends GeminiBaseActivity implements HeaderFra
 
     private void fillViewWithJobs() {
         JobsTable jobsTable = new JobsTable();
+        Integer selectedIndex = 0;
         currentlyJobList = (List<JobObject>) DBHelper.getInstance().getMultiple(new JobsTable(), null, jobsTable.getWhereTodayNotFinishedJobsWithNoJob(), null, null);
+        JobObject selectedJob = tripStatusHelper.getSelectedJob(this);
+        if(selectedJob != null){
+            for (int i=0;i<currentlyJobList.size();i++){
+                if(currentlyJobList.get(i).id == selectedJob.id){
+                    selectedIndex = i;
+                }
+            }
+        }
         adapter = new BaseSpinnerAdapter(this, currentlyJobList);
         jobsSpinner.setAdapter(adapter);
+        jobsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                jobInfoWidget.setVisibility(View.VISIBLE);
+                jobInfoWidget.setJob(currentlyJobList.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        if(selectedIndex != null) {
+            jobsSpinner.setSelection(selectedIndex);
+            jobsSpinner.setEnabled(false);
+        }
+
         if (currentlyJobList.size() == 0) {
             noJobsContainer.setVisibility(View.VISIBLE);
             tripInfoContainer.setVisibility(View.GONE);

@@ -43,7 +43,7 @@ public class InspectionActivity extends RunwayBaseActivity {
 
     @AfterViews
     protected void init(){
-        inspectionContainerFragment.buildInspection(buildStep1Inspection(), buildStep2Inspection());
+//        inspectionContainerFragment.buildInspection(buildStep1Inspection(), buildStep2Inspection());
     }
 
     private InspectionStructureResponse buildStep1Inspection() {

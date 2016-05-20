@@ -1,6 +1,7 @@
 package com.flightpath.gemini.di.components;
 
 import com.flightpath.gemini.activity.InspectionActivity;
+import com.flightpath.gemini.activity.JobListActivity;
 import com.flightpath.gemini.activity.LoginActivity;
 import com.flightpath.gemini.activity.MapActivity;
 import com.flightpath.gemini.activity.PrepareTripActivity;
@@ -28,4 +29,5 @@ public interface GeminiActivityComponent extends ActivityComponent {
     void inject(MapActivity activity);
     void inject(InspectionActivity activity);
     void inject(PrepareTripActivity activity);
+    void inject(JobListActivity activity);
 }

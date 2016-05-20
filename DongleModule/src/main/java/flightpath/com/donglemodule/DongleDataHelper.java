@@ -97,12 +97,12 @@ public class DongleDataHelper implements ObdReaderServiceConnection.OBDServiceHa
     }
 
     public void removeListener(DongleDataListener listener) {
-        while (listeners.remove(listener))
-            ;
+        while (listeners.remove(listener));
     }
 
     private void notifyAllListeners() {
         Map<String, String> dataCpy = new HashMap<>(currentDongleData);
+        List<DongleDataListener> listeners = new ArrayList<>(this.listeners);
         for (DongleDataListener l : listeners) {
             l.onDongleDataReceived(dataCpy);
         }

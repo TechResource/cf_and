@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <RelativeLayout
+        android:id="@+id/clickable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:padding="@dimen/margin_small">
+
+        <TextView
+            android:id="@+id/jobName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:textSize="@dimen/text_size_large"
+            tools:text="C1294501923"
+            />
+
+        <TextView
+            android:id="@+id/jobDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/rightIconDropdown"
+            android:paddingRight="@dimen/margin_small"
+            android:textSize="@dimen/text_size_large"
+            tools:text="2016-10-10 12:22"
+            />
+
+        <ImageView
+            android:id="@+id/rightIconDropdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_dropdown"
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/jobInfoContainer"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <com.flightpathcore.widgets.JobInfoWidget_
+            android:id="@+id/jobInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_small"
+            />
+
+        <Button
+            style="@style/Base.BlueButton"
+            android:id="@+id/selectJobBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/select_job_label"
+            />
+    </LinearLayout>
+</LinearLayout>

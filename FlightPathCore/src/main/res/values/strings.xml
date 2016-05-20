@@ -63,4 +63,7 @@
     <string name="prepare_trip_no_jobs_text">Currently there is no jobs for you. Please tap below button to get newest job list from server.</string>
     <string name="end_mileage_label">End Trip Mileage</string>
     <string name="remove_image_text">Are you sure you want to remove photo?</string>
+    <string name="job_list_label">Job List</string>
+    <string name="select_job_label">Select Job</string>
+    <string name="unselect_job_label">Unselect Job</string>
 </resources>

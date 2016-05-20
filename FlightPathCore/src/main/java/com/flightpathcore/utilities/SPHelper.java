@@ -17,6 +17,7 @@ public class SPHelper {
     public static final String INSPECTION_STRUCTURE = "inspection_structure";
     public static final String SAVED_INSPECTION = "saved_inspection";
     public static final String SAVED_INSPECTION_EVENT_ID = "saved_inspection_event_id";
+    public static final String SELECTED_JOB = "selected_job";
 
     public static void saveData(Context context, String key, String data) {
         context.getSharedPreferences(SP_PREFIX + getAppName(), Activity.MODE_PRIVATE).edit().putString(key, data).apply();

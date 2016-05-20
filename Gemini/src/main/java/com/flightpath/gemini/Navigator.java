@@ -3,6 +3,8 @@ package com.flightpath.gemini;
 import android.app.Activity;
 
 import com.flightpath.gemini.activity.InspectionActivity_;
+import com.flightpath.gemini.activity.JobListActivity;
+import com.flightpath.gemini.activity.JobListActivity_;
 import com.flightpath.gemini.activity.LoginActivity_;
 import com.flightpath.gemini.activity.MapActivity_;
 import com.flightpath.gemini.activity.PrepareTripActivity_;
@@ -53,5 +55,9 @@ public class Navigator extends NavigatorAbstract {
     }
 
     public void closePeriod() {
+    }
+
+    public void jobList() {
+        JobListActivity_.intent(activity).start();
     }
 }

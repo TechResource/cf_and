@@ -3,6 +3,7 @@ package com.flightpath.gemini.activity;
 import com.flightpath.gemini.Navigator;
 import com.flightpath.gemini.di.DI;
 import com.flightpathcore.base.BaseActivity;
+import com.flightpathcore.objects.JobObject;
 
 import javax.inject.Inject;
 
@@ -17,4 +18,5 @@ public class GeminiBaseActivity extends BaseActivity {
     protected DI.Injections di() {
         return DI.di().injections();
     }
+
 }

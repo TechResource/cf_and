@@ -1,7 +1,6 @@
 package flightpath.com.inspectionmodule;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -29,10 +28,6 @@ import com.flightpathcore.utilities.SPHelper;
 import com.flightpathcore.utilities.SwipeableViewPager;
 import com.flightpathcore.utilities.Utilities;
 import com.google.gson.Gson;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -158,7 +153,7 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
         SPHelper.saveData(getContext(), SPHelper.SAVED_INSPECTION_EVENT_ID, null);
         SPHelper.saveData(getContext(), SPHelper.SAVED_INSPECTION, null);
         SynchronizationHelper.getInstance().updateCounter();
-        ((InspectionModuleInterfaces.InspectionCompleteListener) getActivity()).onCompleteListener();
+        ((InspectionModuleInterfaces.InspectionListener) getActivity()).onCompleteListener();
     }
 
     private boolean checkValidity() {

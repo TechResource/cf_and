@@ -1,6 +1,7 @@
 package com.flightpath.gemini.di;
 
 import com.flightpath.gemini.activity.InspectionActivity;
+import com.flightpath.gemini.activity.JobListActivity;
 import com.flightpath.gemini.activity.LoginActivity;
 import com.flightpath.gemini.activity.MapActivity;
 import com.flightpath.gemini.activity.PrepareTripActivity;
@@ -69,6 +70,10 @@ public class DI {
         }
 
         public void inject(PrepareTripActivity activity) {
+            activityComponent(activity).inject(activity);
+        }
+
+        public void inject(JobListActivity activity) {
             activityComponent(activity).inject(activity);
         }
     }

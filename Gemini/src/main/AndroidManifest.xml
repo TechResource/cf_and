@@ -39,6 +39,10 @@
                   android:theme="@style/BaseTheme.AppThemeTranslucentBg"
                   android:screenOrientation="portrait"
             />
+        <activity android:name=".activity.JobListActivity_"
+                  android:theme="@style/BaseTheme.AppThemeTranslucentBg"
+                  android:screenOrientation="portrait"
+            />
 
         <meta-data
             android:name="io.fabric.ApiKey"

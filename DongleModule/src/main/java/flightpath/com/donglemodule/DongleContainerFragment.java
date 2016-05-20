@@ -130,11 +130,13 @@ public class DongleContainerFragment extends BaseFragment implements DongleDataH
                 if (chartsContainerFragment == null) {
                     chartsContainerFragment = ChartsContainerFragment_.builder().build();
                     getChildFragmentManager().beginTransaction()
+                            .remove(devicePickerFragment)
                             .replace(R.id.fragmentContainer, chartsContainerFragment, "chartsContainerFragment")
                             .commitAllowingStateLoss();
                 }
             } else {
                 getChildFragmentManager().beginTransaction()
+                        .remove(devicePickerFragment)
                         .replace(R.id.fragmentContainer, chartsContainerFragment, "chartsContainerFragment")
                         .commitAllowingStateLoss();
             }
