@@ -40,7 +40,7 @@ android {
         applicationId "com.connectedfleet"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 52
+        versionCode 53
         versionName "2.2"
         archivesBaseName = "ConnectedFleet_"+versionName+"_"+versionCode+"_"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

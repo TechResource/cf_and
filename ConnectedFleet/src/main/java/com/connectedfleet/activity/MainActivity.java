@@ -414,7 +414,7 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
             } catch (Exception e) {
                 endMileage = null;
             }
-            if (endMileage != null && endMileage >= tripStatusHelper.getCurrentTrip().startMileage) {
+            if (endMileage != null && (tripStatusHelper.getCurrentTrip() == null || endMileage >= tripStatusHelper.getCurrentTrip().startMileage)) {
                 tripStatusHelper.setTripStatus(TripObject.TripStatus.TRIP_STOPPED, locationHandler.getLocation(), endMileage);
                 canFinish = true;
             } else {

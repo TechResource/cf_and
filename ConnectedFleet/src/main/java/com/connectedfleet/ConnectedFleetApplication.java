@@ -48,6 +48,16 @@ public class ConnectedFleetApplication extends BaseApplication {
     }
 
     @Override
+    public void logCrash(Throwable error, String extraInfo) {
+        if(!isDebug(this)){
+            if(extraInfo != null)
+                Crashlytics.log(extraInfo);
+            if(error != null)
+                Crashlytics.logException(error);
+        }
+    }
+
+    @Override
     protected void initInstances() {
         AppCore.initInstance(getAppObject());
         DBHelper.initInstance(this);

@@ -14,7 +14,7 @@ public class EngineRPMObdCommand extends IntObdCommand{
 		String res = getResult();
 		String[] ress = res.split("\r");
 		res = ress[0].replace(" ","");
-		if ("NODATA".equals(res)|| res.isEmpty()) {
+		if ("NODATA".equals(res)|| res.isEmpty() || res.equals("--")) {
 			return "NODATA";
 		}
 		String byteStrOne = res.substring(4,6);

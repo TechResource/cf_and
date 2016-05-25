@@ -33,4 +33,5 @@ public abstract class BaseApplication extends Application {
     public abstract AppObject getAppObject();
     public abstract void getComponent();
     public abstract void logCrash(Throwable error);
+    public abstract void logCrash(Throwable error, String extraInfo);
 }

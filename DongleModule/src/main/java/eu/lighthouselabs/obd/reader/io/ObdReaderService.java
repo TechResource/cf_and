@@ -164,7 +164,7 @@ public class ObdReaderService extends Service {
         connectThread = null;
         mObdReaderServiceWorkerThread = null;
         removeNotifMsg();
-        additionalHandler.onOBDDisconnected(null);
+        additionalHandler.onOBDDisconnected(null, null);
         return true;
     }
 

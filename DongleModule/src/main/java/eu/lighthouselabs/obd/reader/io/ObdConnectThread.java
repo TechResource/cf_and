@@ -8,6 +8,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -81,7 +83,7 @@ public class ObdConnectThread extends Thread implements LocationListener {
 
                 if (additionalHandler != null) {
                     if (sock == null || !sock.isConnected())
-                        additionalHandler.onOBDDisconnected(e2);
+                        additionalHandler.onOBDDisconnected(e2, null);
                 }
                 return;
             }
@@ -104,7 +106,7 @@ public class ObdConnectThread extends Thread implements LocationListener {
 
     public void run() {
         Throwable error = null;
-
+        String extraInfoError = null;
         try {
             startDevice();
             int cmdSize = cmds.size();
@@ -134,26 +136,30 @@ public class ObdConnectThread extends Thread implements LocationListener {
                         lastSuccesCmdTimestamp = System.currentTimeMillis();
                     }
                 } catch (Exception e) {
+                    if(e instanceof StringIndexOutOfBoundsException){
+                        extraInfoError = new Gson().toJson(cmd);
+                    }
                     Log.d("ObdConnectThread", "error " + e.getMessage());
                     e.printStackTrace();
                     error = e;
                     results.put(cmd.getDesc(), "--");
                 } finally {
                     if (lastSuccesCmdTimestamp + 20000 < System.currentTimeMillis()) {
-                        additionalHandler.onOBDDisconnected(error);
+                        additionalHandler.onOBDDisconnected(error, extraInfoError);
                     }
                     error = null;
+                    extraInfoError = null;
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
             mService.notifyMessage("Bluetooth Connection Error", e.getMessage(), ObdReaderService.CONNECT_ERROR_NOTIFY);
             mService.popupWrongDevice();
-            additionalHandler.onOBDDisconnected(e);
+            additionalHandler.onOBDDisconnected(e, "Bluetooth Connection Error");
 
         } catch (Exception e) {
             e.printStackTrace();
-            additionalHandler.onOBDDisconnected(e);
+            additionalHandler.onOBDDisconnected(e, null);
         } finally {
             closeConnectThread();
         }
