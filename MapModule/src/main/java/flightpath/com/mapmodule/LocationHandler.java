@@ -125,7 +125,6 @@ public class LocationHandler implements LocationInterfacce {
 
         @Override
         public void onLocationChanged(Location location) {
-            Log.d("TEST", "location changed");
             this.latestLocation = location;
             notifyAllListeners();
         }
