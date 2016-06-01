@@ -44,9 +44,11 @@ public class LocationHandler implements LocationInterfacce {
 
         locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
         if(BaseApplication.isDebug(context)) {
-            passiveService = new LocationService();
+            if(passiveService == null)
+                passiveService = new LocationService();
         }
-        gpsService = new LocationService();
+        if(gpsService == null)
+            gpsService = new LocationService();
         try {
             if(user != null) {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, user.gpsPointPer * 1000, MIN_DISTANCE_CHANGE_FOR_UPDATES, gpsService);
@@ -123,6 +125,7 @@ public class LocationHandler implements LocationInterfacce {
 
         @Override
         public void onLocationChanged(Location location) {
+            Log.d("TEST", "location changed");
             this.latestLocation = location;
             notifyAllListeners();
         }

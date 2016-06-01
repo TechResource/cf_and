@@ -104,7 +104,7 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
         super.onCreate(savedInstanceState);
 
         di().inject(this);
-        SynchronizationHelper.initInstance(fpModel);
+
         currentUser = (UserObject) DBHelper.getInstance().get(new DriverTable(), DriverTable.HELPER_ID+"");
         if (currentUser != null) {
             if(!BaseApplication.isDebug(this))
@@ -118,8 +118,6 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
         Intent i = new Intent(this, AccelerationService.class);
         i.addCategory(AccelerationService.tag);
         bindService(i, mConnection, Context.BIND_AUTO_CREATE);
-
-        DBHelper.getInstance().setLocationHandler(locationHandler);
     }
 
     @AfterViews
@@ -148,6 +146,16 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
         adapter = new PagerAdapter(getSupportFragmentManager(), fragments);
         pager.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SynchronizationHelper.initInstance(fpModel);
+        DBHelper.getInstance().setLocationHandler(locationHandler);
+
+        mapFragment.setStatusLabel(SPHelper.getData(this, SPHelper.CURRENT_STATUS_KEY));
     }
 
     @Override

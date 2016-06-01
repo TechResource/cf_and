@@ -89,9 +89,7 @@ public class MapFragment extends BaseFragment implements TripStatusHelper.TripSt
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DIMapModule.diMapModule().injections().inject(this);
-        if (checkPermissions()) {
-            initLocationHandler();
-        }
+
     }
 
     public void setCallbacks(MapCallbacks mapCallbacks){
@@ -101,6 +99,9 @@ public class MapFragment extends BaseFragment implements TripStatusHelper.TripSt
     @Override
     public void onResume() {
         super.onResume();
+        if (checkPermissions()) {
+            initLocationHandler();
+        }
         checkGpsStatus();
         if (locationHandler.isReady()) {
             locationHandler.addAdditionalListener(this);

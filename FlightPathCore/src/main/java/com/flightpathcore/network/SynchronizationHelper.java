@@ -2,6 +2,7 @@ package com.flightpathcore.network;
 
 import android.content.Context;
 
+import com.flightpathcore.base.BaseApplication;
 import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.database.tables.DriverTable;
 import com.flightpathcore.database.tables.EventTable;
@@ -49,15 +50,17 @@ public class SynchronizationHelper {
         }
         instance.fpModel = fpModel;
 
-        instance.listeners = new ArrayList<>();
         instance.user = (UserObject) DBHelper.getInstance().get(new DriverTable(), DriverTable.HELPER_ID + "");
         if (instance.user != null) {
             instance.synPerMillis = instance.user.synchronizationPer * 1000;
         }
-        instance.eventsSender = new EventsSender();
-        instance.syncThread = new Thread(instance.eventsSender);
-        instance.syncThread.start();
-        instance.eventsLeft = DBHelper.getInstance().countEventsLeft();
+        if( instance.eventsSender == null || (instance.eventsSender != null && Utilities.getTimestamp() > (instance.eventsSender.lastSyncMillis + instance.synPerMillis))) {
+            instance.listeners = new ArrayList<>();
+            instance.eventsSender = new EventsSender();
+            instance.syncThread = new Thread(instance.eventsSender);
+            instance.syncThread.start();
+            instance.eventsLeft = DBHelper.getInstance().countEventsLeft();
+        }
     }
 
     public void stopThread() {
@@ -89,15 +92,14 @@ public class SynchronizationHelper {
     private static class EventsSender implements Runnable {
         private static final int MAX_EVENTS_TO_SEND = 500;
         private List<EventObject> eventsToSend;
-        private EventTable eventTable;
         public final Object lockObj = new Object();
+        public Long lastSyncMillis = null;
 
         @Override
         public void run() {
 
-            eventTable = new EventTable();
-
             while (instance.shouldRunning) {
+
                 if (!instance.sending) {
                     instance.sending = true;
                     if (instance.user == null) {
@@ -162,6 +164,7 @@ public class SynchronizationHelper {
                         }
 
                         instance.lastSyncDate = Utilities.getCurrentDateFormatted();
+
                         if (response != null && imgResponse != null) {
                             instance.syncState = SyncState.STATE_OK;
                         } else {
@@ -174,6 +177,7 @@ public class SynchronizationHelper {
                         instance.eventsLeft = DBHelper.getInstance().countEventsLeft();
                         instance.notifyListeners();
                     }
+                    lastSyncMillis = Utilities.getTimestamp();
                     instance.sending = false;
                 }
                 synchronized (lockObj) {

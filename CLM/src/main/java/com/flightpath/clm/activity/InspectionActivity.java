@@ -5,8 +5,11 @@ import android.os.Bundle;
 
 import com.flightpath.clm.CLMApplication;
 import com.flightpath.clm.R;
+import com.flightpathcore.database.DBHelper;
+import com.flightpathcore.database.tables.JobsTable;
 import com.flightpathcore.objects.BaseWidgetObject;
 import com.flightpathcore.objects.InspectionStructureResponse;
+import com.flightpathcore.objects.JobObject;
 import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
@@ -123,7 +126,11 @@ public class InspectionActivity extends CLMBaseActivity implements InspectionMod
 
     @Override
     public void onCompleteListener() {
-
         finish();
+    }
+
+    @Override
+    public List<JobObject> getJobs() {
+        return (List<JobObject>) DBHelper.getInstance().getMultiple(new JobsTable(), null);
     }
 }

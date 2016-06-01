@@ -22,9 +22,9 @@ public class CLMApplication extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        if(!BaseApplication.isDebug(this)) {
+//        if(!BaseApplication.isDebug(this)) {
             Fabric.with(this, new Crashlytics());
-        }
+//        }
         AppCore.initInstance(getAppObject());
     }
 
@@ -55,6 +55,16 @@ public class CLMApplication extends BaseApplication {
     @Override
     public void logCrash(Throwable error) {
         if(!isDebug(this)){
+            if(error != null)
+                Crashlytics.logException(error);
+        }
+    }
+
+    @Override
+    public void logCrash(Throwable error, String extraInfo) {
+        if(!isDebug(this)){
+            if(extraInfo != null)
+                Crashlytics.log(extraInfo);
             if(error != null)
                 Crashlytics.logException(error);
         }

@@ -20,15 +20,14 @@ public class ConnectedFleetApplication extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        if(!BaseApplication.isDebug(this)) {
+//        if(!BaseApplication.isDebug(this)) {
             Fabric.with(this, new Crashlytics());
-        }
+//        }
         DI.di().withApp(this);
     }
 
     @Override
     public AppObject getAppObject() {
-
         try {
             return new AppObject(getString(R.string.app_name), getString(R.string.api_version),
                     getPackageManager().getPackageInfo(getPackageName(), 0).versionName,

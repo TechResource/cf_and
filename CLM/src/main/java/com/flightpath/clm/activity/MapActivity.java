@@ -90,7 +90,6 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         di().inject(this);
-        SynchronizationHelper.initInstance(fpModel);
         currentUser = ((UserObject) DBHelper.getInstance().getLast(new DriverTable()));
         if (currentUser != null) {
             if(!BaseApplication.isDebug(this))
@@ -105,7 +104,6 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
         i.addCategory(AccelerationService.tag);
         bindService(i, mConnection, Context.BIND_AUTO_CREATE);
 
-        DBHelper.getInstance().setLocationHandler(locationHandler);
     }
 
     @AfterViews
@@ -188,6 +186,9 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
     @Override
     protected void onResume() {
         super.onResume();
+        SynchronizationHelper.initInstance(fpModel);
+        DBHelper.getInstance().setLocationHandler(locationHandler);
+
         mapFragment.setStatusLabel(SPHelper.getData(this, SPHelper.CURRENT_STATUS_KEY));
     }
 

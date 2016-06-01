@@ -39,7 +39,7 @@ android {
         applicationId "com.flightpath.clm"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 51
+        versionCode 52
         versionName "2.2"
         archivesBaseName = "CLM_"+versionName+"_"+versionCode+"_"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
