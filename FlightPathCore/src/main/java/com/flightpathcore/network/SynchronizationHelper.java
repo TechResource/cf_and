@@ -54,7 +54,7 @@ public class SynchronizationHelper {
         if (instance.user != null) {
             instance.synPerMillis = instance.user.synchronizationPer * 1000;
         }
-        if( instance.eventsSender == null || (instance.eventsSender != null && Utilities.getTimestamp() > (instance.eventsSender.lastSyncMillis + instance.synPerMillis))) {
+        if( instance.eventsSender == null || (instance.eventsSender != null && instance.eventsSender.lastSyncMillis != null && Utilities.getTimestamp() > (instance.eventsSender.lastSyncMillis + (instance.synPerMillis*2)))) {
             instance.listeners = new ArrayList<>();
             instance.eventsSender = new EventsSender();
             instance.syncThread = new Thread(instance.eventsSender);
