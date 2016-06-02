@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -78,6 +79,7 @@ public class DisposalInspectionActivity extends CLMBaseActivity implements Dispo
         if(disposalObject == null){
             disposalObject = new DisposalObject();
         }
+
     }
 
     @Override
@@ -97,6 +99,10 @@ public class DisposalInspectionActivity extends CLMBaseActivity implements Dispo
                 addPhoto.setVisibility(View.GONE);
             else
                 addPhoto.setVisibility(View.VISIBLE);
+
+            if(disposalObject == null || disposalObject.imagePaths == null || disposalObject.imagePaths.size() == 0 || disposalObject.imagePaths.size() >= 8)
+                headerFragment.setRightBtnEnabled(false);
+            else headerFragment.setRightBtnEnabled(true);
         }
     }
 
@@ -104,7 +110,10 @@ public class DisposalInspectionActivity extends CLMBaseActivity implements Dispo
     protected void init() {
         headerFragment.setViewType(HeaderFragment.ViewType.DISPOSAL_INSPECTION);
         headerFragment.setHeaderCallback(this);
-        headerFragment.setRightBtnEnabled(false);
+        if(disposalObject == null || disposalObject.imagePaths == null || disposalObject.imagePaths.size() == 0 || disposalObject.imagePaths.size() >= 8)
+            headerFragment.setRightBtnEnabled(false);
+        else headerFragment.setRightBtnEnabled(true);
+
         adapter = new DisposalImagesAdapter();
         imgContainer.setAdapter(adapter);
         validate(false);
