@@ -127,6 +127,7 @@ public class SynchronizationHelper {
                         }
 
                         Integer imgResponse = 1;
+                        Integer disposalResponse = 1;
                         if (response != null) {
                             EventObject lastSendEvent = DBHelper.getInstance().getLastSendEvent();
                             if (lastSendEvent != null) {
@@ -146,7 +147,7 @@ public class SynchronizationHelper {
                                 } else {
                                     imgResponse = 1;
                                 }
-                                Integer disposalResponse = 1;
+
                                 Map<String, TypedFile> outputDisposalInspection = createMultipartOutputDisposalInspection(lastSendEvent.eventId);
                                 if (outputDisposalInspection != null) {
                                     try {
@@ -157,7 +158,10 @@ public class SynchronizationHelper {
                                             }
                                         }
                                     } catch (RetrofitError e) {
+                                        disposalResponse = null;
                                     }
+                                }else{
+                                    disposalResponse = 1;
                                 }
 
                             } else {
@@ -167,7 +171,7 @@ public class SynchronizationHelper {
 
                         instance.lastSyncDate = Utilities.getCurrentDateFormatted();
 
-                        if (response != null && imgResponse != null) {
+                        if (response != null && imgResponse != null && disposalResponse != null) {
                             instance.syncState = SyncState.STATE_OK;
                         } else {
                             if (instance.syncState == SyncState.STATE_OK) {

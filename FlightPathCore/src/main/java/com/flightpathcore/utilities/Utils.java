@@ -255,7 +255,7 @@ public class Utils {
 //	    Bitmap scaledBitmap = Bitmap.createScaledBitmap(returnedBitmap, returnedBitmap.getWidth()/2, returnedBitmap.getHeight()/2, true);
 //	    return scaledBitmap;
 	    
-	    int width = 400;
+	    int width = 800;
     	int height = (int) Math.ceil(width * (float) returnedBitmap.getHeight() / returnedBitmap.getWidth());
     	return Bitmap.createScaledBitmap(returnedBitmap, width, height, true);
 	}

@@ -92,6 +92,7 @@ public class DamagesWidget extends LinearLayout implements InspectionWidgetInter
 
                     addDamageWidget(item);
                 })
+                .setCancelable(false)
                 .setNegativeButton(R.string.cancel_label, (dialog1, which1) -> {
                     damageDialogShouldBeOpen = false;
                 })

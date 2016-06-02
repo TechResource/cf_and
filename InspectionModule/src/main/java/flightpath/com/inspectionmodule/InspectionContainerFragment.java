@@ -76,6 +76,7 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         InspectionsUtilities.createImageLoaderInstance(getActivity().getApplicationContext());
+        setRetainInstance(true);
     }
 
     @AfterViews
@@ -141,7 +142,6 @@ public class InspectionContainerFragment extends BaseFragment implements ViewPag
             e.printStackTrace();
             return;
         }
-        Log.d("Inspection", "all data: " + json.toString());
 
         currentEventObject.isSent = false;
         currentEventObject.customEventObject = json.toString();

@@ -3,7 +3,9 @@ package flightpath.com.inspectionmodule;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v7.view.ContextThemeWrapper;
 import android.util.Log;
 import android.view.View;
@@ -229,7 +231,6 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
                 }
             }
         }
-        Log.d("Inspection", "step1 data :" + json.toString());
         return json;
     }
 

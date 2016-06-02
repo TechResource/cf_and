@@ -2,6 +2,7 @@ package com.flightpath.clm.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.flightpath.clm.CLMApplication;
 import com.flightpath.clm.R;
