@@ -93,7 +93,8 @@ public class DongleDataHelper implements ObdReaderServiceConnection.OBDServiceHa
 
     public void addListener(DongleDataListener listener) {
         listeners.add(listener);
-        listener.onDongleDataReceived(new HashMap<>(currentDongleData));
+        if(currentDongleData != null)
+            listener.onDongleDataReceived(new HashMap<>(currentDongleData));
     }
 
     public void removeListener(DongleDataListener listener) {

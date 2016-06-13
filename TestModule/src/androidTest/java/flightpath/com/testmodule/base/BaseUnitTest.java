@@ -19,6 +19,5 @@ public abstract class BaseUnitTest extends InstrumentationTestCase {
         }catch (InterruptedException e){
             e.printStackTrace();
         }
-
     }
 }

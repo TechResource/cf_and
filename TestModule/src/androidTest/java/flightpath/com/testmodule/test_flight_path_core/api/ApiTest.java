@@ -33,39 +33,39 @@ public class ApiTest extends BaseUnitTest {
     protected void setUp() throws Exception {
         super.setUp();
 //        FPModel.initInstance(getInstrumentation().getTargetContext());
-//        AppCore.initInstance(new AppObject("test", "2.0", "2.0", "1"));
+        AppCore.initInstance(new AppObject("test", "2.0", "2.0", "1", "XPFC"));
     }
 
     public void testLoginApi(){
-//        Assert.assertNotNull(FPModel.getInstance());
-//        FPModel.getInstance().fpApi.login(new LoginRequest("radek@appsvisio.com", "radek123"), new MyCallback<UserObject>() {
-//            @Override
-//            public void onSuccess(UserObject response) {
-//                Assert.assertNotNull(response);
-//                Assert.assertNotNull(response.access);
-//                accessToken = response.access;
-//                Assert.assertNotNull(response.tokenId);
-//                tokenId = response.tokenId;
-//                driverId = response.driverId;
-//                getCountDownLatch().countDown();
-//            }
-//
-//            @Override
-//            public void onError(String error) {
-//                throw new IllegalArgumentException(error);
-//            }
-//        });
-//        waitUntilCompleted();
+        Assert.assertNotNull(AppCore.getInstance());
+        new FPModel(getInstrumentation().getTargetContext()).fpApi.login(new LoginRequest("radek@appsvisio.com", "radek123"), new MyCallback<UserObject>() {
+            @Override
+            public void onSuccess(UserObject response) {
+                Assert.assertNotNull(response);
+                Assert.assertNotNull(response.access);
+                accessToken = response.access;
+                Assert.assertNotNull(response.tokenId);
+                tokenId = response.tokenId;
+                driverId = response.driverId;
+                getCountDownLatch().countDown();
+            }
+
+            @Override
+            public void onError(String error) {
+                throw new IllegalArgumentException(error);
+            }
+        });
+        waitUntilCompleted();
     }
 
     public void testSynchronization(){
 //        Assert.assertNotNull(FPModel.getInstance());
-//        testLoginApi(); // get credential
-//        Assert.assertNotNull(tokenId);
-//        Assert.assertNotNull(accessToken);
-//        Assert.assertNotNull(driverId);
-//        Integer response = FPModel.getInstance().fpApi.sendEvents(new SynchronizeRequest(tokenId,accessToken,createExampleEvents()));
-//        Assert.assertNotNull(response);
+        testLoginApi(); // get credential
+        Assert.assertNotNull(tokenId);
+        Assert.assertNotNull(accessToken);
+        Assert.assertNotNull(driverId);
+        Integer response = new FPModel(getInstrumentation().getTargetContext()).fpApi.sendEvents(new SynchronizeRequest(tokenId,accessToken,createExampleEvents()));
+        Assert.assertNotNull(response);
     }
 
     private List<EventObject> createExampleEvents(){
