@@ -1,0 +1,47 @@
+<manifest package="com.flightpath.easidrive"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".EasiDriveApplication"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/BaseTheme.AppTheme">
+
+        <activity android:name=".activity.SplashScreenActivity_"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.LoginActivity_"
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/BaseTheme.AppThemeTranslucentBg"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".activity.MapActivity_"
+                  android:theme="@style/BaseTheme.AppThemeTranslucentBg"
+                  android:screenOrientation="portrait"
+            />
+        <activity android:name=".activity.InspectionActivity_"
+                  android:theme="@style/BaseTheme.AppThemeTranslucentBg"
+                  android:screenOrientation="portrait"
+                  android:configChanges="orientation"
+            />
+
+        <activity android:name=".activity.PrepareTripActivity_"
+                  android:theme="@style/BaseTheme.AppThemeTranslucentBg"
+                  android:screenOrientation="portrait"
+            />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="ffe491230b5578ec5a4b9f88d76d8fea3c69ea4b" />
+    </application>
+
+</manifest>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <fragment
+        class="com.flightpathcore.fragments.HeaderFragment_"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/headerFragment"
+        tools:layout="@layout/fragment_header"
+        />
+
+    <LinearLayout
+        android:id="@+id/noJobsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/prepare_trip_no_jobs_text"
+            android:padding="@dimen/margin_normal"
+            />
+
+        <Button
+            style="@style/Base.BlueButton"
+            android:id="@+id/getJobs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/get_jobs_label"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tripInfoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:divider="@drawable/list_view_divider_drawable"
+        android:showDividers="middle"
+        android:visibility="gone"
+        >
+    <android.support.design.widget.TextInputLayout
+        style="@style/Base.Input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <EditText
+            style="@style/Base.Input.ET"
+            android:id="@+id/currentMileage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberSigned"
+            android:digits="0123456789"
+            android:hint="@string/current_mileage_hint" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Spinner
+        android:id="@+id/jobsSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>
