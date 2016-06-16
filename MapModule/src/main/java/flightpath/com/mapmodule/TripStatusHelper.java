@@ -147,6 +147,13 @@ public class TripStatusHelper {
         while(listeners.remove(listener)){}
     }
 
+    public void setTripStartLocation(Location location) {
+        currentTrip.startLat = location.getLatitude();
+        currentTrip.startLon = location.getLongitude();
+        DBHelper.getInstance().updateOrInsert(new TripTable(), new TripTable().getContentValues(currentTrip), currentTrip.tripId + "");
+        notifyAllListeners();
+    }
+
     public interface TripStatusListener{
         void onTripStatusChanged(TripObject.TripStatus tripStatus, TripObject trip);
     }

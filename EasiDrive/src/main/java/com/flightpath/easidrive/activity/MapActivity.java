@@ -100,7 +100,7 @@ public class MapActivity extends EDBaseActivity implements MapCallbacks, HeaderF
         tripStatusHelper.addListener(this);
         tripStatusHelper.setStopTripListener(this);
 
-        if(tripStatusHelper.getCurrentTrip() == null && DBHelper.getInstance().getLast(new JobsTable()) != null)
+        if(tripStatusHelper.getCurrentTrip() == null || tripStatusHelper.getTripStatus() == null || tripStatusHelper.getTripStatus() == TripObject.TripStatus.TRIP_STOPPED)
             startNewTrip();
 
         handler.post(dataCollector);
@@ -129,7 +129,7 @@ public class MapActivity extends EDBaseActivity implements MapCallbacks, HeaderF
     @AfterViews
     protected void init() {
         headerFragment.setHeaderCallback(this);
-        mapFragment.setCallbacks(this);
+        mapFragment.setCallbacks(this, true);
 
         menuView.setCallbacks(this);
         menuView.setupMenu(DrawerMenuView.UPDATE_APP, DrawerMenuView.STATUS, DrawerMenuView.ADD_INSPECTION, DrawerMenuView.LOGOUT, DrawerMenuView.EXIT);

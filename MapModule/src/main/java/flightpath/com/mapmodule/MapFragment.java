@@ -84,12 +84,18 @@ public class MapFragment extends BaseFragment implements TripStatusHelper.TripSt
     private TripObject currentTrip = null;
 //    private int driverId = -1;
     private MapCallbacks mapCallbacks;
+    private boolean startTripWithoutLocation = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DIMapModule.diMapModule().injections().inject(this);
 
+    }
+
+    public void setCallbacks(MapCallbacks mapCallbacks, boolean startTripWithoutLocation){
+        this.startTripWithoutLocation = startTripWithoutLocation;
+        this.mapCallbacks = mapCallbacks;
     }
 
     public void setCallbacks(MapCallbacks mapCallbacks){
@@ -166,7 +172,7 @@ public class MapFragment extends BaseFragment implements TripStatusHelper.TripSt
     @Click
     protected void tripStatusLabel() {
         if (currentTrip == null || currentTrip.getStatusEnum() == TripObject.TripStatus.TRIP_STOPPED || currentTrip.getStatusEnum() == null) {
-            if(locationHandler.getLocation() != null) {
+            if(locationHandler.getLocation() != null || startTripWithoutLocation) {
                 if(mapCallbacks != null){
                     mapCallbacks.onPrepareTrip();
                 }
@@ -248,6 +254,9 @@ public class MapFragment extends BaseFragment implements TripStatusHelper.TripSt
                         currentTrip.getStatusEnum() == TripObject.TripStatus.TRIP_PAUSED ? true : false);
                 if (currentTrip.getStatusEnum() != TripObject.TripStatus.TRIP_STOPPED && currentTrip.tripId != 0) {
                     DBHelper.getInstance().insert(new PointsTable(), new PointsTable().getContentValues(currentPoint));
+                }
+                if(currentTrip.getStatusEnum() != TripObject.TripStatus.TRIP_STOPPED && currentTrip.startLat == 0){
+                    tripStatusHelper.setTripStartLocation(location);
                 }
             }
             if (trackLocationBtn.isChecked()) {

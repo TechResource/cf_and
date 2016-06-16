@@ -13,9 +13,9 @@ public class TripObject {
     @SerializedName("start_mileage")
     public int startMileage;
     @SerializedName("start_lat")
-    public double startLat;
+    public double startLat = 0;
     @SerializedName("start_lon")
-    public double startLon;
+    public double startLon = 0;
     @SerializedName("end_lat")
     public double endLat;
     @SerializedName("end_lon")
