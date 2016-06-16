@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TimePicker;
+
+import com.flightpathcore.utilities.Utilities;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
@@ -35,7 +38,10 @@ public class DateTimeWidget extends FrameLayout implements InspectionWidgetInter
     @ViewById
     protected FrameLayout root;
     private InputObject data;
-    private int year, month, dayOfMonth;
+    private int year, month, dayOfMonth, hour, minutes;
+
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+
 
     public DateTimeWidget(Context context) {
         super(context);
@@ -110,12 +116,8 @@ public class DateTimeWidget extends FrameLayout implements InspectionWidgetInter
         dialog.setTitle("Date");
         dialog.setContentView(R.layout.date_and_time_picker_layout);
         dialog.setCancelable(true);
-        dialog.findViewById(R.id.cancel).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                dialog.dismiss();
-            }
-        });
+        dialog.findViewById(R.id.timeContainer).setVisibility(VISIBLE);
+        dialog.findViewById(R.id.cancel).setOnClickListener(v -> dialog.dismiss());
 
         DatePicker dp = (DatePicker) dialog.findViewById(R.id.datePicker);
         final Calendar c = Calendar.getInstance();
@@ -123,23 +125,24 @@ public class DateTimeWidget extends FrameLayout implements InspectionWidgetInter
         month = c.get(Calendar.MONTH);
         dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
 
-        dp.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), new DatePicker.OnDateChangedListener() {
-            @Override
-            public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                DateTimeWidget.this.year = year;
-                DateTimeWidget.this.month = monthOfYear;
-                DateTimeWidget.this.dayOfMonth = dayOfMonth;
-            }
+        dp.init(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), (view, year1, monthOfYear, dayOfMonth1) -> {
+            DateTimeWidget.this.year = year1;
+            DateTimeWidget.this.month = monthOfYear;
+            DateTimeWidget.this.dayOfMonth = dayOfMonth1;
         });
 
-        dialog.findViewById(R.id.ok).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                String date = sdf.format(new Date(year - 1900, month, dayOfMonth));
-                et.setText(date);
-                dialog.dismiss();
-            }
+        TimePicker tp = (TimePicker)dialog.findViewById(R.id.timePicker);
+        tp.setOnTimeChangedListener((view, hourOfDay, minute1) -> {
+            DateTimeWidget.this.hour = hourOfDay;
+            DateTimeWidget.this.minutes = minute1;
+        });
+
+        dialog.findViewById(R.id.ok).setOnClickListener(v -> {
+            Calendar cal = Calendar.getInstance();
+            cal.set(year, month, dayOfMonth, hour, minutes);
+            String date = sdf.format(cal.getTime());
+            et.setText(date);
+            dialog.dismiss();
         });
 
         dialog.show();

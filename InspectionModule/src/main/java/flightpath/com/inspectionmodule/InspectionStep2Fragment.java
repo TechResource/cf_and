@@ -53,6 +53,8 @@ public class InspectionStep2Fragment extends BaseFragment implements SignatureWi
     private List<BaseWidgetObject> widgets;
     private Integer signatureCounter = 1;
 
+
+
     @AfterViews
     protected void init() {
         buildStep(((InspectionModuleInterfaces.InspectionContainerCallback) getParentFragment()).getWidgetStep2());
