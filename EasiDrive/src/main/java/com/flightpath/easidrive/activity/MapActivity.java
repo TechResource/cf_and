@@ -86,6 +86,7 @@ public class MapActivity extends EDBaseActivity implements MapCallbacks, HeaderF
     private Handler handler = new Handler();
     private UserObject currentUser = null;
     private AccelerationService accelerationService = null;
+    private boolean shouldStartTripAfterGetJobs = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,8 +113,10 @@ public class MapActivity extends EDBaseActivity implements MapCallbacks, HeaderF
 
     private void startNewTrip() {
         JobObject selectedJob = (JobObject) DBHelper.getInstance().getLast(new JobsTable());
-        if(selectedJob == null)
+        if(selectedJob == null) {
+            shouldStartTripAfterGetJobs = true;
             return;
+        }
         TripObject newTrip = new TripObject(0, selectedJob.id);
 
         Location l = locationHandler.getLocation();
@@ -296,6 +299,10 @@ public class MapActivity extends EDBaseActivity implements MapCallbacks, HeaderF
             @Override
             public void onSuccess(List<JobObject> response) {
                 DBHelper.getInstance().insertMultiple(new JobsTable(), new JobsTable().getMultipleValues(response));
+                if(shouldStartTripAfterGetJobs){
+                    shouldStartTripAfterGetJobs = false;
+                    startNewTrip();
+                }
             }
 
             @Override
