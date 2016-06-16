@@ -60,7 +60,6 @@ public class SplashScreenActivity extends CFBaseActivity implements SplashScreen
         userObject = SPHelper.getUserSession(SplashScreenActivity.this);
         if (userObject != null && userObject.email != null && !userObject.email.isEmpty()) {
             model.fpApi.login(new LoginRequest(userObject.email, userObject.password), loginCallback);
-
         } else {
             splashScreenFragment.showPager(this);
         }
