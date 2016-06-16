@@ -146,8 +146,8 @@ public class DongleContainerFragment extends BaseFragment implements DongleDataH
 
     @Override
     public void onDongleDisconnected(Throwable error, String extraInfo) {
-        if(getActivity() != null && getActivity().getApplication() != null)
-            ((BaseApplication)getActivity().getApplication()).logCrash(error, extraInfo);
+//        if(getActivity() != null && getActivity().getApplication() != null)
+//            ((BaseApplication)getActivity().getApplication()).logCrash(error, extraInfo);
 
         showDevicePicker();
         devicePickerFragment.reset();
@@ -166,9 +166,19 @@ public class DongleContainerFragment extends BaseFragment implements DongleDataH
                         .commitAllowingStateLoss();
             }
         }else{
-            getChildFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, devicePickerFragment, "devicePickerFragment")
-                    .commitAllowingStateLoss();
+            try {
+                getChildFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, devicePickerFragment, "devicePickerFragment")
+                        .commitAllowingStateLoss();
+            }catch (Exception e){
+                try {
+                    getChildFragmentManager().beginTransaction()
+                            .show(devicePickerFragment)
+                            .commitAllowingStateLoss();
+                }catch (Exception e2){
+
+                }
+            }
         }
         devicePickerShowing = true;
     }

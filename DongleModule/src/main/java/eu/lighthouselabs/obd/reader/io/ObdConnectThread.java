@@ -106,7 +106,6 @@ public class ObdConnectThread extends Thread implements LocationListener {
 
     public void run() {
         Throwable error = null;
-        String extraInfoError = null;
         try {
             startDevice();
             int cmdSize = cmds.size();
@@ -136,19 +135,18 @@ public class ObdConnectThread extends Thread implements LocationListener {
                         lastSuccesCmdTimestamp = System.currentTimeMillis();
                     }
                 } catch (Exception e) {
-                    if(e instanceof StringIndexOutOfBoundsException){
-                        extraInfoError = new Gson().toJson(cmd);
-                    }
+//                    if(e instanceof StringIndexOutOfBoundsException){
+//                        extraInfoError = new Gson().toJson(cmd);
+//                    }
                     Log.d("ObdConnectThread", "error " + e.getMessage());
                     e.printStackTrace();
                     error = e;
                     results.put(cmd.getDesc(), "--");
                 } finally {
                     if (lastSuccesCmdTimestamp + 20000 < System.currentTimeMillis()) {
-                        additionalHandler.onOBDDisconnected(error, extraInfoError);
+                        additionalHandler.onOBDDisconnected(error, null);
                     }
                     error = null;
-                    extraInfoError = null;
                 }
             }
         } catch (IOException e) {
