@@ -276,6 +276,7 @@ public class MapActivity extends CLMBaseActivity implements MapCallbacks, Header
         fpModel.fpApi.getJobs(new JobsRequest(SPHelper.getUserSession(this)), new MyCallback<List<JobObject>>() {
             @Override
             public void onSuccess(List<JobObject> response) {
+                DBHelper.getInstance().clearDB(new JobsTable());
                 DBHelper.getInstance().insertMultiple(new JobsTable(), new JobsTable().getMultipleValues(response));
             }
 

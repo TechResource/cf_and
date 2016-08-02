@@ -43,7 +43,7 @@ public class JobObject {
     public String postcode;
     public String description;
     public String loan;
-    public String street;
+    public String street, street2;
     public String city;
 
     public String insurer;
@@ -62,6 +62,10 @@ public class JobObject {
     public boolean[] selectedLooseItems;
     public boolean expanded = false;
     public float baseHeight = 0f;
+    @SerializedName("home_number")
+    public String homeNumber = null;
+    @SerializedName("ref_number")
+    public String referenceNumber;
 
     public JobObject(){
 
@@ -98,6 +102,8 @@ public class JobObject {
         workPhone = job.workPhone;
         homePhone = job.homePhone;
         excess = job.excess;
+        homeNumber = job.homeNumber;
+        street2 = job.street2;
     }
 
 }

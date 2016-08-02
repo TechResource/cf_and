@@ -89,7 +89,11 @@ public class CheckBoxWidget extends LinearLayout implements InspectionWidgetInte
 
     @Override
     public void setValue(String value) {
-
+        if(value.equalsIgnoreCase("true")){
+            checkbox.setChecked(true);
+        }else if(value.equalsIgnoreCase("false")){
+            checkbox.setChecked(false);
+        }
     }
 
     @Override

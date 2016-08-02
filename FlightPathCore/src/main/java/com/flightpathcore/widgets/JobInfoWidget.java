@@ -65,11 +65,19 @@ public class JobInfoWidget extends ScrollView {
         if(job.id != -1)
             jobInfoContainer.addView(getSimpleSectionHeader(R.string.job_description_label));
         if(job.booking != null && job.booking.customer != null && !job.booking.customer.isEmpty())
-            jobInfoContainer.addView(getSimpleInputView(job.booking.customer, R.string.customer_hint));
+            jobInfoContainer.addView(getSimpleInputView(job.booking.customer, R.string.customer_name_hint));
         if(job.number != null && !job.number.isEmpty())
             jobInfoContainer.addView(getSimpleInputView(job.number, R.string.number_hint));
+        if(job.homeNumber != null && !job.homeNumber.isEmpty())
+            jobInfoContainer.addView(getSimpleInputView(job.homeNumber, R.string.home_name_number_hint));
         if(job.address != null && !job.address.isEmpty())
-            jobInfoContainer.addView(getSimpleInputView(job.address, R.string.address_hint));
+            jobInfoContainer.addView(getSimpleInputView(job.street, R.string.address_line_1_hint));
+        if(job.street2 != null && !job.street2.isEmpty())
+            jobInfoContainer.addView(getSimpleInputView(job.street2, R.string.address_line_2_hint));
+        if(job.city != null && !job.city.isEmpty())
+            jobInfoContainer.addView(getSimpleInputView(job.city, R.string.city_hint));
+        if(job.postcode != null && !job.postcode.isEmpty())
+            jobInfoContainer.addView(getSimpleInputView(job.postcode, R.string.postcode_hint));
         if(job.description != null && !job.description.isEmpty())
             jobInfoContainer.addView(getSimpleInputView(job.description, R.string.job_description_label));
         if(job.booking != null && job.booking.col_mobile != null && !job.booking.col_mobile.isEmpty())

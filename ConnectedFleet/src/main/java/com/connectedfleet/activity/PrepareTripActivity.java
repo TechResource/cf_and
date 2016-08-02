@@ -96,7 +96,7 @@ public class PrepareTripActivity extends CFBaseActivity implements HeaderFragmen
             try {
                 startMileage = Integer.valueOf(startMileageIW.getValue());
 
-                if(previousTrip.startMileage <= startMileage) {
+//                if(previousTrip.startMileage <= startMileage) {
                     EventObject changeMileageEvent = new EventObject();
                     changeMileageEvent.driverId = driver.driverId;
                     changeMileageEvent.timestamp = Utilities.getTimestamp() + "";
@@ -110,9 +110,9 @@ public class PrepareTripActivity extends CFBaseActivity implements HeaderFragmen
                     DBHelper.getInstance().updateOrInsert(tt, tt.getContentValues(previousTrip), previousTrip.tripId + "");
                     DBHelper.getInstance().createEvent(changeMileageEvent);
                     changeMileageContainer.setVisibility(View.GONE);
-                }else{
-                    startMileageIW.setError("Finish mileage can\'t be lower than starting mileage: " + previousTrip.startMileage + "!");
-                }
+//                }else{
+//                    startMileageIW.setError("Finish mileage can\'t be lower than starting mileage: " + previousTrip.startMileage + "!");
+//                }
             } catch (NumberFormatException e) {
                 //should never happen
             }
