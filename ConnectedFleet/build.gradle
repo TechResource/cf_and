@@ -82,7 +82,7 @@ dependencies {
     compile project(':FlightPathCore')
     compile project(':LoginModule')
     compile project(':MapModule')
-    compile project(':DongleModule')
+//    compile project(':DongleModule')
     compile project(':InspectionModule')
 
     testCompile 'junit:junit:4.12'

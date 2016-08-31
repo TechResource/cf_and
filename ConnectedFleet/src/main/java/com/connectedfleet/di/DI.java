@@ -7,19 +7,14 @@ import com.connectedfleet.activity.PrepareTripActivity;
 import com.connectedfleet.activity.SplashScreenActivity;
 import com.connectedfleet.di.components.CFActivityComponent;
 import com.connectedfleet.di.components.CFAppComponent;
-import com.connectedfleet.di.components.CFDongleComponent;
 import com.connectedfleet.di.components.DaggerCFActivityComponent;
 import com.connectedfleet.di.components.DaggerCFAppComponent;
-import com.connectedfleet.di.components.DaggerCFDongleComponent;
 import com.connectedfleet.di.modules.CFActivityModule;
 import com.connectedfleet.di.modules.CFAppModule;
-import com.connectedfleet.di.modules.CFDongleModule;
 import com.connectedfleet.fragments.ClosePeriodStep2Fragment;
 import com.flightpathcore.base.BaseActivity;
 import com.flightpathcore.base.BaseApplication;
-import com.flightpathcore.di.DICore;
 
-import flightpath.com.donglemodule.di.DIDongleModule;
 import flightpath.com.mapmodule.di.DIMapModule;
 
 /**
@@ -30,7 +25,6 @@ public class DI {
     private static DI di = new DI();
     public Injections injection = new Injections();
     private CFAppComponent applicationComponent;
-    private CFDongleComponent dongleComponent;
 
     public static DI di() {
         return di;
@@ -42,7 +36,6 @@ public class DI {
 
     public void withApp(BaseApplication app){
         applicationComponent = DaggerCFAppComponent.builder().cFAppModule(new CFAppModule(app)).mapComponent(DIMapModule.diMapModule().mapComponent).build();
-        dongleComponent = DaggerCFDongleComponent.builder().cFDongleModule(new CFDongleModule()).dongleComponent(DIDongleModule.diDongleModule().dongleComponent).build();
     }
 
     public CFAppComponent applicationComponent(){

@@ -20,22 +20,27 @@
             android:tag="headerFragment"
             tools:layout="@layout/fragment_header"/>
 
-        <com.flightpathcore.utilities.SwipeableViewPager
-            android:id="@+id/pager"
+        <FrameLayout
+            android:id="@+id/fragmentContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"/>
 
-            <android.support.v4.view.PagerTabStrip
-                android:id="@+id/pagerTabStrip"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:background="@color/menu_bg"
-                android:paddingBottom="@dimen/margin_very_small"
-                android:paddingTop="@dimen/margin_very_small"
-                android:textColor="@android:color/white"/>
+        <!--<com.flightpathcore.utilities.SwipeableViewPager-->
+            <!--android:id="@+id/pager"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
 
-        </com.flightpathcore.utilities.SwipeableViewPager>
+            <!--<android.support.v4.view.PagerTabStrip-->
+                <!--android:id="@+id/pagerTabStrip"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="top"-->
+                <!--android:background="@color/menu_bg"-->
+                <!--android:paddingBottom="@dimen/margin_very_small"-->
+                <!--android:paddingTop="@dimen/margin_very_small"-->
+                <!--android:textColor="@android:color/white"/>-->
+
+        <!--</com.flightpathcore.utilities.SwipeableViewPager>-->
     </LinearLayout>
 
     <com.flightpathcore.widgets.DrawerMenuView_

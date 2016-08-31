@@ -3,6 +3,7 @@ package flightpath.com.mapmodule.di;
 import dagger.Component;
 import flightpath.com.mapmodule.LocationHandler;
 import flightpath.com.mapmodule.MapFragment;
+import flightpath.com.mapmodule.SpeedService;
 import flightpath.com.mapmodule.TripStartStopWidget;
 import flightpath.com.mapmodule.TripStatusHelper;
 
@@ -14,6 +15,7 @@ import flightpath.com.mapmodule.TripStatusHelper;
 public interface MapComponent {
     TripStatusHelper tripStatusHelper();
     LocationHandler locationHandler();
+    SpeedService speedService();
 
     void inject(MapFragment fragment);
     void inject(TripStartStopWidget widget);

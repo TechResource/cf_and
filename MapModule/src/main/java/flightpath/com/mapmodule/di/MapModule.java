@@ -3,6 +3,7 @@ package flightpath.com.mapmodule.di;
 import dagger.Module;
 import dagger.Provides;
 import flightpath.com.mapmodule.LocationHandler;
+import flightpath.com.mapmodule.SpeedService;
 import flightpath.com.mapmodule.TripStatusHelper;
 
 /**
@@ -21,5 +22,11 @@ public class MapModule {
     @Provides
     public LocationHandler locationHandler(){
         return new LocationHandler();
+    }
+
+    @MapScope
+    @Provides
+    public SpeedService speedService(){
+        return new SpeedService();
     }
 }

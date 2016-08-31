@@ -34,6 +34,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.CheckedChange;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.osmdroid.DefaultResourceProxyImpl;
@@ -78,6 +79,8 @@ public class MapFragment extends BaseFragment implements TripStatusHelper.TripSt
     protected TripStatusHelper tripStatusHelper;
     @Inject
     protected LocationHandler locationHandler;
+    @FragmentArg
+    protected boolean isConnectedFleet = false;
 
     private MapPathHelper mapPathHelper;
     private PointObject currentPoint = null;
@@ -90,7 +93,6 @@ public class MapFragment extends BaseFragment implements TripStatusHelper.TripSt
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DIMapModule.diMapModule().injections().inject(this);
-
     }
 
     public void setCallbacks(MapCallbacks mapCallbacks, boolean startTripWithoutLocation){
@@ -118,7 +120,10 @@ public class MapFragment extends BaseFragment implements TripStatusHelper.TripSt
     }
 
     private void initLocationHandler() {
-        locationHandler.initLocationHandler(getActivity());
+        if(isConnectedFleet)
+            locationHandler.initLocationHandler(getActivity(), 2000);
+        else
+            locationHandler.initLocationHandler(getActivity());
         locationHandler.addAdditionalListener(this);
     }
 

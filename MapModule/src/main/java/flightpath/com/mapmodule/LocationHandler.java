@@ -66,6 +66,25 @@ public class LocationHandler implements LocationInterfacce {
         }
     }
 
+    public void initLocationHandler(Context context, int gpsPointPerInMillis){
+        locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        if(BaseApplication.isDebug(context)) {
+            if(passiveService == null)
+                passiveService = new LocationService();
+        }
+        if(gpsService == null)
+            gpsService = new LocationService();
+        try {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, gpsPointPerInMillis, MIN_DISTANCE_CHANGE_FOR_UPDATES, gpsService);
+            if(BaseApplication.isDebug(context))
+                locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, gpsPointPerInMillis, MIN_DISTANCE_CHANGE_FOR_UPDATES, passiveService);
+            isReady = true;
+        }catch (SecurityException e){
+            isReady = false;
+            // permission not granted
+        }
+    }
+
     public boolean isReady(){
         return isReady;
     }

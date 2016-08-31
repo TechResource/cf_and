@@ -1,6 +1,5 @@
 package com.connectedfleet.activity;
 
-import android.bluetooth.BluetoothAdapter;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,11 +9,9 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.support.v4.view.PagerTabStrip;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -23,7 +20,6 @@ import android.widget.Toast;
 import com.connectedfleet.R;
 import com.crashlytics.android.Crashlytics;
 import com.flightpathcore.acceleration.AccelerationService;
-import com.flightpathcore.adapters.PagerAdapter;
 import com.flightpathcore.base.BaseApplication;
 import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.database.tables.DriverTable;
@@ -36,7 +32,6 @@ import com.flightpathcore.objects.TripObject;
 import com.flightpathcore.objects.UpdateAppObject;
 import com.flightpathcore.objects.UserObject;
 import com.flightpathcore.utilities.SPHelper;
-import com.flightpathcore.utilities.SwipeableViewPager;
 import com.flightpathcore.utilities.Utilities;
 import com.flightpathcore.widgets.DrawerMenuView;
 import com.flightpathcore.widgets.InputWidget;
@@ -49,20 +44,17 @@ import org.androidannotations.annotations.FragmentByTag;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.WakeLock;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
 
-import flightpath.com.donglemodule.DongleContainerFragment;
-import flightpath.com.donglemodule.DongleContainerFragment_;
-import flightpath.com.donglemodule.DongleDataHelper;
 import flightpath.com.loginmodule.UpdateHelper;
 import flightpath.com.mapmodule.LocationHandler;
 import flightpath.com.mapmodule.MapCallbacks;
 import flightpath.com.mapmodule.MapFragment;
 import flightpath.com.mapmodule.MapFragment_;
+import flightpath.com.mapmodule.SpeedService;
 import flightpath.com.mapmodule.TripStatusHelper;
 
 /**
@@ -74,10 +66,10 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
 
     @FragmentByTag
     protected HeaderFragment headerFragment;
-    @ViewById
-    protected SwipeableViewPager pager;
-    @ViewById
-    protected PagerTabStrip pagerTabStrip;
+//    @ViewById
+//    protected SwipeableViewPager pager;
+//    @ViewById
+//    protected PagerTabStrip pagerTabStrip;
     @ViewById
     protected DrawerMenuView menuView;
     @ViewById
@@ -88,13 +80,15 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
     protected LocationHandler locationHandler;
     @Inject
     protected FPModel fpModel;
+    @Inject
+    protected SpeedService speedService;
 
-    protected DongleDataHelper dongleDataHelper;
+//    protected DongleDataHelper dongleDataHelper;
 
-    private PagerAdapter adapter;
+//    private PagerAdapter adapter;
     private MapFragment mapFragment;
-    private DongleContainerFragment dongleFragment;
-    private List<String> fragments;
+//    private DongleContainerFragment dongleFragment;
+//    private List<String> fragments;
     private Handler handler = new Handler();
     private UserObject currentUser = null;
     private AccelerationService accelerationService = null;
@@ -129,23 +123,23 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
 
         headerFragment.setHeaderCallback(this);
         headerFragment.setViewType(HeaderFragment.ViewType.MAIN_ACTIVITY);
-        pager.setOffscreenPageLimit(2);
-        fragments = new ArrayList<>();
-        fragments.add("android:switcher:" + pager.getId() + ":" + 0);
-        fragments.add("android:switcher:" + pager.getId() + ":" + 1);
+//        pager.setOffscreenPageLimit(2);
+//        fragments = new ArrayList<>();
+//        fragments.add("android:switcher:" + pager.getId() + ":" + 0);
+//        fragments.add("android:switcher:" + pager.getId() + ":" + 1);
         if (mapFragment == null) {
             mapFragment = MapFragment_.builder().build();
             mapFragment.setCallbacks(this);
-            getSupportFragmentManager().beginTransaction().add(pager.getId(), mapFragment, fragments.get(0)).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.fragmentContainer, mapFragment, "mapFragment").commit();
         }
 
-        if (dongleFragment == null) {
-            dongleFragment = DongleContainerFragment_.builder().build();
-            getSupportFragmentManager().beginTransaction().add(pager.getId(), dongleFragment, fragments.get(1)).commit();
-        }
-        adapter = new PagerAdapter(getSupportFragmentManager(), fragments);
-        pager.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+//        if (dongleFragment == null) {
+//            dongleFragment = DongleContainerFragment_.builder().build();
+//            getSupportFragmentManager().beginTransaction().add(pager.getId(), dongleFragment, fragments.get(1)).commit();
+//        }
+//        adapter = new PagerAdapter(getSupportFragmentManager(), fragments);
+//        pager.setAdapter(adapter);
+//        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -154,6 +148,7 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
 
         SynchronizationHelper.initInstance(fpModel);
         DBHelper.getInstance().setLocationHandler(locationHandler);
+        locationHandler.addAdditionalListener(speedService);
 
         mapFragment.setStatusLabel(SPHelper.getData(this, SPHelper.CURRENT_STATUS_KEY));
     }
@@ -217,11 +212,11 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
 
     @Override
     public void onBackPressed() {
-        if (pager.getCurrentItem() != 0) {
-            pager.setCurrentItem(pager.getCurrentItem() - 1, true);
-        } else {
+//        if (pager.getCurrentItem() != 0) {
+//            pager.setCurrentItem(pager.getCurrentItem() - 1, true);
+//        } else {
             onExit();
-        }
+//        }
     }
 
     private void onExit() {
@@ -310,14 +305,17 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
     @WakeLock(tag = "point_collector", level = WakeLock.Level.PARTIAL_WAKE_LOCK)
     protected EventObject collectPoint() {
         EventObject eventObject = null;
+        currentDongleData = new HashMap<>();
         currentLocation = locationHandler.getLocation();
         currentTripStatus = tripStatusHelper.getTripStatus();
 
-        if (dongleDataHelper == null)
-            dongleDataHelper = ((DongleContainerFragment) adapter.getItem(1)).getDongleDataHelper();
+//        if (dongleDataHelper == null)
+//            dongleDataHelper = ((DongleContainerFragment) adapter.getItem(1)).getDongleDataHelper();
+//
+//        if (dongleDataHelper != null)
+//            currentDongleData = dongleDataHelper.getCurrentData();
 
-        if (dongleDataHelper != null)
-            currentDongleData = dongleDataHelper.getCurrentData();
+        currentDongleData.put("vehicle_speed", speedService.getCurrentAvgSpeedAndClear()+"");
 
         if (mConnection != null && accelerationService != null && currentDongleData != null) {
             currentDongleData.put("acceleration", accelerationService.getCurrentAcceleration() + "");
@@ -327,13 +325,13 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
             eventObject = new EventObject();
 
             eventObject.type = EventObject.EventType.POINT;
-            if (dongleDataHelper.isDongleConnected()) {
-                eventObject.dongleEnabled = 1;
-                eventObject.btEnabled = 1;
-            } else {
+//            if (dongleDataHelper.isDongleConnected()) {
+//                eventObject.dongleEnabled = 1;
+//                eventObject.btEnabled = 1;
+//            } else {
                 eventObject.dongleEnabled = 0;
-                eventObject.btEnabled = BluetoothAdapter.getDefaultAdapter().isEnabled() ? 1 : 0;
-            }
+                eventObject.btEnabled = 0;
+//            }
 
             if (currentDongleData != null) {
                 eventObject.customEventObject = gson.toJson(currentDongleData);

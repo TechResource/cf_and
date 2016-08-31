@@ -6,8 +6,6 @@ import com.flightpathcore.di.components.AppScope;
 import com.flightpathcore.di.components.ApplicationComponent;
 
 import dagger.Component;
-import flightpath.com.donglemodule.DongleDataHelper;
-import flightpath.com.donglemodule.di.DongleComponent;
 import flightpath.com.mapmodule.LocationHandler;
 import flightpath.com.mapmodule.TripStatusHelper;
 import flightpath.com.mapmodule.di.MapComponent;
