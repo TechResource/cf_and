@@ -23,6 +23,7 @@
     <string name="logout_label">Log out</string>
     <string name="exit_label">Exit</string>
     <string name="close_period_label">Close Period</string>
+    <string name="returning_vehicle_label">Returning Vehicle</string>
     <string name="sync_label">Synchronize</string>
     <string name="clean_db_label">Clear database[dev panel]</string>
     <string name="send_now_label">Synchronize now</string>
@@ -66,4 +67,28 @@
     <string name="job_list_label">Job List</string>
     <string name="select_job_label">Select Job</string>
     <string name="unselect_job_label">Unselect Job</string>
+    
+    <!--returning vehicle checklist-->
+    <string name="vehicle_condition_title">Vehicle Condition</string>
+    <string name="vehicle_condition_description">The vehicle has been cleaned / valeted inside and out for the day of collection and ensure that the parcel shelf and accessories that the vehicle was supplied with is returned in full working order.</string>
+    <string name="service_man_info_title">Service &amp; Manufacturer Information</string>
+    <string name="service_man_info_description">The Book Pack and Service Book returned in the vehicle(updated as per the manufacturers scheduled guidelines)</string>
+    <string name="valid_mot_cert_title">Valid MOT Certificate</string>
+    <string name="valid_mot_cert_description">The MOT Certificate is available – (if applicable)</string>
+    <string name="keys_title">Keys</string>
+    <string name="keys_description">A full set of keys, including the master key, spares and locking wheel-nut keys, should be returned in working order if originally supplied.</string>
+    <string name="fuel_level_title">Fuel Level</string>
+    <string name="fuel_level_description">Return vehicle with 1/4 tank of fuel</string>
+    <string name="door_mirrors_title">Door Mirrors</string>
+    <string name="door_mirrors_description">Door Mirrors – Missing, cracked or damaged mirrors are not acceptable. If adjustable and /or heated door mirrors, they must be in working order when returned</string>
+    <string name="window_title">Windows / Windscreens</string>
+    <string name="window_description">Windows / windscreens – light scratching is acceptable provided it does not interfere with the driver’s line of sight and any heating elements still work properly. Chips, cracks and holes are not acceptable. Repaired chips within the driver’s line of sight are not acceptable. Repaired chips outside the driver’s line of sight are acceptable provided they are repaired to a professional standard.</string>
+    <string name="lamps_title">Lamps &amp; Lenses</string>
+    <string name="lamps_description">All lamps must work. Minor scuffs marks and scratches up to 25mm are acceptable. Holes or cracks in the glass or plastic covers of lamp are not acceptable.</string>
+    <string name="tyres_title">Tyres &amp; Wheels</string>
+    <string name="tyres_description">All tyres, including any spare, must meet minimum UK legal requirements (in excess of 1.6mm tread across the entire width of the wheel) and comply with the vehicle manufacturer’s recommendations of tyre type, class*, size and speed rating for the vehicle. There must be no damage to sidewalls or tread. Evidence of uneven wear due to under or over inflation is not acceptable. Punctured or illegal tyres are not acceptable and will result in an aborted collection</string>
+    <string name="overall_condition_title">Overall condition of the vehicle</string>
+    <string name="overall_condition_description">Vehicle has no warning lights displayed. There is no unreported accident damage on the vehicle which will result in excess damage charges.</string>
+    <string name="damage_free_title">Damage Free</string>
+    <string name="damage_free_description">Any third party induced damage should be reported. Any own fault damage (including damage whilst parked), must be reported to Peter Dinallo immediately</string>
 </resources>

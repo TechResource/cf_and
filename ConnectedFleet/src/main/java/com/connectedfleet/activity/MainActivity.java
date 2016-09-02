@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.connectedfleet.R;
@@ -117,7 +118,7 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
     @AfterViews
     protected void init() {
         menuView.setCallbacks(this);
-        menuView.setupMenu(DrawerMenuView.UPDATE_APP, DrawerMenuView.CLOSE_PERIOD, DrawerMenuView.LOGOUT, DrawerMenuView.EXIT);
+        menuView.setupMenu(DrawerMenuView.UPDATE_APP, DrawerMenuView.CLOSE_PERIOD, DrawerMenuView.LOGOUT, DrawerMenuView.EXIT, DrawerMenuView.RETURNING_VEHICLE);
 
         drawer.setDrawerListener(this);
 
@@ -315,7 +316,8 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
 //        if (dongleDataHelper != null)
 //            currentDongleData = dongleDataHelper.getCurrentData();
 
-        currentDongleData.put("vehicle_speed", speedService.getCurrentAvgSpeedAndClear()+"");
+        int v = (int) Math.round(speedService.getCurrentAvgSpeedAndClear());
+        currentDongleData.put("vehicle_speed", v+" km/h");
 
         if (mConnection != null && accelerationService != null && currentDongleData != null) {
             currentDongleData.put("acceleration", accelerationService.getCurrentAcceleration() + "");
@@ -351,7 +353,7 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
                 eventObject.startDateTrip = tripStatusHelper.getCurrentTrip().startDateAsTimestamp + "";
             }
 
-            Log.d("POINT COLLECTOR", gson.toJson(eventObject));
+//            Log.d("POINT COLLECTOR", gson.toJson(eventObject));
         }
         return eventObject;
     }
@@ -458,6 +460,8 @@ public class MainActivity extends CFBaseActivity implements HeaderFragment.Heade
                 logout();
             } else if (onMenuCloseOpenViewWithId == DrawerMenuView.CLOSE_PERIOD) {
                 navigator.closePeriod();
+            }else if(onMenuCloseOpenViewWithId == DrawerMenuView.RETURNING_VEHICLE){
+                navigator.returningVehicle();
             }
         }
         onMenuCloseOpenViewWithId = null;

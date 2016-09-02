@@ -41,6 +41,9 @@
             android:name=".activity.ClosePeriodActivity_"
             android:screenOrientation="landscape"
             />
+        <activity android:name=".activity.ReturningVehicleActivity_"
+            android:screenOrientation="portrait"
+            />
 
         <service android:name="com.flightpathcore.acceleration.AccelerationService"/>
 

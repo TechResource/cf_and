@@ -1,6 +1,7 @@
 package flightpath.com.mapmodule;
 
 import android.location.Location;
+import android.util.Log;
 
 import javax.inject.Inject;
 
@@ -26,6 +27,7 @@ public class SpeedService implements LocationHandler.LocationAdditionalListener{
     public double getCurrentAvgSpeedAndClear(){
         double avgSpeed = currentAvgSpeed;
         currentAvgSpeed = 0;
+        speedCounter = 0;
         return avgSpeed;
     }
 
@@ -79,7 +81,6 @@ public class SpeedService implements LocationHandler.LocationAdditionalListener{
             double speed_mps = distance / time_s;
             double speed_mph = (speed_mps * 3600.0) / 1609.344;
             double speed_kph = (speed_mps * 3600.0) / 1000;
-
             return speed_kph;
         }else{
             return 0;

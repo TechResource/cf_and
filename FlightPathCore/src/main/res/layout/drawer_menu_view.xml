@@ -116,6 +116,17 @@
             />
 
         <Button
+            android:id="@+id/returningVehicle"
+            style="@style/Menu.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/returning_vehicle_label"
+            android:drawablePadding="@dimen/margin_small"
+            android:drawableLeft="@drawable/returning_vehicle_icon"
+            android:visibility="gone"
+            />
+
+        <Button
             android:id="@+id/logout"
             style="@style/Menu.Button"
             android:layout_width="match_parent"

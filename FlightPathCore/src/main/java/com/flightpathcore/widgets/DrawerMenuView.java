@@ -40,11 +40,12 @@ public class DrawerMenuView extends LinearLayout implements View.OnClickListener
     public final static int SYNC_NOW = R.id.sendNow;
     public final static int DISPOSAL_INSPECTION = R.id.disposalInspection;
     public final static int JOB_LIST = R.id.jobList;
+    public final static int RETURNING_VEHICLE = R.id.returningVehicle;
 
     @ViewById
     protected TextView driver;
     @ViewById
-    protected Button updateApp, status, addInspection, getJobs, jobInfo, logout, exit, closePeriod, cleanDB, sendNow, storeDB, disposalInspection, jobList;
+    protected Button updateApp, status, addInspection, getJobs, jobInfo, logout, exit, closePeriod, cleanDB, sendNow, storeDB, disposalInspection, jobList, returningVehicle;
     private MenuCallbacks callbacks;
 
     public DrawerMenuView(Context context) {
@@ -83,7 +84,7 @@ public class DrawerMenuView extends LinearLayout implements View.OnClickListener
     @AfterViews
     protected void init() {
         Utilities.setOswaldTypeface(getContext().getAssets(), driver, updateApp, status, addInspection,
-                getJobs, jobInfo, logout, exit, closePeriod, cleanDB, sendNow, storeDB, disposalInspection, jobList);
+                getJobs, jobInfo, logout, exit, closePeriod, cleanDB, sendNow, storeDB, disposalInspection, jobList, returningVehicle);
         String name = null;
         if (!isInEditMode()) {
             if (DBHelper.getInstance().getLast(new DriverTable()) != null) {
@@ -104,6 +105,7 @@ public class DrawerMenuView extends LinearLayout implements View.OnClickListener
         storeDB.setOnClickListener(this);
         disposalInspection.setOnClickListener(this);
         jobList.setOnClickListener(this);
+        returningVehicle.setOnClickListener(this);
     }
 
     @Override

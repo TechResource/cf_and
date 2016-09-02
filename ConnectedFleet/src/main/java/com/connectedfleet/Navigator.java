@@ -6,6 +6,7 @@ import com.connectedfleet.activity.ClosePeriodActivity_;
 import com.connectedfleet.activity.LoginActivity_;
 import com.connectedfleet.activity.MainActivity_;
 import com.connectedfleet.activity.PrepareTripActivity_;
+import com.connectedfleet.activity.ReturningVehicleActivity_;
 import com.connectedfleet.activity.SplashScreenActivity_;
 import com.flightpathcore.base.NavigatorAbstract;
 import com.flightpathcore.di.components.ActivityScope;
@@ -51,5 +52,9 @@ public class Navigator extends NavigatorAbstract {
     public void splashScreen() {
         SplashScreenActivity_.intent(activity).start();
         activity.finish();
+    }
+
+    public void returningVehicle() {
+        ReturningVehicleActivity_.intent(activity).start();
     }
 }
