@@ -1,1 +1,1 @@
-include ':FlightPathCore', ':LoginModule', ':ConnectedFleet', ':MapModule', ':DongleModule', ':TestModule', ':InspectionModule', ':Runway', ':CLM', ':Gemini', ':EasiDrive'
+include ':FlightPathCore', ':LoginModule', ':ConnectedFleet', ':MapModule', ':DongleModule', ':TestModule', ':InspectionModule', ':Runway', ':CLM', ':Gemini', ':EasiDrive', ':Crutchleys'

@@ -138,6 +138,17 @@
             />
 
         <Button
+            android:id="@+id/endTrip"
+            style="@style/Menu.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/end_trip_label"
+            android:drawableLeft="@drawable/ic_logout"
+            android:drawablePadding="@dimen/margin_small"
+            android:visibility="gone"
+            />
+
+        <Button
             android:id="@+id/exit"
             style="@style/Menu.Button"
             android:layout_width="match_parent"

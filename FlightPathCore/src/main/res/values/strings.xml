@@ -9,8 +9,10 @@
     <string name="cancel_label">Cancel</string>
     <string name="done_label">Done</string>
     <string name="logout_title">Application logout</string>
+    <string name="end_trip_label">End trip</string>
     <string name="logout_ont_trip_message">Please close the current trip before logging out.</string>
     <string name="logout_message">Are you sure you want to log out?</string>
+    <string name="end_trip_message">Are you sure you want to end trip?</string>
     <string name="no_location_error">Cannot get your location. Please enable GPS.</string>
     <string name="close_app_title">Close application</string>
     <string name="close_app_msg">Are you sure you want to exit?</string>

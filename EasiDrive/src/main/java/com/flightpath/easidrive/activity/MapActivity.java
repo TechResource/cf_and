@@ -133,9 +133,10 @@ public class MapActivity extends EDBaseActivity implements MapCallbacks, HeaderF
     protected void init() {
         headerFragment.setHeaderCallback(this);
         mapFragment.setCallbacks(this, true);
+        mapFragment.hideStopPause();
 
         menuView.setCallbacks(this);
-        menuView.setupMenu(DrawerMenuView.UPDATE_APP, DrawerMenuView.STATUS, DrawerMenuView.ADD_INSPECTION, DrawerMenuView.LOGOUT, DrawerMenuView.EXIT);
+        menuView.setupMenu(DrawerMenuView.UPDATE_APP, DrawerMenuView.END_TRIP);
 
         drawer.setDrawerListener(this);
 
@@ -173,36 +174,28 @@ public class MapActivity extends EDBaseActivity implements MapCallbacks, HeaderF
 
     @Override
     public void onBackPressed() {
-        onExit();
+        logoutAndEndTrip();
     }
 
-    private void onExit() {
+//    private void onExit() {
+//        Utilities.styleAlertDialog(new AlertDialog.Builder(this, R.style.BlueAlertDialog)
+//                .setTitle(R.string.close_app_title)
+//                .setMessage(R.string.close_app_msg)
+//                .setPositiveButton(R.string.yes_label, (dialog, which1) -> MapActivity.this.finish())
+//                .setNegativeButton(R.string.no_label, null)
+//                .show());
+//    }
+
+    private void logoutAndEndTrip() {
         Utilities.styleAlertDialog(new AlertDialog.Builder(this, R.style.BlueAlertDialog)
-                .setTitle(R.string.close_app_title)
-                .setMessage(R.string.close_app_msg)
-                .setPositiveButton(R.string.yes_label, (dialog, which1) -> MapActivity.this.finish())
+                .setTitle(R.string.end_trip_label)
+                .setMessage(R.string.end_trip_message)
+                .setPositiveButton(R.string.yes_label, (dialog, which) -> {
+                    tripStatusHelper.stopTrip();
+                    MapActivity.this.finish();
+                })
                 .setNegativeButton(R.string.no_label, null)
                 .show());
-    }
-
-    private void logout() {
-        if (mapFragment.isOnTrip()) {
-            Utilities.styleAlertDialog(new AlertDialog.Builder(this, R.style.BlueAlertDialog)
-                    .setTitle(R.string.logout_title)
-                    .setMessage(R.string.logout_ont_trip_message)
-                    .setPositiveButton(R.string.ok_label, null)
-                    .show());
-        } else {
-            Utilities.styleAlertDialog(new AlertDialog.Builder(this, R.style.BlueAlertDialog)
-                    .setTitle(R.string.logout_title)
-                    .setMessage(R.string.logout_message)
-                    .setPositiveButton(R.string.ok_label, (dialog, which) -> {
-                        SPHelper.deleteData(this, SPHelper.USER_SESSION_KEY);
-                        navigator.splashScreen();
-                    })
-                    .setNegativeButton(R.string.cancel_text, null)
-                    .show());
-        }
     }
 
     @Override
@@ -416,14 +409,8 @@ public class MapActivity extends EDBaseActivity implements MapCallbacks, HeaderF
         if (onMenuCloseOpenViewWithId != null) {
             if (onMenuCloseOpenViewWithId == DrawerMenuView.UPDATE_APP) {
                 checkUpdate();
-            } else if (onMenuCloseOpenViewWithId == DrawerMenuView.STATUS) {
-                showStatusDialog();
-            } else if (onMenuCloseOpenViewWithId == DrawerMenuView.ADD_INSPECTION) {
-                navigator.addInspection();
-            } else if (onMenuCloseOpenViewWithId == DrawerMenuView.LOGOUT) {
-                logout();
-            } else if (onMenuCloseOpenViewWithId == DrawerMenuView.EXIT) {
-                onExit();
+            } else if (onMenuCloseOpenViewWithId == DrawerMenuView.END_TRIP) {
+                logoutAndEndTrip();
             }
         }
 

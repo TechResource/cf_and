@@ -43,6 +43,7 @@
         <View style="@style/SeparatorHorizontal" />
 
         <LinearLayout
+            android:id="@+id/stopPauseContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

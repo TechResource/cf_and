@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.FragmentByTag;
 
 import java.util.ArrayList;
@@ -41,6 +42,8 @@ public class SplashScreenActivity extends EDBaseActivity implements SplashScreen
     protected Navigator navigator;
     @Inject
     protected FPModel model;
+    @Extra
+    protected Boolean autoLogin = true;
     private UserObject userObject;
     private UserObject response = null;
 
@@ -53,8 +56,9 @@ public class SplashScreenActivity extends EDBaseActivity implements SplashScreen
     @AfterViews
     protected void init(){
         userObject = SPHelper.getUserSession(SplashScreenActivity.this);
-        if (userObject != null && userObject.email != null && !userObject.email.isEmpty()) {
-            model.fpApi.login(new LoginRequest(userObject.email, userObject.password), loginCallback);
+        if (autoLogin && userObject != null && userObject.email != null && !userObject.email.isEmpty()) {
+//            model.fpApi.login(new LoginRequest(userObject.email, userObject.password), loginCallback);
+            navigator.loginActivity();
         } else {
             splashScreenFragment.showPager(this);
         }

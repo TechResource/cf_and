@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="host_addresses">
+        <item>http://46.17.215.204:42365</item>
+        <item>http://46.17.215.204:50001</item>
+        <item>http://192.168.0.103:42551</item>
+        <item>http://192.168.0.109:8001</item>
+    </string-array>
+</resources>

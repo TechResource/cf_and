@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/password_hint"
         android:inputType="textPassword"
+        android:focusableInTouchMode="true"
         android:layout_marginBottom="@dimen/margin_normal"
         android:layout_marginLeft="@dimen/margin_normal"
         android:layout_marginRight="@dimen/margin_normal"

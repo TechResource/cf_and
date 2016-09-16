@@ -34,7 +34,7 @@ public class TripStartStopWidget extends LinearLayout implements TripStatusHelpe
     @ViewById
     protected TextView tripStartLatLon, tripStartDate;
     @ViewById
-    protected LinearLayout mainContainer;
+    protected LinearLayout mainContainer, stopPauseContainer;
     @ViewById
     protected ImageView stopBtn;
     @ViewById
@@ -84,6 +84,10 @@ public class TripStartStopWidget extends LinearLayout implements TripStatusHelpe
         }else{
             tripStatusHelper.setTripStatus(TripObject.TripStatus.TRIP_PAUSED, locationHandler.getLocation());
         }
+    }
+
+    public void hideStopPause(){
+        stopPauseContainer.setVisibility(GONE);
     }
 
     @Click

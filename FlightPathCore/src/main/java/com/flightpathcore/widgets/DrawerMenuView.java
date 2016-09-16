@@ -33,6 +33,7 @@ public class DrawerMenuView extends LinearLayout implements View.OnClickListener
     public final static int GET_JOBS = R.id.getJobs;
     public final static int JOB_INFO = R.id.jobInfo;
     public final static int LOGOUT = R.id.logout;
+    public final static int END_TRIP = R.id.endTrip;
     public final static int EXIT = R.id.exit;
     public final static int CLOSE_PERIOD = R.id.closePeriod;
     public final static int CLEAR_DB = R.id.cleanDB;
@@ -45,7 +46,7 @@ public class DrawerMenuView extends LinearLayout implements View.OnClickListener
     @ViewById
     protected TextView driver;
     @ViewById
-    protected Button updateApp, status, addInspection, getJobs, jobInfo, logout, exit, closePeriod, cleanDB, sendNow, storeDB, disposalInspection, jobList, returningVehicle;
+    protected Button updateApp, status, addInspection, getJobs, jobInfo, logout, exit, closePeriod, cleanDB, sendNow, storeDB, disposalInspection, jobList, returningVehicle, endTrip;
     private MenuCallbacks callbacks;
 
     public DrawerMenuView(Context context) {
@@ -84,7 +85,7 @@ public class DrawerMenuView extends LinearLayout implements View.OnClickListener
     @AfterViews
     protected void init() {
         Utilities.setOswaldTypeface(getContext().getAssets(), driver, updateApp, status, addInspection,
-                getJobs, jobInfo, logout, exit, closePeriod, cleanDB, sendNow, storeDB, disposalInspection, jobList, returningVehicle);
+                getJobs, jobInfo, logout, exit, closePeriod, cleanDB, sendNow, storeDB, disposalInspection, jobList, returningVehicle, endTrip);
         String name = null;
         if (!isInEditMode()) {
             if (DBHelper.getInstance().getLast(new DriverTable()) != null) {
@@ -106,6 +107,7 @@ public class DrawerMenuView extends LinearLayout implements View.OnClickListener
         disposalInspection.setOnClickListener(this);
         jobList.setOnClickListener(this);
         returningVehicle.setOnClickListener(this);
+        endTrip.setOnClickListener(this);
     }
 
     @Override

@@ -27,7 +27,6 @@ public class ReturningVehicleActivity extends CFBaseActivity {
     @ViewById
     protected Button send;
 
-
     @AfterViews
     protected void init(){
 

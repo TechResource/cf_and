@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -16,9 +14,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -28,7 +24,6 @@ import com.flightpathcore.database.DBHelper;
 import com.flightpathcore.database.tables.PointsTable;
 import com.flightpathcore.objects.PointObject;
 import com.flightpathcore.objects.TripObject;
-import com.flightpathcore.utilities.Utilities;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.CheckedChange;
@@ -37,8 +32,6 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.osmdroid.DefaultResourceProxyImpl;
-import org.osmdroid.ResourceProxy;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -119,6 +112,15 @@ public class MapFragment extends BaseFragment implements TripStatusHelper.TripSt
         tripStatusHelper.addListener(mapPathHelper);
     }
 
+    public boolean stopPauseShouldGone = false;
+
+    public void hideStopPause(){
+        if(tripStartStopWidget == null)
+            stopPauseShouldGone = true;
+        else
+            tripStartStopWidget.hideStopPause();
+    }
+
     private void initLocationHandler() {
         if(isConnectedFleet)
             locationHandler.initLocationHandler(getActivity(), 2000);
@@ -172,6 +174,9 @@ public class MapFragment extends BaseFragment implements TripStatusHelper.TripSt
         if(mapPathHelper == null) {
             mapPathHelper = new MapPathHelper(mapView);
         }
+
+        if(stopPauseShouldGone)
+            tripStartStopWidget.hideStopPause();
     }
 
     @Click

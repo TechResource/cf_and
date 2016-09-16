@@ -2,6 +2,7 @@ package flightpath.com.loginmodule;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
@@ -11,6 +12,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -49,6 +51,7 @@ public class LoginFragment extends BaseFragment implements HeaderFragment.Header
 
     private String securityCode;
     private LoginCallbacks loginCallback;
+    private String email = null;
 
     @AfterViews
     protected void init() {
@@ -58,6 +61,8 @@ public class LoginFragment extends BaseFragment implements HeaderFragment.Header
             login.setText("radek@appsvisio.com");
             password.setText("radek123");
         }
+        if(email != null)
+            login.setText(email);
     }
 
     public void setCallback(LoginCallbacks loginCallbacks){
@@ -93,6 +98,12 @@ public class LoginFragment extends BaseFragment implements HeaderFragment.Header
                 })
                 .show();
         Utilities.styleAlertDialog(securityCodeDialog);
+    }
+
+    public void setEmail(String email){
+        if(login != null)
+            login.setText(email);
+        else this.email = email;
     }
 
     @Override
@@ -206,4 +217,13 @@ public class LoginFragment extends BaseFragment implements HeaderFragment.Header
         }
     }
 
+    public void requestFocusOnPassword() {
+        password.postDelayed(() -> {
+            login.clearFocus();
+            password.requestFocus();
+            InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            mgr.showSoftInput(password, InputMethodManager.SHOW_IMPLICIT);
+
+        },250);
+    }
 }

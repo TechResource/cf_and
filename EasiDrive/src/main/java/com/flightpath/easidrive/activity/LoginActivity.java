@@ -50,6 +50,11 @@ public class LoginActivity extends EDBaseActivity implements LoginCallbacks {
         headerFragment.setHeaderCallback(loginFragment);
         headerFragment.setViewType(HeaderFragment.ViewType.LOGIN_ACTIVITY);
         loginFragment.setCallback(this);
+        UserObject savedUser = new Gson().fromJson(SPHelper.getData(this, SPHelper.USER_SESSION_KEY), UserObject.class);
+        if(savedUser != null) {
+            loginFragment.setEmail(savedUser.email);
+            loginFragment.requestFocusOnPassword();
+        }
     }
 
     private String email, password;
@@ -125,7 +130,7 @@ public class LoginActivity extends EDBaseActivity implements LoginCallbacks {
 
     @Override
     public void onBackPressed() {
-        SplashScreenActivity_.intent(this).start();
+        SplashScreenActivity_.intent(this).autoLogin(false).start();
         finish();
         overridePendingTransition(com.flightpathcore.R.anim.abc_fade_in, com.flightpathcore.R.anim.abc_slide_out_bottom);
     }
