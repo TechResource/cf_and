@@ -136,7 +136,7 @@ public class MapActivity extends EDBaseActivity implements MapCallbacks, HeaderF
         mapFragment.hideStopPause();
 
         menuView.setCallbacks(this);
-        menuView.setupMenu(DrawerMenuView.UPDATE_APP, DrawerMenuView.END_TRIP);
+        menuView.setupMenu(DrawerMenuView.UPDATE_APP, DrawerMenuView.STATUS, DrawerMenuView.ADD_INSPECTION, DrawerMenuView.END_TRIP);
 
         drawer.setDrawerListener(this);
 
@@ -192,6 +192,9 @@ public class MapActivity extends EDBaseActivity implements MapCallbacks, HeaderF
                 .setMessage(R.string.end_trip_message)
                 .setPositiveButton(R.string.yes_label, (dialog, which) -> {
                     tripStatusHelper.stopTrip();
+                    UserObject userObject = new Gson().fromJson(SPHelper.getData(MapActivity.this, SPHelper.USER_SESSION_KEY), UserObject.class);
+                    userObject.password = null;
+                    SPHelper.saveData(MapActivity.this, SPHelper.USER_SESSION_KEY, new Gson().toJson(userObject));
                     MapActivity.this.finish();
                 })
                 .setNegativeButton(R.string.no_label, null)
@@ -409,6 +412,10 @@ public class MapActivity extends EDBaseActivity implements MapCallbacks, HeaderF
         if (onMenuCloseOpenViewWithId != null) {
             if (onMenuCloseOpenViewWithId == DrawerMenuView.UPDATE_APP) {
                 checkUpdate();
+            } else if (onMenuCloseOpenViewWithId == DrawerMenuView.STATUS) {
+                showStatusDialog();
+            } else if (onMenuCloseOpenViewWithId == DrawerMenuView.ADD_INSPECTION) {
+                navigator.addInspection();
             } else if (onMenuCloseOpenViewWithId == DrawerMenuView.END_TRIP) {
                 logoutAndEndTrip();
             }

@@ -39,9 +39,9 @@ android {
         applicationId "com.flightpath.easidrive"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 38
+        versionCode 39
         versionName "2.2"
-        archivesBaseName = "ED_"+versionName+"_"+versionCode+"_"
+//        archivesBaseName = "ED_"+versionName+"_"+versionCode+"_"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

@@ -57,8 +57,10 @@ public class SplashScreenActivity extends EDBaseActivity implements SplashScreen
     protected void init(){
         userObject = SPHelper.getUserSession(SplashScreenActivity.this);
         if (autoLogin && userObject != null && userObject.email != null && !userObject.email.isEmpty()) {
-//            model.fpApi.login(new LoginRequest(userObject.email, userObject.password), loginCallback);
-            navigator.loginActivity();
+            if(userObject.password != null)
+                model.fpApi.login(new LoginRequest(userObject.email, userObject.password), loginCallback);
+            else
+                navigator.loginActivity();
         } else {
             splashScreenFragment.showPager(this);
         }

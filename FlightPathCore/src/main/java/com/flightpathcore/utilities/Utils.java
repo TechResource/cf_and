@@ -114,9 +114,9 @@ public class Utils {
     public static File createEmptyImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "/"+DIRECTORY_NAME+"/"+"JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStorageDirectory();
-
+        String imageFileName = "JPEG_" + timeStamp + "_";
+//        File storageDir = Environment.getExternalStorageDirectory();
+        File storageDir = new File(Environment.getExternalStorageDirectory().getPath() + File.separator+DIRECTORY_NAME);
         // Create directory if doesnt exists
         File directory = new File(Environment.getExternalStorageDirectory() + File.separator + DIRECTORY_NAME);
         if (!directory.exists()) {
