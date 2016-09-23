@@ -104,6 +104,7 @@ public class JobObject {
         excess = job.excess;
         homeNumber = job.homeNumber;
         street2 = job.street2;
+        referenceNumber = job.referenceNumber;
     }
 
 }

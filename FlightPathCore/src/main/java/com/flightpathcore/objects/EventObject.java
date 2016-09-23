@@ -47,8 +47,10 @@ public class EventObject{
         this.longitude = cursor.getDouble(3);
         this.tripId = cursor.getInt(4);
         this.onPause = cursor.getInt(5) == 1 ? true : false;
-        if(this.type == EventType.INSPECTION) {
+        if(this.type == EventType.INSPECTION ) {
             this.timestamp = Utilities.getUtcDateTime(cursor.getLong(6));
+        }else if(this.type == EventType.LOGOUT){
+            this.timestamp = cursor.getString(6);
         }else {
             this.timestamp = cursor.getLong(6) + "";
         }
@@ -82,6 +84,8 @@ public class EventObject{
             return EventType.CHANGE_MILEAGE;
         }else if(type.equals("DISPOSAL_INSPECTION")){
             return EventType.DISPOSAL_INSPECTION;
+        }else if(type.equals("LOGOUT")){
+            return EventType.LOGOUT;
         }
 
         throw new IllegalArgumentException("wrong type :"+type);
@@ -109,7 +113,10 @@ public class EventObject{
                 return "CHANGE_MILEAGE";
             case DISPOSAL_INSPECTION:
                 return "DISPOSAL_INSPECTION";
+            case LOGOUT:
+                return "LOGOUT";
         }
+
         throw new IllegalArgumentException("wrong type");
     }
 
@@ -135,7 +142,10 @@ public class EventObject{
                 return "CHANGE_MILEAGE";
             case DISPOSAL_INSPECTION:
                 return "DISPOSAL_INSPECTION";
+            case LOGOUT:
+                return "LOGOUT";
         }
+
         throw new IllegalArgumentException("wrong type");
     }
 
@@ -149,6 +159,7 @@ public class EventObject{
         INSPECTION,
         DISPOSAL_INSPECTION,
         STATUS,
-        CHANGE_MILEAGE
+        CHANGE_MILEAGE,
+        LOGOUT
     }
 }

@@ -1,6 +1,7 @@
 package com.flightpathcore.network;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.flightpathcore.base.BaseApplication;
 import com.flightpathcore.database.DBHelper;
@@ -96,6 +97,7 @@ public class SynchronizationHelper {
         private List<EventObject> eventsToSend;
         public final Object lockObj = new Object();
         public Long lastSyncMillis = null;
+        public SynchronizationEndCallback endCallback;
 
         @Override
         public void run() {
@@ -117,6 +119,7 @@ public class SynchronizationHelper {
                             try {
                                 response = instance.fpModel.fpApi.sendEvents(new SynchronizeRequest(instance.user.tokenId, instance.user.access, eventsToSend));
                             } catch (RetrofitError e) {
+                                Log.e("Sync", e.getMessage());
                                 response = null;
                             }
                             if (response != null) {
@@ -142,6 +145,7 @@ public class SynchronizationHelper {
                                             }
                                         }
                                     } catch (RetrofitError e) {
+                                        Log.e("Sync Files", e.getMessage());
                                         imgResponse = null;
                                     }
                                 } else {
@@ -158,6 +162,7 @@ public class SynchronizationHelper {
                                             }
                                         }
                                     } catch (RetrofitError e) {
+                                        Log.e("Sync Files 2", e.getMessage());
                                         disposalResponse = null;
                                     }
                                 }else{
@@ -182,6 +187,9 @@ public class SynchronizationHelper {
                         }
                         instance.eventsLeft = DBHelper.getInstance().countEventsLeft();
                         instance.notifyListeners();
+                        if(endCallback != null){
+                            endCallback.onSyncEnd();
+                        }
                     }
                     lastSyncMillis = Utilities.getTimestamp();
                     instance.sending = false;
@@ -255,8 +263,24 @@ public class SynchronizationHelper {
         }
     }
 
+    public void sendNow(Context context, SynchronizationEndCallback endCallback) {
+        if (eventsSender == null) {
+            initInstance(new FPModel(context));
+        }
+        eventsSender.endCallback = endCallback;
+        if (eventsSender != null && !sending) {
+            synchronized (eventsSender.lockObj) {
+                eventsSender.lockObj.notify();
+            }
+        }
+    }
+
     public interface SynchronizationCallback {
         void onSynchronization(int eventsLeft, String dateOfLastSuccessfulSynchronization, SyncState syncState);
+    }
+
+    public interface SynchronizationEndCallback{
+        void onSyncEnd();
     }
 
     public enum SyncState {

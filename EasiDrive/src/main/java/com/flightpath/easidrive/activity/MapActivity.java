@@ -43,6 +43,7 @@ import com.flightpathcore.widgets.InputWidget_;
 import com.flightpathcore.widgets.JobInfoWidget;
 import com.flightpathcore.widgets.JobInfoWidget_;
 import com.google.gson.Gson;
+import com.squareup.okhttp.internal.Util;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -195,7 +196,21 @@ public class MapActivity extends EDBaseActivity implements MapCallbacks, HeaderF
                     UserObject userObject = new Gson().fromJson(SPHelper.getData(MapActivity.this, SPHelper.USER_SESSION_KEY), UserObject.class);
                     userObject.password = null;
                     SPHelper.saveData(MapActivity.this, SPHelper.USER_SESSION_KEY, new Gson().toJson(userObject));
-                    MapActivity.this.finish();
+
+                    EventObject ev = new EventObject();
+                    Location l = locationHandler.getLocation();
+                    if(l != null) {
+                        ev.latitude = l.getLatitude();
+                        ev.longitude = l.getLongitude();
+                    }
+                    ev.timestamp = Utilities.getUtcDateTime(Utilities.getTimestamp());
+                    ev.type = EventObject.EventType.LOGOUT;
+                    DBHelper.getInstance().createEvent(ev);
+                    SynchronizationHelper.getInstance().sendNow(this, () -> MapActivity.this.finish());
+                    Intent i = new Intent();
+                    i.setAction(Intent.ACTION_MAIN);
+                    i.addCategory(Intent.CATEGORY_HOME);
+                    MapActivity.this.startActivity(i);
                 })
                 .setNegativeButton(R.string.no_label, null)
                 .show());

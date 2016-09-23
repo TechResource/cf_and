@@ -174,7 +174,7 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
             return getResources().getInteger(R.integer.view_tag_customer_phone);
         } else if (property.equalsIgnoreCase("courtesy_car")) {
             return getResources().getInteger(R.integer.view_tag_courtesy_car);
-        } else if (property.equalsIgnoreCase("customer_name")) {
+        } else if (property.equalsIgnoreCase("customer_name") || property.equalsIgnoreCase("customerName")) {
             return getResources().getInteger(R.integer.view_tag_customer_name);
         } else if (property.equalsIgnoreCase("jobType")) {
             return getResources().getInteger(R.integer.view_tag_spinner_job_type);
@@ -182,6 +182,8 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
             return getResources().getInteger(R.integer.view_tag_reference_number);
         } else if (property.equalsIgnoreCase("notes")) {
             return getResources().getInteger(R.integer.view_tag_notes);
+        }else if(property.equalsIgnoreCase("homeNumber")){
+            return getResources().getInteger(R.integer.view_tag_home_number);
         }
         return null;
     }
