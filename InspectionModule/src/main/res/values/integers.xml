@@ -23,4 +23,7 @@
     <integer name="view_tag_vat_status">20</integer>
     <integer name="view_tag_customer_phone">21</integer>
     <integer name="view_tag_courtesy_car">22</integer>
+
+    <integer name="view_tag_mobile">23</integer>
+    <integer name="view_tag_work_number">24</integer>
 </resources>

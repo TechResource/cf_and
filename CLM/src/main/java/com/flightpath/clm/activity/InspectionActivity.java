@@ -55,7 +55,10 @@ public class InspectionActivity extends CLMBaseActivity implements InspectionMod
                     "\"jobs\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":\"spinner\",\"property\":\"jobType\",\"hint\":null,\"value\":" +
                     "\"job_type\",\"is_required\":null,\"is_editable\":null,\"input_type\":null},{\"type\":\"input\",\"property\":\"refNumber\",\"hint\":" +
                     "\"Reference Number\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":" +
-                    "\"customerName\",\"hint\":\"Customer Name\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":" +
+                    "\"customerName\",\"hint\":\"Customer Name\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":" +
+                    "\"mobile\",\"hint\":\"Mobile\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":"+
+                    "\"customer_phone\",\"hint\":\"Home Phone\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":\"input\",\"property\":" +
+                    "\"workPhone\",\"hint\":\"Work Phone\",\"value\":null,\"is_required\":false,\"is_editable\":true,\"input_type\":null},{\"type\":" +
                     "\"section_header\",\"property\":null,\"hint\":null,\"value\":\"Address\",\"is_required\":null,\"is_editable\":null,\"input_type\":" +
                     "null},{\"type\":\"input\",\"property\":\"homeNumber\",\"hint\":\"Home Name/Number\",\"value\":null,\"is_required\":true,\"is_editable\":" +
                     "true,\"input_type\":null},{\"type\":\"input\",\"property\":\"addressLine1\",\"hint\":\"Address Line 1\",\"value\":null,\"is_required\":" +

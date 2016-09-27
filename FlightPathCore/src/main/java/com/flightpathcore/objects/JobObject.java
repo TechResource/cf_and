@@ -56,6 +56,8 @@ public class JobObject {
     public String workPhone;
     @SerializedName("home_phone")
     public String homePhone;
+    @SerializedName("mobile_phone")
+    public String mobile;
     public String excess;
 
 
@@ -105,6 +107,7 @@ public class JobObject {
         homeNumber = job.homeNumber;
         street2 = job.street2;
         referenceNumber = job.referenceNumber;
+        mobile = job.mobile;
     }
 
 }

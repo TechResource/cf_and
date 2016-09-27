@@ -184,6 +184,10 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
             return getResources().getInteger(R.integer.view_tag_notes);
         }else if(property.equalsIgnoreCase("homeNumber")){
             return getResources().getInteger(R.integer.view_tag_home_number);
+        }else if(property.equalsIgnoreCase("mobile")){
+            return getResources().getInteger(R.integer.view_tag_mobile);
+        }else if(property.equalsIgnoreCase("workPhone")){
+            return getResources().getInteger(R.integer.view_tag_work_number);
         }
         return null;
     }
@@ -320,7 +324,7 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
         } else if (viewTag == getResources().getInteger(R.integer.view_tag_vat_status)) {
             return job.vatstatus;
         } else if (viewTag == getResources().getInteger(R.integer.view_tag_customer_phone)) {
-            return (job.workPhone != null && job.workPhone.isEmpty()) ? job.workPhone : job.homePhone;
+            return job.homePhone;
         } else if (viewTag == getResources().getInteger(R.integer.view_tag_customer_name)) {
             return job.customerName;
         } else if (viewTag == getResources().getInteger(R.integer.view_tag_home_number)) {
@@ -333,6 +337,10 @@ public class InspectionStep1Fragment extends BaseFragment implements SpinnerWidg
             return job.notes;
         } else if (viewTag == getResources().getInteger(R.integer.view_tag_courtesy_car)) {
             return job.courtesyCar ? "true" : "false";
+        } else if(viewTag == getResources().getInteger(R.integer.view_tag_mobile)){
+            return job.mobile;
+        }else if(viewTag == getResources().getInteger(R.integer.view_tag_work_number)){
+            return job.workPhone;
         }
         return null;
     }
