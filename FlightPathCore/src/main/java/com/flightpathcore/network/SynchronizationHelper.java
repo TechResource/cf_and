@@ -119,7 +119,8 @@ public class SynchronizationHelper {
                             try {
                                 response = instance.fpModel.fpApi.sendEvents(new SynchronizeRequest(instance.user.tokenId, instance.user.access, eventsToSend));
                             } catch (RetrofitError e) {
-                                Log.e("Sync", e.getMessage());
+                                if(e != null && e.getMessage() != null)
+                                    Log.e("Sync", e.getMessage());
                                 response = null;
                             }
                             if (response != null) {
