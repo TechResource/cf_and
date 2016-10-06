@@ -146,7 +146,8 @@ public class SynchronizationHelper {
                                             }
                                         }
                                     } catch (RetrofitError e) {
-                                        Log.e("Sync Files", e.getMessage());
+                                        if(e != null && e.getMessage() != null)
+                                            Log.e("Sync Files", e.getMessage());
                                         imgResponse = null;
                                     }
                                 } else {
@@ -163,7 +164,8 @@ public class SynchronizationHelper {
                                             }
                                         }
                                     } catch (RetrofitError e) {
-                                        Log.e("Sync Files 2", e.getMessage());
+                                        if(e != null && e.getMessage() != null)
+                                            Log.e("Sync Files 2", e.getMessage());
                                         disposalResponse = null;
                                     }
                                 }else{

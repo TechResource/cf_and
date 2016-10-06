@@ -97,7 +97,7 @@
             android:focusable="false"
             android:drawablePadding="@dimen/margin_small"
             android:padding="@dimen/margin_normal"
-            android:text="@string/add_inspection_text"
+            android:text="@string/send_inspection_text"
             android:textSize="@dimen/text_size_extra_large"
 
             />
